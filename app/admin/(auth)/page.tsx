@@ -32,7 +32,7 @@ const Page = () => {
   }
 
   return (
-    <main className="flex h-screen w-full items-center justify-center bg-[#f1f4fa] px-20 py-10">
+    <main className="flex h-screen w-full items-center justify-center bg-[#F1F4FA] px-20 py-10">
       <section className="flex size-full max-w-screen-2xl flex-col">
         <div className="mb-auto flex items-center">
           <Image
