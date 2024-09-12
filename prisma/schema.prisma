@@ -1,0 +1,374 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductStatus {
+  DRAFT
+  AVAILABLE
+  SOLDOUT
+  ARCHIVED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum TransactionStatus {
+  PROCESSING
+  COMPLETED
+  CANCELLED
+  FAILED
+  DELIVERED
+  SHIPPED
+  REFUND
+}
+
+model User {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  password     String
+  avatar       String
+  phone_number String
+  addresses    UserAddress[]
+  cart         Cart?
+  wishlists    Wishlist[]
+  transactions Transaction[]
+  reviews      ProductReview[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @map("updated_at")
+
+  @@map("users")
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique @map("user_id")
+  items     CartItem[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @map("upadted_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String   @map("cart_id")
+  productId String   @map("product_id")
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("cart_items")
+}
+
+model Wishlist {
+  id        String         @id @default(uuid())
+  userId    String         @map("user_id")
+  label     String
+  items     WishlistItem[]
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("wishlists")
+}
+
+model WishlistItem {
+  id         String   @id @default(uuid())
+  wishlistId String   @map("wishlist_id")
+  productId  String   @map("product_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @map("updated_at")
+
+  wishlist Wishlist @relation(fields: [wishlistId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+
+  @@map("wishlist_items")
+}
+
+model UserAddress {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  label        String
+  address      String   @db.LongText
+  state        String
+  city         String
+  zipCode      String   @map("zip_code")
+  phone_number String?  @map("phone_number")
+  isPrimary    Boolean  @map("is_primary")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("user_addresses")
+}
+
+model Series {
+  id          String    @id @default(uuid())
+  title       String
+  description String?   @db.LongText
+  author      String?
+  image       String
+  products    Product[]
+  isActive    Boolean   @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @map("updated_at")
+
+  @@map("series")
+}
+
+model Brand {
+  id        String    @id @default(uuid())
+  name      String
+  products  Product[]
+  isActive  Boolean   @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @map("updated_at")
+
+  @@map("brands")
+}
+
+model Grade {
+  id        String    @id @default(uuid())
+  name      String
+  products  Product[]
+  isActive  Boolean   @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @map("updated_at")
+
+  @@map("grades")
+}
+
+model Product {
+  id               String            @id @default(uuid())
+  name             String
+  description      String            @db.LongText
+  dimensions       String?
+  weight           Int?
+  price            Float
+  quantity         Int
+  status           ProductStatus
+  seriesId         String            @map("series_id")
+  brandId          String?           @map("brand_id")
+  gradeId          String?           @map("grade_id")
+  images           ProductImage[]
+  reviews          ProductReview[]
+  discounts        ProductDiscount[]
+  cartItems        CartItem[]
+  wishlistItems    WishlistItem[]
+  transactionItems TransactionItem[]
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @map("updated_at")
+
+  series Series @relation(fields: [seriesId], references: [id])
+  brand  Brand? @relation(fields: [brandId], references: [id])
+  grade  Grade? @relation(fields: [gradeId], references: [id])
+
+  @@map("products")
+}
+
+model ProductImage {
+  id           String   @id @default(uuid())
+  productId    String   @map("product_id")
+  imageUrl     String   @map("image_url")
+  altText      String?  @map("alt_text")
+  isPrimary    Boolean  @default(false) @map("is_primary")
+  displayOrder Int      @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("product_images")
+}
+
+model ProductReview {
+  id        String   @id @default(uuid())
+  productId String   @map("product_id")
+  userId    String   @map("user_id")
+  rating    Int
+  review    String   @db.LongText
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("product_reviews")
+}
+
+model ProductDiscount {
+  id               String            @id @default(uuid())
+  productId        String            @map("product_id")
+  discountType     DiscountType      @map("discount_type")
+  discountValue    Float             @map("discount_value")
+  startDate        DateTime?         @map("start_date")
+  endDate          DateTime?         @map("end_date")
+  usageLimit       Int?              @map("usage_limit")
+  usageCount       Int?              @map("usage_count")
+  isActive         Boolean           @default(false) @map("is_active")
+  transactionItems TransactionItem[]
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @map("updated_at")
+
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("product_discounts")
+}
+
+model Voucher {
+  id                String        @id @default(uuid())
+  code              String
+  description       String?
+  type              DiscountType
+  value             Float
+  startDate         DateTime?     @map("start_date")
+  endDate           DateTime?     @map("end_date")
+  usageLimit        Int?          @map("usage_limit")
+  usageCount        Int?          @map("use_count")
+  minPurchaseAmount Int?          @map("min_purchase_amount")
+  transactions      Transaction[]
+  isActive          Boolean       @default(false) @map("is_active")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @map("updated_at")
+
+  @@map("vouchers")
+}
+
+model PaymentMethod {
+  id           String        @id @default(uuid())
+  name         String
+  transactions Transaction[]
+  isActive     Boolean       @default(true) @map("is_active")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @map("updated_at")
+
+  @@map("payment_methods")
+}
+
+model Transaction {
+  id                  String            @id @default(uuid())
+  transactionDate     DateTime          @default(now()) @map("transaction_date")
+  userId              String            @map("user_id")
+  shippingAddress     String            @map("shipping_address")
+  shippingCity        String            @map("shipping_city")
+  shippingState       String            @map("shipping_state")
+  shippingZipCode     String            @map("shipping_zip_code")
+  shippingPhoneNumber String?           @map("shipping_phone_number")
+  paymentMethodId     String            @map("payment_method_id")
+  paymentStatus       ProductStatus     @map("payment_status")
+  transactionStatus   TransactionStatus @map("transaction_status")
+  voucherId           String?           @map("voucher_id")
+  voucherAmount       Float?            @map("voucher_amount")
+  totalAmount         Float             @map("total_amount")
+  shippingFee         Float             @map("shipping_fee")
+  taxAmount           Float             @map("tax_amount")
+  grandTotal          Float             @map("grand_total")
+  trackingNumber      String            @map("tracking_number")
+  items               TransactionItem[]
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @map("updated_at")
+
+  user          User          @relation(fields: [userId], references: [id])
+  voucher       Voucher?      @relation(fields: [voucherId], references: [id])
+  paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+  @@map("transactions")
+}
+
+model TransactionItem {
+  id                String   @id @default(uuid())
+  transactionId     String   @map("transaction_id")
+  productId         String   @map("product_id")
+  price             Float
+  quantity          Int
+  productDiscountId String?  @map("product_discount_id")
+  discountAmount    Float?   @map("discount_amount")
+  totalAmount       Float    @map("total_amount")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @map("updated_at")
+
+  transaction     Transaction      @relation(fields: [transactionId], references: [id])
+  product         Product          @relation(fields: [productId], references: [id])
+  productDiscount ProductDiscount? @relation(fields: [productDiscountId], references: [id])
+
+  @@map("transaction_items")
+}
+
+model Role {
+  id               String           @id @default(uuid())
+  name             String
+  description      String
+  admins           Admin[]
+  rolesPermissions RolePermission[]
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @default(now()) @map("updated_at")
+
+  @@map("roles")
+}
+
+model Permission {
+  id               String           @id @default(uuid())
+  name             String
+  description      String
+  rolesPermissions RolePermission[]
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @default(now()) @map("updated_at")
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String   @id @default(uuid())
+  roleId       String   @map("role_id")
+  permissionId String   @map("permission_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId])
+  @@map("roles_permissions")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  username  String
+  email     String
+  password  String
+  roleId    String   @map("role_id")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@map("admins")
+}
