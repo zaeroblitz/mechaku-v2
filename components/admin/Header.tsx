@@ -3,11 +3,15 @@ import TooltipIcon from "@/components/shared/TooltipIcon";
 import { Search, Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const Header = () => {
+interface HeaderProps {
+  title: string;
+}
+
+const Header = ({ title }: HeaderProps) => {
   return (
     <div className="ml-14 flex justify-between">
       <h1 className="font-poppins text-3xl font-bold leading-10 text-[#18120f]">
-        Dashboard
+        {title}
       </h1>
 
       <div className="flex flex-1 items-center justify-end space-x-5">
