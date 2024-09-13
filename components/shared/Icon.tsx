@@ -20,6 +20,8 @@ import {
   HandCoins,
   Users,
   AlignLeft,
+  Wrench,
+  KeyRound,
 } from "lucide-react";
 
 export const selectedIcons = {
@@ -42,6 +44,8 @@ export const selectedIcons = {
   HandCoins,
   Users,
   AlignLeft,
+  Wrench,
+  KeyRound,
 };
 
 type IconName = keyof typeof selectedIcons;

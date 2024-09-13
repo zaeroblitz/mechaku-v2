@@ -12,11 +12,6 @@ export const adminSidebar: SidebarLink[] = [
     route: "products",
     children: [
       {
-        icon: "ShoppingBag",
-        label: "All Products",
-        route: "/admin/products",
-      },
-      {
         icon: "Film",
         label: "Series",
         route: "/admin/series",
@@ -32,9 +27,9 @@ export const adminSidebar: SidebarLink[] = [
         route: "/admin/grades",
       },
       {
-        icon: "Bookmark",
-        label: "Product Status",
-        route: "/admin/product-status",
+        icon: "ShoppingBag",
+        label: "All Products",
+        route: "/admin/products",
       },
     ],
   },
@@ -45,42 +40,35 @@ export const adminSidebar: SidebarLink[] = [
   },
   {
     icon: "Wallet",
-    label: "Payments",
-    route: "/admin/payments",
-    children: [
-      {
-        icon: "CreditCard",
-        label: "Payment Methods",
-        route: "/admin/payments",
-      },
-      {
-        icon: "Coins",
-        label: "Payment Status",
-        route: "/admin/payment-status",
-      },
-    ],
+    label: "Payment Methods",
+    route: "/admin/payment-methods",
   },
   {
     icon: "Banknote",
     label: "Transactions",
     route: "/admin/transactions",
-    children: [
-      {
-        icon: "CircleDollarSign",
-        label: "All Transactions",
-        route: "/admin/transactions",
-      },
-      {
-        icon: "HandCoins",
-        label: "Transaction Status",
-        route: "/admin/transaction-status",
-      },
-    ],
   },
   {
     icon: "Shield",
     label: "Admins",
     route: "/admin/admins",
+    children: [
+      {
+        icon: "Wrench",
+        label: "Roles",
+        route: "/admin/roles",
+      },
+      {
+        icon: "KeyRound",
+        label: "Permissions",
+        route: "/admin/permissions",
+      },
+      {
+        icon: "Users",
+        label: "All Admins",
+        route: "/admin/admins",
+      },
+    ],
   },
   {
     icon: "Users",

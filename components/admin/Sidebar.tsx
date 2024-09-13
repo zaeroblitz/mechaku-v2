@@ -40,7 +40,9 @@ const Sidebar = () => {
         ${isMinimize === false ? "w-[296px]" : "w-fit"}`}
       >
         {/* Logo  */}
-        <div className="mb-8 flex items-center">
+        <div
+          className={`mb-8 flex items-center ${isMinimize && "flex-center"}`}
+        >
           {isMinimize ? (
             <Image
               src="/assets/images/logo.svg"
@@ -62,7 +64,11 @@ const Sidebar = () => {
 
         {/* Menu */}
         <div className="flex flex-col gap-6">
-          <p className="text-sm font-light uppercase text-white">Menu</p>
+          <p
+            className={`text-sm font-light uppercase text-white ${isMinimize && "flex-center"}`}
+          >
+            Menu
+          </p>
           <div className="flex flex-col items-start gap-5 space-x-0">
             {adminSidebar.map((sidebar) => (
               <div
@@ -77,7 +83,9 @@ const Sidebar = () => {
                 {sidebar.children ? (
                   <Accordion type="multiple">
                     <AccordionItem value={sidebar.label} className="border-b-0">
-                      <AccordionTrigger className="no-underline hover:no-underline">
+                      <AccordionTrigger
+                        className={`no-underline hover:no-underline ${isMinimize ? "flex-col space-y-2" : "flex-row"}`}
+                      >
                         <div className="flex items-center justify-start">
                           <Link
                             href={sidebar.route}
@@ -105,7 +113,9 @@ const Sidebar = () => {
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="flex-col space-y-4 pl-5 pt-4">
+                        <div
+                          className={`flex-col space-y-4 pt-4 ${isMinimize ? "flex-center pl-0" : "pl-5"}`}
+                        >
                           {sidebar.children.map((child) => (
                             <Link
                               key={child.route}
@@ -139,7 +149,7 @@ const Sidebar = () => {
                 ) : (
                   <Link
                     href={sidebar.route}
-                    className="flex items-center gap-4"
+                    className="flex items-center justify-center gap-4"
                   >
                     <TooltipIcon
                       classname="ml-10 bg-[#170645]"
@@ -166,11 +176,15 @@ const Sidebar = () => {
 
         {/* Other */}
         <div className="flex flex-col gap-6">
-          <p className="text-sm font-light uppercase text-white">Other</p>
+          <p
+            className={`text-sm font-light uppercase text-white ${isMinimize && "flex-center"}`}
+          >
+            Other
+          </p>
           <div className="w-full items-center justify-between text-lg font-light">
             <div className="flex flex-col gap-5">
               {/* Settings */}
-              <Link href="/admin/settings" className="flex gap-4">
+              <Link href="/admin/settings" className="flex-center flex gap-4">
                 <TooltipIcon
                   classname="ml-10 bg-[#170645]"
                   icon={<Icon name="Settings" size={24} color="white" />}
@@ -184,7 +198,7 @@ const Sidebar = () => {
               </Link>
 
               {/* Logout */}
-              <Link href="/admin/logout" className="flex gap-4">
+              <Link href="/admin/logout" className="flex-center flex gap-4">
                 <TooltipIcon
                   classname="ml-10 bg-[#170645]"
                   icon={<Icon name="LogOut" size={24} color="white" />}
