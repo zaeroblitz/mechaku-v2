@@ -4,8 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import Header from "@/components/admin/Header";
-import SeriesCard from "@/components/admin/Series/SeriesCard";
-import SeriesSkeleton from "@/components/admin/Series/SeriesSkeleton";
+import SeriesCard from "@/components/admin/series/SeriesCard";
+import SeriesSkeleton from "@/components/admin/series/SeriesSkeleton";
 import { ISeries, useGetAllSeriesQuery } from "@/services/series";
 
 const Page = () => {
