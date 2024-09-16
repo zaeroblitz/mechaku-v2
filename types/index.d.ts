@@ -6,3 +6,9 @@ export interface SidebarLink {
   label: string;
   children?: SidebarLink[];
 }
+
+export default interface BaseResponse {
+  success: boolean;
+  data: any;
+  message: string;
+}

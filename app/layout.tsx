@@ -1,7 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Inter, Lexend, Poppins } from "next/font/google";
+import Provider from "./provider";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,7 +39,8 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lexend.variable} ${poppins.variable}`}
       >
-        {children}
+        <Provider>{children}</Provider>
+        <Toaster />
       </body>
     </html>
   );

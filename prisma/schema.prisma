@@ -54,7 +54,7 @@ model User {
   transactions Transaction[]
   reviews      ProductReview[]
   createdAt    DateTime        @default(now()) @map("created_at")
-  updatedAt    DateTime        @map("updated_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -64,7 +64,7 @@ model Cart {
   userId    String     @unique @map("user_id")
   items     CartItem[]
   createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @map("upadted_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id])
 
@@ -77,7 +77,7 @@ model CartItem {
   productId String   @map("product_id")
   quantity  Int
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   cart    Cart    @relation(fields: [cartId], references: [id])
   product Product @relation(fields: [productId], references: [id])
@@ -91,7 +91,7 @@ model Wishlist {
   label     String
   items     WishlistItem[]
   createdAt DateTime       @default(now()) @map("created_at")
-  updatedAt DateTime       @map("updated_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id])
 
@@ -103,7 +103,7 @@ model WishlistItem {
   wishlistId String   @map("wishlist_id")
   productId  String   @map("product_id")
   createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @map("updated_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   wishlist Wishlist @relation(fields: [wishlistId], references: [id])
   product  Product  @relation(fields: [productId], references: [id])
@@ -122,7 +122,7 @@ model UserAddress {
   phone_number String?  @map("phone_number")
   isPrimary    Boolean  @map("is_primary")
   createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @map("updated_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id])
 
@@ -138,7 +138,7 @@ model Series {
   products    Product[]
   isActive    Boolean   @map("is_active")
   createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @map("updated_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("series")
 }
@@ -149,7 +149,7 @@ model Brand {
   products  Product[]
   isActive  Boolean   @map("is_active")
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @map("updated_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("brands")
 }
@@ -160,7 +160,7 @@ model Grade {
   products  Product[]
   isActive  Boolean   @map("is_active")
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @map("updated_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("grades")
 }
@@ -184,7 +184,7 @@ model Product {
   wishlistItems    WishlistItem[]
   transactionItems TransactionItem[]
   createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @map("updated_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
 
   series Series @relation(fields: [seriesId], references: [id])
   brand  Brand? @relation(fields: [brandId], references: [id])
@@ -201,7 +201,7 @@ model ProductImage {
   isPrimary    Boolean  @default(false) @map("is_primary")
   displayOrder Int      @map("display_order")
   createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @map("updated_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   product Product @relation(fields: [productId], references: [id])
 
@@ -215,7 +215,7 @@ model ProductReview {
   rating    Int
   review    String   @db.LongText
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   product Product @relation(fields: [productId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
@@ -235,7 +235,7 @@ model ProductDiscount {
   isActive         Boolean           @default(false) @map("is_active")
   transactionItems TransactionItem[]
   createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @map("updated_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
 
   product Product @relation(fields: [productId], references: [id])
 
@@ -256,7 +256,7 @@ model Voucher {
   transactions      Transaction[]
   isActive          Boolean       @default(false) @map("is_active")
   createdAt         DateTime      @default(now()) @map("created_at")
-  updatedAt         DateTime      @map("updated_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
 
   @@map("vouchers")
 }
@@ -267,7 +267,7 @@ model PaymentMethod {
   transactions Transaction[]
   isActive     Boolean       @default(true) @map("is_active")
   createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @map("updated_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
 
   @@map("payment_methods")
 }
@@ -293,7 +293,7 @@ model Transaction {
   trackingNumber      String            @map("tracking_number")
   items               TransactionItem[]
   createdAt           DateTime          @default(now()) @map("created_at")
-  updatedAt           DateTime          @map("updated_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
 
   user          User          @relation(fields: [userId], references: [id])
   voucher       Voucher?      @relation(fields: [voucherId], references: [id])
@@ -312,7 +312,7 @@ model TransactionItem {
   discountAmount    Float?   @map("discount_amount")
   totalAmount       Float    @map("total_amount")
   createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @map("updated_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   transaction     Transaction      @relation(fields: [transactionId], references: [id])
   product         Product          @relation(fields: [productId], references: [id])
@@ -328,7 +328,7 @@ model Role {
   admins           Admin[]
   rolesPermissions RolePermission[]
   createdAt        DateTime         @default(now()) @map("created_at")
-  updatedAt        DateTime         @default(now()) @map("updated_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
 
   @@map("roles")
 }
@@ -339,7 +339,7 @@ model Permission {
   description      String
   rolesPermissions RolePermission[]
   createdAt        DateTime         @default(now()) @map("created_at")
-  updatedAt        DateTime         @default(now()) @map("updated_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
 
   @@map("permissions")
 }
@@ -349,7 +349,7 @@ model RolePermission {
   roleId       String   @map("role_id")
   permissionId String   @map("permission_id")
   createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @default(now()) @map("updated_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   role       Role       @relation(fields: [roleId], references: [id])
   permission Permission @relation(fields: [permissionId], references: [id])
@@ -366,7 +366,7 @@ model Admin {
   roleId    String   @map("role_id")
   isActive  Boolean  @default(true) @map("is_active")
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   role Role @relation(fields: [roleId], references: [id])
 

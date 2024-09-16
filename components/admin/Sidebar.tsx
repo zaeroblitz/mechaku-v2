@@ -36,7 +36,7 @@ const Sidebar = () => {
     <div className={`${isMinimize ? "w-32" : "w-[320px]"}`}>
       <aside
         className={`
-        scrollbar-sidebar-admin fixed inset-y-8 flex-col overflow-y-scroll rounded-3xl bg-[#170645] p-6 font-poppins text-white
+        scrollbar-sidebar-admin fixed inset-y-8 flex-col overflow-y-scroll rounded-3xl bg-primary p-6 font-poppins text-white
         ${isMinimize === false ? "w-[296px]" : "w-fit"}`}
       >
         {/* Logo  */}
@@ -49,7 +49,7 @@ const Sidebar = () => {
               width={32}
               height={32}
               alt="logo"
-              className="invert-colors object-contain"
+              className="invert-colors size-auto object-contain"
             />
           ) : (
             <Image
@@ -57,7 +57,7 @@ const Sidebar = () => {
               width={160}
               height={48}
               alt="logo"
-              className="invert-colors object-contain"
+              className="invert-colors size-auto object-contain"
             />
           )}
         </div>

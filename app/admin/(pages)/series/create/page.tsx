@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
+import { ChevronLeft, Save, FileUp, LoaderCircle } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,13 +19,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronLeft, Save, FileUp } from "lucide-react";
-import { NewSeriesSchema } from "@/lib/validations";
-
 import Header from "@/components/admin/Header";
-import Image from "next/image";
+import { NewSeriesSchema } from "@/lib/validations";
+import { useCreateSeriesMutation } from "@/services/series";
+import { useToast } from "@/hooks/use-toast";
 
 const Page = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [createSeries, { isLoading }] = useCreateSeriesMutation();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const form = useForm<z.infer<typeof NewSeriesSchema>>({
     resolver: zodResolver(NewSeriesSchema),
@@ -46,8 +51,31 @@ const Page = () => {
     }
   };
 
-  const onSubmit = (values: z.infer<typeof NewSeriesSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof NewSeriesSchema>) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("description", values.description ?? "");
+      formData.append("author", values.author ?? "");
+      formData.append("isActive", "true");
+      formData.append("image", values.image);
+
+      await createSeries(formData).unwrap();
+
+      toast({
+        title: "Success!",
+        description: "Series created successfully!",
+      });
+
+      router.push("/admin/series");
+    } catch (error) {
+      console.error("Failed to create new series!");
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem when create new series.",
+      });
+    }
   };
 
   return (
@@ -88,7 +116,7 @@ const Page = () => {
                               alt="Preview"
                               width={680}
                               height={380}
-                              className="h-auto w-full rounded-2xl object-cover"
+                              className="size-auto rounded-2xl object-cover"
                             />
                             <div className="absolute inset-0 h-auto w-full rounded-2xl bg-gradient-to-b from-transparent to-[#170645] opacity-0 mix-blend-multiply duration-500 group-hover:opacity-100 group-hover:transition-opacity" />
                             <div className="flex-center absolute flex size-full flex-col font-lexend opacity-0 transition-opacity duration-500 group-hover:opacity-100">
@@ -227,9 +255,18 @@ const Page = () => {
               <Button
                 className="flex-center mt-4 flex gap-3 rounded-full bg-primary py-6 font-lexend font-semibold text-white hover:bg-[#372174]"
                 type="submit"
+                disabled={isLoading}
               >
-                <Save size={16} color="white" />
-                Create
+                {isLoading ? (
+                  <LoaderCircle
+                    size={16}
+                    color="white"
+                    className="animate-spin"
+                  />
+                ) : (
+                  <Save size={16} color="white" />
+                )}
+                {isLoading ? "Creating New Series.." : "Create"}
               </Button>
             </form>
           </Form>

@@ -19,4 +19,5 @@ export const NewSeriesSchema = z.object({
       (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
       "Only .jpg, .png, and .webp formats are supported."
     ),
+  isActive: z.boolean().optional(),
 });
