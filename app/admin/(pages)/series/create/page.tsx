@@ -69,7 +69,7 @@ const Page = () => {
 
       router.push("/admin/series");
     } catch (error) {
-      console.error("Failed to create new series!");
+      console.error("There was a problem when create new series.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",

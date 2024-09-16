@@ -1,6 +1,7 @@
+import BaseResponse from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface Series {
+export interface ISeries {
   id: string;
   title: string;
   description: string;
@@ -11,6 +12,14 @@ interface Series {
   updatedAt: string;
 }
 
+interface SeriesResponse extends BaseResponse {
+  data: ISeries;
+}
+
+interface GetAllSeriesResponse extends BaseResponse {
+  data: ISeries[];
+}
+
 export const seriesApi = createApi({
   reducerPath: "seriesApi",
   baseQuery: fetchBaseQuery({
@@ -18,14 +27,42 @@ export const seriesApi = createApi({
   }),
   tagTypes: ["series"],
   endpoints: (builder) => ({
-    createSeries: builder.mutation<Series, FormData>({
+    createSeries: builder.mutation<SeriesResponse, FormData>({
       query: (formData) => ({
-        url: "/seriess",
+        url: "/series",
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["series"],
+    }),
+    getAllSeries: builder.query<GetAllSeriesResponse, void>({
+      query: () => ({
+        method: "GET",
+        url: "/series",
+      }),
+      providesTags: ["series"],
+    }),
+    getSeriesById: builder.query<SeriesResponse, string>({
+      query: (id) => ({
+        method: "GET",
+        url: `/series/${id}`,
+      }),
+      providesTags: ["series"],
+    }),
+    updateSeries: builder.mutation<SeriesResponse, FormData>({
+      query: (formData) => ({
+        url: "/series",
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: ["series"],
     }),
   }),
 });
 
-export const { useCreateSeriesMutation } = seriesApi;
+export const {
+  useCreateSeriesMutation,
+  useGetAllSeriesQuery,
+  useGetSeriesByIdQuery,
+  useUpdateSeriesMutation,
+} = seriesApi;

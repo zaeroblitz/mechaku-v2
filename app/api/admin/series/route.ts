@@ -52,7 +52,30 @@ export async function POST(req: NextRequest, res: NextResponse) {
     console.error("🚀 ~ file: route.ts:56 ~ POST ~ error:", error);
     return Response({
       success: false,
-      message: "Failed to checkout!",
+      message: "Failed to create new series!",
+      data: error,
+      status: 500,
+    });
+  }
+}
+
+export async function GET() {
+  try {
+    const series = await prisma.series.findMany({
+      orderBy: { createdAt: "asc" },
+    });
+
+    return Response({
+      success: true,
+      message: "Successfully get all series!",
+      data: series,
+      status: 200,
+    });
+  } catch (error) {
+    console.log("🚀 ~ file: route.ts:66 ~ GET ~ error:", error);
+    return Response({
+      success: false,
+      message: "Failed to get all series!",
       data: error,
       status: 500,
     });
