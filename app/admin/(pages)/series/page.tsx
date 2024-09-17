@@ -6,10 +6,12 @@ import { Plus } from "lucide-react";
 import Header from "@/components/admin/Header";
 import SeriesCard from "@/components/admin/series/SeriesCard";
 import SeriesSkeleton from "@/components/admin/series/SeriesSkeleton";
+import EmptyState from "@/components/shared/EmptyState";
 import { ISeries, useGetAllSeriesQuery } from "@/services/series";
 
 const Page = () => {
   const { data: series, isLoading } = useGetAllSeriesQuery();
+  console.log(series);
 
   return (
     <section className="flex w-full flex-1 flex-col">
@@ -26,18 +28,16 @@ const Page = () => {
         </div>
 
         <div className="flex w-full flex-wrap gap-10">
-          {series ? (
-            isLoading ? (
-              [0, 1, 2, 3, 4, 5].map((val) => (
-                <SeriesSkeleton key={`series-skeleton-${val}`} />
-              ))
-            ) : (
-              series.data.map((item: ISeries) => (
-                <SeriesCard key={item.id} item={item} />
-              ))
-            )
+          {isLoading ? (
+            [0, 1, 2, 3, 4, 5].map((val) => (
+              <SeriesSkeleton key={`series-skeleton-${val}`} />
+            ))
+          ) : series && series.data.length > 0 ? (
+            series.data.map((item: ISeries) => (
+              <SeriesCard key={item.id} item={item} />
+            ))
           ) : (
-            <div>404</div>
+            <EmptyState text="Oops, No product series found!" />
           )}
         </div>
       </main>

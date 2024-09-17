@@ -12,3 +12,7 @@ export default interface BaseResponse {
   data: any;
   message: string;
 }
+
+export interface ParamsProps {
+  params: { id: string };
+}

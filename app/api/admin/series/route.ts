@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
-
 import { prisma } from "@/lib/prisma";
 import { NewSeriesSchema } from "@/lib/validations";
 import Response from "@/lib/api.response";
