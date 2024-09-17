@@ -3,18 +3,58 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { MoveLeft, Pencil } from "lucide-react";
-import { ParamsProps } from "@/types";
-import { Button } from "@/components/ui/button";
+import { MoveLeft, Pencil, Settings2, LoaderCircle } from "lucide-react";
 import Header from "@/components/admin/Header";
 import EmptyState from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
+import { ParamsProps } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { useGetSeriesByIdQuery } from "@/services/series";
+import {
+  useGetSeriesByIdQuery,
+  useUpdateSeriesStatusMutation,
+} from "@/services/series";
 
-const Page = ({ params }: ParamsProps) => {
+export default function Page({ params }: ParamsProps) {
   const router = useRouter();
+  const { toast } = useToast();
+  let debounceTimeout: NodeJS.Timeout | null = null;
+
   const { data: series, isLoading } = useGetSeriesByIdQuery(params.id);
+  const [updateSeriesStatus, { isLoading: updateLoading }] =
+    useUpdateSeriesStatusMutation();
+
+  const handleUpdateStatus = async () => {
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+
+    debounceTimeout = setTimeout(async () => {
+      try {
+        await updateSeriesStatus({
+          id: params.id,
+          isActive: series!.data.isActive,
+        });
+
+        toast({
+          title: "Success!",
+          description: "Series status updated successfully!",
+        });
+      } catch (error) {
+        console.error(
+          "🚀 ~ file: page.tsx:40 ~ handleUpdateStatus ~ error:",
+          error
+        );
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem when updating series status.",
+        });
+      }
+    }, 500); // Debounce delay in 500 milliseconds
+  };
 
   return (
     <section className="flex w-full flex-1 flex-col">
@@ -42,14 +82,34 @@ const Page = ({ params }: ParamsProps) => {
             {series?.data ? (
               <div className="flex w-full flex-col font-lexend">
                 <div className="mb-6 flex justify-end">
-                  <Button
-                    className="gap-2 rounded-2xl bg-primary px-8 py-2 text-center font-lexend text-white"
-                    onClick={() =>
-                      router.push(`/admin/series/edit/${series.data.id}`)
-                    }
-                  >
-                    <Pencil size={16} color="white" /> Edit Series
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      className="gap-2 rounded-2xl bg-neutral-200 px-8 py-2 text-center font-lexend text-accent-gray-alt hover:bg-neutral-300"
+                      onClick={() => handleUpdateStatus()}
+                      disabled={updateLoading}
+                    >
+                      {updateLoading ? (
+                        <LoaderCircle
+                          size={16}
+                          color="#737373"
+                          className="animate-spin"
+                        />
+                      ) : (
+                        <Settings2 size={16} color="#737373" />
+                      )}
+                      {updateLoading
+                        ? "Updating Series Status.."
+                        : `Set to ${series.data.isActive ? "Inactive" : "Active"}`}
+                    </Button>
+                    <Button
+                      className="gap-2 rounded-2xl bg-primary px-8 py-2 text-center font-lexend text-white"
+                      onClick={() =>
+                        router.push(`/admin/series/edit/${series.data.id}`)
+                      }
+                    >
+                      <Pencil size={16} color="white" /> Edit Series
+                    </Button>
+                  </div>
                 </div>
 
                 <Image
@@ -60,12 +120,29 @@ const Page = ({ params }: ParamsProps) => {
                   className="mb-5 size-auto rounded-2xl object-cover"
                 />
 
+                <div className="mb-3 flex justify-start">
+                  {series.data.isActive ? (
+                    <Badge className="w-fit bg-form-positive px-2 py-1 text-center text-white">
+                      Active
+                    </Badge>
+                  ) : (
+                    <Badge className="w-fit bg-form-negative px-2 py-1 text-center text-white">
+                      Inactive
+                    </Badge>
+                  )}
+                </div>
+
                 <h2 className="mb-2 text-2xl font-bold text-primary">
                   {series.data.title}
                 </h2>
+
                 <p className="mb-1 text-base text-subtitle">
                   <span className="font-bold">Created At</span>:{" "}
                   {formatDate(series.data.createdAt)}
+                </p>
+                <p className="mb-1 text-base text-subtitle">
+                  <span className="font-bold">Updated At</span>:{" "}
+                  {formatDate(series.data.updatedAt)}
                 </p>
                 {series.data.author && (
                   <p className="mb-1 text-base text-subtitle">
@@ -92,6 +169,4 @@ const Page = ({ params }: ParamsProps) => {
       </main>
     </section>
   );
-};
-
-export default Page;
+}

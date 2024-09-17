@@ -51,9 +51,20 @@ export const seriesApi = createApi({
     }),
     updateSeries: builder.mutation<SeriesResponse, FormData>({
       query: (formData) => ({
-        url: "/series",
         method: "PUT",
+        url: "/series",
         body: formData,
+      }),
+      invalidatesTags: ["series"],
+    }),
+    updateSeriesStatus: builder.mutation<
+      SeriesResponse,
+      { id: string; isActive: boolean }
+    >({
+      query: (data) => ({
+        method: "PUT",
+        url: `/series/update-status/${data.id}`,
+        body: data,
       }),
       invalidatesTags: ["series"],
     }),
@@ -65,4 +76,5 @@ export const {
   useGetAllSeriesQuery,
   useGetSeriesByIdQuery,
   useUpdateSeriesMutation,
+  useUpdateSeriesStatusMutation,
 } = seriesApi;
