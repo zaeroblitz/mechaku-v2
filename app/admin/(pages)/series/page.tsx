@@ -9,9 +9,8 @@ import SeriesSkeleton from "@/components/admin/series/SeriesSkeleton";
 import EmptyState from "@/components/shared/EmptyState";
 import { ISeries, useGetAllSeriesQuery } from "@/services/series";
 
-const Page = () => {
+export default function Page() {
   const { data: series, isLoading } = useGetAllSeriesQuery();
-  console.log(series);
 
   return (
     <section className="flex w-full flex-1 flex-col">
@@ -43,6 +42,4 @@ const Page = () => {
       </main>
     </section>
   );
-};
-
-export default Page;
+}

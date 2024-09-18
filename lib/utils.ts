@@ -11,5 +11,7 @@ export const formatDate = (dateString: string) => {
     month: "long",
     day: "numeric",
     year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
   }).format(date);
 };

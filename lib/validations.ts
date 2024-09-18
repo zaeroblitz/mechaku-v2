@@ -43,3 +43,11 @@ export const UpdateSeriesSchema = z.object({
 export const UpdateSeriesStatusSchema = z.object({
   isActive: z.boolean(),
 });
+
+export const NewBrandSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Brand name is required!")
+    .max(32, "Brand name must less than 32 characters!"),
+  isActive: z.boolean().optional(),
+});
