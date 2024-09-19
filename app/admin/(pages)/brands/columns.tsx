@@ -1,25 +1,10 @@
-"use client";
-
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Copy, Pencil, Settings2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { IBrand } from "@/services/brands";
 import { formatDate } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/shared/datatable/data-table-column-header";
-
-const handleCopyId = (id: string) => {
-  navigator.clipboard.writeText(id);
-};
+import ActionCell from "@/components/admin/brand/ActionCell";
 
 export const columns: ColumnDef<IBrand>[] = [
   {
@@ -87,41 +72,6 @@ export const columns: ColumnDef<IBrand>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Actions" />;
     },
-    cell: ({ row }) => {
-      const brand = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="size-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="flex flex-col rounded-xl bg-white p-2 font-inter"
-          >
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-slate-200" />
-            <DropdownMenuItem
-              className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100"
-              onClick={() => handleCopyId(brand.id)}
-            >
-              <Copy size={10} color="#333333" />
-              <span>Copy ID</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100">
-              <Pencil size={10} color="#333333" />
-              <span>Edit</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100">
-              <Settings2 size={10} color="#333333" />
-              <span>Set to {brand.isActive ? "Inactive" : "Active"}</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: (props) => <ActionCell {...props} />,
   },
 ];

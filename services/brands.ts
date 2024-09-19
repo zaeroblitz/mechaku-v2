@@ -47,7 +47,22 @@ export const brandsApi = createApi({
       }),
       providesTags: ["brands"],
     }),
+    updateBrand: builder.mutation<BrandResponse, BrandParams>({
+      query: (data) => ({
+        url: "/brands",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["brands"],
+    }),
   }),
 });
 
-export const { useCreateBrandMutation, useGetAllBrandsQuery } = brandsApi;
+export const {
+  useCreateBrandMutation,
+  useGetAllBrandsQuery,
+  useUpdateBrandMutation,
+} = brandsApi;

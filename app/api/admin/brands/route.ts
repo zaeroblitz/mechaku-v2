@@ -57,3 +57,60 @@ export async function GET() {
     });
   }
 }
+
+export async function PUT(req: NextRequest, res: NextResponse) {
+  try {
+    const { id, name, isActive } = await req.json();
+
+    // Validations
+    NewBrandSchema.parse({ name, isActive });
+
+    // Check for valid series ID
+    if (!id) {
+      return Response({
+        success: false,
+        message: "Invalid series ID!",
+        data: null,
+        status: 400,
+      });
+    }
+
+    // Find existing series
+    const brand = await prisma.brand.findUnique({
+      where: { id },
+    });
+
+    if (!brand) {
+      return Response({
+        success: false,
+        message: "Brand not exists!",
+        data: null,
+        status: 404,
+      });
+    }
+
+    // Update brand
+    const updatedBrand = await prisma.brand.update({
+      where: { id },
+      data: {
+        name,
+        isActive,
+      },
+    });
+
+    return Response({
+      success: true,
+      message: "Successfully updated brand data!",
+      data: updatedBrand,
+      status: 200,
+    });
+  } catch (error) {
+    console.log("🚀 ~ file: route.ts:29 ~ POST ~ error:", error);
+    return Response({
+      success: false,
+      message: "Failed to updated brand data!",
+      data: error,
+      status: 500,
+    });
+  }
+}

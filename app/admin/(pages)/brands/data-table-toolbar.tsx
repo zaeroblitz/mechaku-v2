@@ -1,5 +1,3 @@
-"use client";
-
 import { DataTableFacetedFilter } from "@/components/shared/datatable/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/shared/datatable/data-table-view-options";
 import { Button } from "@/components/ui/button";
