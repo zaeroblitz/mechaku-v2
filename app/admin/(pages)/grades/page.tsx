@@ -7,9 +7,9 @@ import Header from "@/components/admin/Header";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import {
-  useGetAllBrandsQuery,
-  useCreateBrandMutation,
-} from "@/services/brands";
+  useGetAllGradesQuery,
+  useCreateGradeMutation,
+} from "@/services/grades";
 import EmptyState from "@/components/shared/EmptyState";
 import ErrorState from "@/components/shared/ErrorState";
 import {
@@ -22,43 +22,43 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { NewBrandSchema } from "@/lib/validations";
+import { NewGradeSchema } from "@/lib/validations";
 import { Form } from "@/components/ui/form";
 import TextInput from "@/components/shared/form/TextInput";
 
 export default function Page() {
   const { toast } = useToast();
-  const { data: brands, isLoading, isError } = useGetAllBrandsQuery();
-  const [createBrand, { isLoading: createLoading }] = useCreateBrandMutation();
+  const { data: grades, isLoading, isError } = useGetAllGradesQuery();
+  const [createGrade, { isLoading: createLoading }] = useCreateGradeMutation();
   const [open, setOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof NewBrandSchema>>({
-    resolver: zodResolver(NewBrandSchema),
+  const form = useForm<z.infer<typeof NewGradeSchema>>({
+    resolver: zodResolver(NewGradeSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof NewBrandSchema>) => {
+  const onSubmit = async (values: z.infer<typeof NewGradeSchema>) => {
     try {
       const data = {
         name: values.name,
         isActive: true,
       };
 
-      await createBrand(data);
+      await createGrade(data);
 
       toast({
         title: "Success!",
-        description: "New Brand created successfully!",
+        description: "Grade created successfully!",
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
     } catch (error) {
-      console.error("There was a problem when creating brand data.");
+      console.error("There was a problem when creating grade data.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem when creating brand data.",
+        description: "There was a problem when creating grade data.",
         className: "rounded-xl bg-pink-50 text-pink-800",
       });
     } finally {
@@ -69,7 +69,7 @@ export default function Page() {
   return (
     <>
       <section className="flex w-full flex-1 flex-col">
-        <Header title="Brands" />
+        <Header title="Grades" />
         <main className="mt-10 flex w-full flex-1 flex-col rounded-2xl">
           <div className="mb-10 flex">
             <Button
@@ -78,7 +78,7 @@ export default function Page() {
             >
               <Plus size={16} color="white" />
               <p className="text-center font-lexend text-white">
-                Add New Brand
+                Add New Grade
               </p>
             </Button>
           </div>
@@ -94,19 +94,19 @@ export default function Page() {
             </div>
           ) : isError ? (
             <ErrorState text="There was something went wrong." />
-          ) : brands && brands.data.length > 0 ? (
+          ) : grades && grades.data.length > 0 ? (
             <div className="rounded-2xl bg-white p-8">
-              <DataTable columns={columns} data={brands.data} />
+              <DataTable columns={columns} data={grades.data} />
             </div>
           ) : (
-            <EmptyState text="No brands data found!" />
+            <EmptyState text="No grades data found!" />
           )}
         </main>
       </section>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="bg-white p-10 font-lexend">
           <DialogHeader>
-            <DialogTitle>Create New Brand</DialogTitle>
+            <DialogTitle>Create New Grade</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form
@@ -117,7 +117,7 @@ export default function Page() {
                 control={form.control}
                 name="name"
                 label="Name"
-                placeholder="Type brand name"
+                placeholder="Type grade name"
                 required
               />
 
@@ -135,7 +135,7 @@ export default function Page() {
                 ) : (
                   <SaveIcon size={16} color="white" />
                 )}
-                {isLoading ? "Creating A New Brand ..." : "Create New Brand"}
+                {isLoading ? "Creating A New Grade ..." : "Create New Grade"}
               </Button>
             </form>
           </Form>

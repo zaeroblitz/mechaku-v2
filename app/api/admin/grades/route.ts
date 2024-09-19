@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { NewBrandSchema } from "@/lib/validations";
+import { NewGradeSchema } from "@/lib/validations";
 import Response from "@/lib/api.response";
 
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -8,10 +8,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const { name, isActive } = await req.json();
 
     // Validations
-    NewBrandSchema.parse({ name, isActive });
+    NewGradeSchema.parse({ name, isActive });
 
-    // Create new brand to db
-    const newBrand = await prisma.brand.create({
+    // Create new grade to db
+    const newGrade = await prisma.grade.create({
       data: {
         name,
         isActive,
@@ -20,15 +20,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     return Response({
       success: true,
-      message: "Successfully created a new brand!",
-      data: newBrand,
+      message: "Successfully created a new grade!",
+      data: newGrade,
       status: 201,
     });
   } catch (error) {
     console.log("🚀 ~ file: route.ts:29 ~ POST ~ error:", error);
     return Response({
       success: false,
-      message: "Failed to created a new brand!",
+      message: "Failed to created a new grade!",
       data: error,
       status: 500,
     });
@@ -37,21 +37,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET() {
   try {
-    const brands = await prisma.brand.findMany({
+    const grades = await prisma.grade.findMany({
       orderBy: { createdAt: "asc" },
     });
 
     return Response({
       success: true,
-      message: "Successfully get all brands!",
-      data: brands,
+      message: "Successfully get all grades!",
+      data: grades,
       status: 200,
     });
   } catch (error) {
     console.log("🚀 ~ file: route.ts:51 ~ GET ~ error:", error);
     return Response({
       success: false,
-      message: "Failed to get all brands!",
+      message: "Failed to get all grades!",
       data: error,
       status: 500,
     });
@@ -63,34 +63,34 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     const { id, name, isActive } = await req.json();
 
     // Validations
-    NewBrandSchema.parse({ name, isActive });
+    NewGradeSchema.parse({ name, isActive });
 
-    // Check for valid brand ID
+    // Check for valid grade ID
     if (!id) {
       return Response({
         success: false,
-        message: "Invalid brand ID!",
+        message: "Invalid grade ID!",
         data: null,
         status: 400,
       });
     }
 
-    // Find existing brand
-    const brand = await prisma.brand.findUnique({
+    // Find existing grade
+    const grade = await prisma.grade.findUnique({
       where: { id },
     });
 
-    if (!brand) {
+    if (!grade) {
       return Response({
         success: false,
-        message: "Brand not exists!",
+        message: "Grade not exists!",
         data: null,
         status: 404,
       });
     }
 
-    // Update brand
-    const updatedBrand = await prisma.brand.update({
+    // Update grade
+    const updatedGrade = await prisma.grade.update({
       where: { id },
       data: {
         name,
@@ -100,15 +100,15 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     return Response({
       success: true,
-      message: "Successfully updated brand data!",
-      data: updatedBrand,
+      message: "Successfully updated grade data!",
+      data: updatedGrade,
       status: 200,
     });
   } catch (error) {
     console.log("🚀 ~ file: route.ts:29 ~ POST ~ error:", error);
     return Response({
       success: false,
-      message: "Failed to updated brand data!",
+      message: "Failed to updated grade data!",
       data: error,
       status: 500,
     });

@@ -108,33 +108,37 @@ const Sidebar = () => {
                       </AccordionTrigger>
                       <AccordionContent>
                         <div
-                          className={`flex-col space-y-4 pt-4 ${toggle ? "flex-center pl-0" : "pl-5"}`}
+                          className={`relative flex-col space-y-4 pt-4 ${toggle ? "flex-center pl-0" : "pl-5"}`}
                         >
                           {sidebar.children.map((child) => (
-                            <Link
-                              key={child.route}
-                              href={child.route}
-                              className="flex items-center gap-4"
-                            >
-                              <TooltipIcon
-                                classname="ml-10 bg-[#170645]"
-                                icon={
-                                  <Icon
-                                    name={child.icon}
-                                    size={20}
-                                    color="white"
-                                  />
-                                }
-                                content={<p>{child.label}</p>}
-                              />
-                              <p
-                                className={`flex-1 text-base 
+                            <div className="relative" key={child.route}>
+                              <Link
+                                href={child.route}
+                                className="flex items-center gap-4"
+                              >
+                                <TooltipIcon
+                                  classname="ml-10 bg-[#170645]"
+                                  icon={
+                                    <Icon
+                                      name={child.icon}
+                                      size={20}
+                                      color="white"
+                                    />
+                                  }
+                                  content={<p>{child.label}</p>}
+                                />
+                                <p
+                                  className={`flex-1 text-base 
                                     ${pathname === child.route ? "font-medium" : "font-light"}
                                     ${toggle ? "hidden" : "block"}`}
-                              >
-                                {child.label}
-                              </p>
-                            </Link>
+                                >
+                                  {child.label}
+                                </p>
+                              </Link>
+                              {pathname === child.route && (
+                                <div className="absolute -left-3 top-0 h-6 w-1 bg-[#7f6cf3]" />
+                              )}
+                            </div>
                           ))}
                         </div>
                       </AccordionContent>

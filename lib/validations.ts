@@ -51,3 +51,11 @@ export const NewBrandSchema = z.object({
     .max(32, "Brand name must less than 32 characters!"),
   isActive: z.boolean().optional(),
 });
+
+export const NewGradeSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Grade name is required!")
+    .max(32, "Grade name must less than 32 characters!"),
+  isActive: z.boolean().optional(),
+});
