@@ -107,7 +107,7 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
                       </FormLabel>
                     </h3>
                     <p className="mt-1 text-xs text-white">
-                      PNG, JPG, GIF up to 5MB
+                      PNG, JPG, WEBP up to 5MB
                     </p>
                   </div>
                 </div>
@@ -151,7 +151,7 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
                           </FormLabel>
                         </h3>
                         <p className="mt-1 text-xs text-white">
-                          PNG, JPG, GIF up to 5MB
+                          PNG, JPG, WEBP up to 5MB
                         </p>
                       </div>
                     </div>
@@ -177,7 +177,7 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
                         </FormLabel>
                       </h3>
                       <p className="mt-1 text-xs text-gray-500">
-                        PNG, JPG, GIF up to 5MB
+                        PNG, JPG, WEBP up to 5MB
                       </p>
                     </div>
                   )}
