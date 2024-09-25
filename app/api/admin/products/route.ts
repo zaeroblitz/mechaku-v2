@@ -82,7 +82,38 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      include: {
+        series: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        brand: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        grade: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        images: {
+          orderBy: { displayOrder: "asc" },
+          take: 1,
+          select: {
+            id: true,
+            imageUrl: true,
+            altText: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
 
     if (!products) {
       return Response({

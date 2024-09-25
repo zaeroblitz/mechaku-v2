@@ -1,6 +1,5 @@
 "use client";
 
-// Modules
 import React from "react";
 import {
   ColumnDef,
@@ -14,8 +13,6 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-
-// Components
 import {
   Table,
   TableBody,
@@ -26,17 +23,17 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/shared/datatable/data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { IProduct } from "@/services/products";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData extends IProduct, TValue> {
+  columns: ColumnDef<IProduct, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends IProduct, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  // Define state variables for sorting, column filters, and column visibility
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -44,7 +41,6 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
 
-  // Use the useReactTable hook to create a table instance
   const table = useReactTable({
     data,
     columns,
@@ -62,9 +58,29 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const series = data.map((item) => item.series);
+  const uniqueSeries = series.filter(
+    (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+  );
+
+  const brands = data.map((item) => item.brand);
+  const uniqueBrands = brands.filter(
+    (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+  );
+
+  const grades = data.map((item) => item.grade);
+  const uniqueGrades = grades.filter(
+    (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+  );
+
   return (
     <>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar
+        table={table}
+        series={uniqueSeries}
+        brands={uniqueBrands}
+        grades={uniqueGrades}
+      />
       <div className="mt-3 rounded-2xl border border-form-border font-inter">
         <Table>
           <TableHeader>

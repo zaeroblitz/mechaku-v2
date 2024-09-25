@@ -1,7 +1,7 @@
 "use client";
 
 import { Columns2 } from "lucide-react";
-import { Table } from "@tanstack/react-table";
+import { Column, Table } from "@tanstack/react-table";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -19,6 +19,21 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  const columns = table.getAllColumns().filter((column) => column.getCanHide());
+
+  const [column1, column2] = columns.reduce(
+    (
+      result: [Array<Column<TData, unknown>>, Array<Column<TData, unknown>>],
+      item,
+      index
+    ) => {
+      const targetArray = index % 2 === 0 ? result[0] : result[1];
+      targetArray.push(item);
+      return result;
+    },
+    [[], []]
+  );
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,21 +50,40 @@ export function DataTableViewOptions<TData>({
       >
         <DropdownMenuLabel>View Columns</DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-neutral-200" />
-        {table
-          .getAllColumns()
-          .filter((column) => column.getCanHide())
-          .map((column) => {
-            return (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                className="cursor-pointer rounded-xl font-poppins capitalize hover:bg-neutral-100"
-                checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
-              >
-                {column.id}
-              </DropdownMenuCheckboxItem>
-            );
-          })}
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            {column1.map((column) => {
+              const columnId = column.id.replace("_id", "");
+
+              return (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="cursor-pointer rounded-xl font-poppins capitalize hover:bg-neutral-100"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {columnId}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
+          </div>
+          <div>
+            {column2.map((column) => {
+              const columnId = column.id.replace("_id", "");
+
+              return (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="cursor-pointer rounded-xl font-poppins capitalize hover:bg-neutral-100"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {columnId}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
+          </div>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

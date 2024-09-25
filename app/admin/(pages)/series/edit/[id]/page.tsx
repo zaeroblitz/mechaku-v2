@@ -1,25 +1,38 @@
 "use client";
 
+// Modules
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MoveLeft, Save, LoaderCircle } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UpdateSeriesSchema } from "@/lib/validations";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
+
+// Icons
+import { MoveLeft, Save, LoaderCircle } from "lucide-react";
+
+// Shadcn Components
 import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
+
+// Custom Components
 import Header from "@/components/admin/Header";
-import TextInput from "@/components/shared/form/TextInput";
 import TextArea from "@/components/shared/form/TextArea";
+import TextInput from "@/components/shared/form/TextInput";
 import ImageUpload from "@/components/shared/form/ImageUpload";
+
+// Validation
+import { UpdateSeriesSchema } from "@/lib/validations";
+
+// Query
 import {
   useUpdateSeriesMutation,
   useGetSeriesByIdQuery,
 } from "@/services/series";
+
+// Types
 import { ParamsProps } from "@/types";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const defaultValues: z.infer<typeof UpdateSeriesSchema> = {
   title: "",
@@ -75,7 +88,6 @@ export default function Page({ params }: ParamsProps) {
 
       router.push(`/admin/series/${params.id}`);
     } catch (error) {
-      console.error("There was a problem when updating series.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",

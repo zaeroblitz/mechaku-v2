@@ -78,29 +78,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function GET() {
-  try {
-    const series = await prisma.series.findMany({
-      orderBy: { createdAt: "asc" },
-    });
-
-    return Response({
-      success: true,
-      message: "Successfully get all series!",
-      data: series,
-      status: 200,
-    });
-  } catch (error) {
-    console.log("🚀 ~ file: route.ts:66 ~ GET ~ error:", error);
-    return Response({
-      success: false,
-      message: "Failed to get all series!",
-      data: error,
-      status: 500,
-    });
-  }
-}
-
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
     const formData = await req.formData();
@@ -164,10 +141,41 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:169 ~ PUT ~ error:", error);
     return Response({
       success: false,
       message: "Failed to updated series!",
+      data: error,
+      status: 500,
+    });
+  }
+}
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  try {
+    let series;
+    const isActive = req.nextUrl.searchParams.get("isActive");
+
+    if (isActive === "active") {
+      series = await prisma.series.findMany({
+        where: { isActive: true },
+        orderBy: { createdAt: "asc" },
+      });
+    } else {
+      series = await prisma.series.findMany({
+        orderBy: { createdAt: "asc" },
+      });
+    }
+
+    return Response({
+      success: true,
+      message: "Successfully get all series!",
+      data: series,
+      status: 200,
+    });
+  } catch (error) {
+    return Response({
+      success: false,
+      message: "Failed to get all series!",
       data: error,
       status: 500,
     });

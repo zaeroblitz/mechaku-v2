@@ -45,10 +45,20 @@ import { useCreateProductMutation } from "@/services/products";
 export default function Page() {
   const router = useRouter();
   const { toast } = useToast();
+
+  // Mutation for creating product
   const [createSeries, { isLoading }] = useCreateProductMutation();
-  const { data: seriesList, isLoading: seriesLoading } = useGetAllSeriesQuery();
-  const { data: brandList, isLoading: brandLoading } = useGetAllBrandsQuery();
-  const { data: gradeList, isLoading: gradeLoading } = useGetAllGradesQuery();
+
+  // Query for dropdown options
+  const { data: seriesList, isLoading: seriesLoading } = useGetAllSeriesQuery({
+    isActive: "active",
+  });
+  const { data: brandList, isLoading: brandLoading } = useGetAllBrandsQuery({
+    isActive: "active",
+  });
+  const { data: gradeList, isLoading: gradeLoading } = useGetAllGradesQuery({
+    isActive: "active",
+  });
 
   const form = useForm<z.infer<typeof NewProductSchema>>({
     resolver: zodResolver(NewProductSchema),
@@ -228,6 +238,7 @@ export default function Page() {
                       placeholder="Select product brand"
                       label="Brand"
                       icon={<TagIcon size={14} />}
+                      required
                       options={
                         brandList?.data?.map((brand) => ({
                           value: brand.id,
@@ -245,6 +256,7 @@ export default function Page() {
                       placeholder="Select product grade"
                       label="Grade"
                       icon={<SparkleIcon size={14} />}
+                      required
                       options={
                         gradeList?.data?.map((grade) => ({
                           value: grade.id,

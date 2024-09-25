@@ -40,11 +40,15 @@ export const brandsApi = createApi({
       }),
       invalidatesTags: ["brands"],
     }),
-    getAllBrands: builder.query<GetAllBrandResponse, void>({
-      query: () => ({
-        method: "GET",
-        url: "/brands",
-      }),
+    getAllBrands: builder.query<GetAllBrandResponse, { isActive?: string }>({
+      query: (args) => {
+        const { isActive } = args;
+        return {
+          method: "GET",
+          url: "/brands",
+          params: { isActive },
+        };
+      },
       providesTags: ["brands"],
     }),
     updateBrand: builder.mutation<BrandResponse, BrandParams>({

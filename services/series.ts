@@ -35,11 +35,15 @@ export const seriesApi = createApi({
       }),
       invalidatesTags: ["series"],
     }),
-    getAllSeries: builder.query<GetAllSeriesResponse, void>({
-      query: () => ({
-        method: "GET",
-        url: "/series",
-      }),
+    getAllSeries: builder.query<GetAllSeriesResponse, { isActive?: string }>({
+      query: (args) => {
+        const { isActive } = args;
+        return {
+          method: "GET",
+          url: "/series",
+          params: { isActive },
+        };
+      },
       providesTags: ["series"],
     }),
     getSeriesById: builder.query<SeriesResponse, string>({

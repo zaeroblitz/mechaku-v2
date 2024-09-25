@@ -51,7 +51,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:55 ~ PUT ~ error:", error);
     return Response({
       success: false,
       message: "Failed to updated series status!",

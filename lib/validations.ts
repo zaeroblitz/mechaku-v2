@@ -75,8 +75,8 @@ export const NewProductSchema = z.object({
   quantity: z.number().positive(),
   status: z.enum(["DRAFT", "AVAILABLE", "SOLDOUT", "ARCHIVED"]),
   seriesId: z.string().min(1, "Product series is required"),
-  brandId: z.string().optional(),
-  gradeId: z.string().optional(),
+  brandId: z.string().min(1, "Product series is required"),
+  gradeId: z.string().min(1, "Product series is required"),
   images: z
     .any()
     .refine(

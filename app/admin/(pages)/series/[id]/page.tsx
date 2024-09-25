@@ -1,17 +1,30 @@
 "use client";
 
+// Modules
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+
+// Icons
 import { MoveLeft, Pencil, Settings2, LoaderCircle } from "lucide-react";
-import Header from "@/components/admin/Header";
-import EmptyState from "@/components/shared/EmptyState";
+
+// Shadcn Components
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+
+// Custom Components
+import Header from "@/components/admin/Header";
+import EmptyState from "@/components/shared/EmptyState";
+
+// Types
 import { ParamsProps } from "@/types";
+
+// Utils
 import { formatDate } from "@/lib/utils";
+
+// Query
 import {
   useGetSeriesByIdQuery,
   useUpdateSeriesStatusMutation,
@@ -20,6 +33,8 @@ import {
 export default function Page({ params }: ParamsProps) {
   const router = useRouter();
   const { toast } = useToast();
+
+  // eslint-disable-next-line no-undef
   let debounceTimeout: NodeJS.Timeout | null = null;
 
   const { data: series, isLoading } = useGetSeriesByIdQuery(params.id);
@@ -43,17 +58,13 @@ export default function Page({ params }: ParamsProps) {
           description: "Series status updated successfully!",
         });
       } catch (error) {
-        console.error(
-          "🚀 ~ file: page.tsx:40 ~ handleUpdateStatus ~ error:",
-          error
-        );
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
           description: "There was a problem when updating series status.",
         });
       }
-    }, 500); // Debounce delay in 500 milliseconds
+    }, 500);
   };
 
   return (

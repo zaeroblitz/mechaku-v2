@@ -1,10 +1,17 @@
+// Modules
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
+
+// Components
 import { Badge } from "@/components/ui/badge";
-import { IBrand } from "@/services/brands";
-import { formatDate } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/shared/datatable/data-table-column-header";
 import ActionCell from "@/components/admin/brand/ActionCell";
+
+// Types
+import { IBrand } from "@/services/brands";
+
+// Utils
+import { formatDate } from "@/lib/utils";
 
 export const columns: ColumnDef<IBrand>[] = [
   {

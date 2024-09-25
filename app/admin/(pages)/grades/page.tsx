@@ -1,17 +1,15 @@
 "use client";
 
+// Modules
 import React, { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Icons
 import { Ellipsis, LoaderCircleIcon, Plus, SaveIcon } from "lucide-react";
-import Header from "@/components/admin/Header";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
-import {
-  useGetAllGradesQuery,
-  useCreateGradeMutation,
-} from "@/services/grades";
-import EmptyState from "@/components/shared/EmptyState";
-import ErrorState from "@/components/shared/ErrorState";
+
+// Shadcn Components
 import {
   Dialog,
   DialogContent,
@@ -19,16 +17,29 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { NewGradeSchema } from "@/lib/validations";
 import { Form } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+
+// Custom Components
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
+import Header from "@/components/admin/Header";
+import EmptyState from "@/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
 import TextInput from "@/components/shared/form/TextInput";
+
+// Schema
+import { NewGradeSchema } from "@/lib/validations";
+
+// Query
+import {
+  useGetAllGradesQuery,
+  useCreateGradeMutation,
+} from "@/services/grades";
 
 export default function Page() {
   const { toast } = useToast();
-  const { data: grades, isLoading, isError } = useGetAllGradesQuery();
+  const { data: grades, isLoading, isError } = useGetAllGradesQuery({});
   const [createGrade, { isLoading: createLoading }] = useCreateGradeMutation();
   const [open, setOpen] = useState(false);
 
@@ -54,7 +65,6 @@ export default function Page() {
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
     } catch (error) {
-      console.error("There was a problem when creating grade data.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",

@@ -5,10 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export interface IProductImage {
   id: string;
   imageUrl: string;
-  isPrimary: boolean;
-  displayOrder: number;
-  createdAt: string;
-  updatedAt: string;
+  altText: string;
 }
 
 export interface IProduct {
@@ -23,6 +20,18 @@ export interface IProduct {
   seriesId: string;
   brandId: string;
   gradeId: string;
+  series: {
+    id: string;
+    title: string;
+  };
+  brand: {
+    id: string;
+    name: string;
+  };
+  grade: {
+    id: string;
+    name: string;
+  };
   images: IProductImage[];
   createdAt: string;
   updatedAt: string;

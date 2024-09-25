@@ -25,7 +25,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       status: 201,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:29 ~ POST ~ error:", error);
     return Response({
       success: false,
       message: "Failed to created a new brand!",
@@ -35,11 +34,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const brands = await prisma.brand.findMany({
-      orderBy: { createdAt: "asc" },
-    });
+    let brands;
+    const isActive = req.nextUrl.searchParams.get("isActive");
+
+    if (isActive === "active") {
+      brands = await prisma.brand.findMany({
+        where: { isActive: true },
+        orderBy: { createdAt: "asc" },
+      });
+    } else {
+      brands = await prisma.brand.findMany({
+        orderBy: { createdAt: "asc" },
+      });
+    }
 
     return Response({
       success: true,
@@ -48,7 +57,6 @@ export async function GET() {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:51 ~ GET ~ error:", error);
     return Response({
       success: false,
       message: "Failed to get all brands!",
@@ -105,7 +113,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:29 ~ POST ~ error:", error);
     return Response({
       success: false,
       message: "Failed to updated brand data!",

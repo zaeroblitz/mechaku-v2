@@ -1,34 +1,45 @@
 "use client";
 
+// Modules
 import React, { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Icons
 import { Ellipsis, LoaderCircleIcon, Plus, SaveIcon } from "lucide-react";
-import Header from "@/components/admin/Header";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
-import {
-  useGetAllBrandsQuery,
-  useCreateBrandMutation,
-} from "@/services/brands";
-import EmptyState from "@/components/shared/EmptyState";
-import ErrorState from "@/components/shared/ErrorState";
+
+// Shadncn Components
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { NewBrandSchema } from "@/lib/validations";
 import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+
+// Custom Components
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
+import Header from "@/components/admin/Header";
+import EmptyState from "@/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
 import TextInput from "@/components/shared/form/TextInput";
+
+// Schema
+import { NewBrandSchema } from "@/lib/validations";
+
+// Query
+import {
+  useGetAllBrandsQuery,
+  useCreateBrandMutation,
+} from "@/services/brands";
 
 export default function Page() {
   const { toast } = useToast();
-  const { data: brands, isLoading, isError } = useGetAllBrandsQuery();
+  const { data: brands, isLoading, isError } = useGetAllBrandsQuery({});
   const [createBrand, { isLoading: createLoading }] = useCreateBrandMutation();
   const [open, setOpen] = useState(false);
 
@@ -54,7 +65,6 @@ export default function Page() {
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
     } catch (error) {
-      console.error("There was a problem when creating brand data.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",

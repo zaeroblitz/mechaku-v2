@@ -1,22 +1,33 @@
 "use client";
 
+// Modules
 import React from "react";
 import { useRouter } from "next/navigation";
-import { MoveLeft, Save, LoaderCircle } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { NewSeriesSchema } from "@/lib/validations";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
+
+// Icons
+import { MoveLeft, Save, LoaderCircle } from "lucide-react";
+
+// Shadcn Components
 import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+
+// Custom Components
 import Header from "@/components/admin/Header";
 import TextInput from "@/components/shared/form/TextInput";
 import TextArea from "@/components/shared/form/TextArea";
 import ImageUpload from "@/components/shared/form/ImageUpload";
+
+// Validation Schema
+import { NewSeriesSchema } from "@/lib/validations";
+
+// Mutation Hook
 import { useCreateSeriesMutation } from "@/services/series";
 
-const Page = () => {
+export default function Page() {
   const router = useRouter();
   const { toast } = useToast();
   const [createSeries, { isLoading }] = useCreateSeriesMutation();
@@ -48,7 +59,6 @@ const Page = () => {
 
       router.push("/admin/series");
     } catch (error) {
-      console.error("There was a problem when create new series.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
@@ -128,6 +138,4 @@ const Page = () => {
       </main>
     </section>
   );
-};
-
-export default Page;
+}

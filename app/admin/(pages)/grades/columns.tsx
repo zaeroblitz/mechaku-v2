@@ -1,10 +1,17 @@
+// Modules
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
+
+// Components
 import { Badge } from "@/components/ui/badge";
-import { IGrade } from "@/services/grades";
-import { formatDate } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/shared/datatable/data-table-column-header";
 import ActionCell from "@/components/admin/grade/ActionCell";
+
+// Types
+import { IGrade } from "@/services/grades";
+
+// Utils
+import { formatDate } from "@/lib/utils";
 
 export const columns: ColumnDef<IGrade>[] = [
   {

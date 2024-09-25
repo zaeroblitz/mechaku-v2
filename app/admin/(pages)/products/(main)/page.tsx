@@ -1,11 +1,20 @@
 "use client";
 
+// Modules
 import React from "react";
 import Link from "next/link";
+
+// Icons
 import { Ellipsis, Plus } from "lucide-react";
+
+// Components
 import Header from "@/components/admin/Header";
 import EmptyState from "@/components/shared/EmptyState";
 import ErrorState from "@/components/shared/ErrorState";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
+
+// Query
 import { useGetProductsQuery } from "@/services/products";
 
 export default function Page() {
@@ -40,8 +49,8 @@ export default function Page() {
           ) : isError ? (
             <ErrorState text="There was something went wrong." />
           ) : products && products.data.length > 0 ? (
-            <div className="rounded-2xl bg-white p-8">
-              {/* <DataTable columns={columns} data={products.data} /> */}
+            <div className="max-w-screen-2xl overflow-x-auto rounded-2xl bg-white p-8">
+              <DataTable columns={columns} data={products.data} />
             </div>
           ) : (
             <EmptyState text="No products data found!" />

@@ -1,5 +1,6 @@
 "use client";
 
+// Modules
 import React from "react";
 import {
   ColumnDef,
@@ -13,6 +14,8 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
+
+// Components
 import {
   Table,
   TableBody,
@@ -33,6 +36,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  // Define state variables for sorting, column filters, and column visibility
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -40,6 +44,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
 
+  // Use the useReactTable hook to create a table instance
   const table = useReactTable({
     data,
     columns,

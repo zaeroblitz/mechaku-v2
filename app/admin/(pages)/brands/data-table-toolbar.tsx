@@ -1,9 +1,15 @@
-import { DataTableFacetedFilter } from "@/components/shared/datatable/data-table-faceted-filter";
-import { DataTableViewOptions } from "@/components/shared/datatable/data-table-view-options";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// Modules
+import React from "react";
 import { Table } from "@tanstack/react-table";
+
+// Icons
 import { XIcon } from "lucide-react";
+
+// Components
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { DataTableViewOptions } from "@/components/shared/datatable/data-table-view-options";
+import { DataTableFacetedFilter } from "@/components/shared/datatable/data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

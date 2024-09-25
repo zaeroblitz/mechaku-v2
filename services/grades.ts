@@ -40,11 +40,15 @@ export const gradesApi = createApi({
       }),
       invalidatesTags: ["grades"],
     }),
-    getAllGrades: builder.query<GetAllGradeResponse, void>({
-      query: () => ({
-        method: "GET",
-        url: "/grades",
-      }),
+    getAllGrades: builder.query<GetAllGradeResponse, { isActive?: string }>({
+      query: (args) => {
+        const { isActive } = args;
+        return {
+          method: "GET",
+          url: "/grades",
+          params: { isActive },
+        };
+      },
       providesTags: ["grades"],
     }),
     updateGrade: builder.mutation<GradeResponse, GradeParams>({
