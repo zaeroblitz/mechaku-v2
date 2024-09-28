@@ -68,6 +68,7 @@ export const NewProductSchema = z.object({
     .string()
     .min(1, "Product name is required!")
     .max(250, "Product name must less than 250 characters!"),
+  slug: z.string(),
   description: z.string().min(2, "Product description is required"),
   dimensions: z.string().optional(),
   weight: z.number().optional(),
@@ -77,14 +78,17 @@ export const NewProductSchema = z.object({
   seriesId: z.string().min(1, "Product series is required"),
   brandId: z.string().min(1, "Product series is required"),
   gradeId: z.string().min(1, "Product series is required"),
-  images: z
-    .any()
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max image size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ),
+  images: z.union([
+    z.any().optional(),
+    z
+      .any()
+      .refine(
+        (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+        `Max image size is 5MB.`
+      )
+      .refine(
+        (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+        "Only .jpg, .jpeg, .png and .webp formats are supported."
+      ),
+  ]),
 });

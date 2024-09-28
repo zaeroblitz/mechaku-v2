@@ -107,6 +107,7 @@ export function DataTable<TData extends IProduct, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="cursor-pointer transition duration-300 hover:bg-slate-50"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

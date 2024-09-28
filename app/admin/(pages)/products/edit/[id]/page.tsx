@@ -1,7 +1,7 @@
 "use client";
 
 // Modules
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -40,17 +40,42 @@ import MultiImagesUpload from "@/components/shared/form/MultiImagesUpload";
 import { useGetAllSeriesQuery } from "@/services/series";
 import { useGetAllBrandsQuery } from "@/services/brands";
 import { useGetAllGradesQuery } from "@/services/grades";
-import { useCreateProductMutation } from "@/services/products";
+import {
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
+} from "@/services/products";
 
-// Utils
+// Types
+import { ParamsProps } from "@/types";
 import { generateSlug } from "@/lib/utils";
 
-export default function Page() {
+const defaultValues: z.infer<typeof NewProductSchema> = {
+  name: "",
+  slug: "",
+  description: "",
+  dimensions: "",
+  weight: 0,
+  price: 0,
+  quantity: 0,
+  status: "DRAFT",
+  seriesId: "",
+  brandId: "",
+  gradeId: "",
+  images: undefined,
+};
+
+export default function Page(params: ParamsProps) {
   const router = useRouter();
   const { toast } = useToast();
 
-  // Mutation for creating product
-  const [createProduct, { isLoading }] = useCreateProductMutation();
+  // Query for getting product by id
+  const { data: product, isLoading: dataLoading } = useGetProductByIdQuery(
+    params.params.id
+  );
+
+  // Query for updating product
+  const [updateProduct, { isLoading: updateLoading }] =
+    useUpdateProductMutation();
 
   // Query for dropdown options
   const { data: seriesList, isLoading: seriesLoading } = useGetAllSeriesQuery({
@@ -66,28 +91,36 @@ export default function Page() {
   const form = useForm<z.infer<typeof NewProductSchema>>({
     resolver: zodResolver(NewProductSchema),
     mode: "onSubmit",
-    defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
-      dimensions: "",
-      weight: 0,
-      price: 0,
-      quantity: 0,
-      status: "DRAFT",
-      seriesId: "",
-      brandId: "",
-      gradeId: "",
-      images: undefined,
-    },
+    defaultValues,
   });
+
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        name: product?.data?.name || "",
+        slug: product?.data?.slug || "",
+        description: product?.data?.description || "",
+        dimensions: product?.data?.dimensions || "",
+        weight: product?.data?.weight || 0,
+        price: product?.data?.price || 0,
+        quantity: product?.data?.quantity || 0,
+        status: product?.data?.status || "DRAFT",
+        seriesId: product?.data?.seriesId || "",
+        brandId: product?.data?.brandId || "",
+        gradeId: product?.data?.gradeId || "",
+        images: undefined,
+      });
+    }
+  }, [product, form]);
 
   const onSubmit = async (data: z.infer<typeof NewProductSchema>) => {
     const formData = new FormData();
+    formData.append("id", params.params.id);
     formData.append("name", data.name);
     formData.append("slug", generateSlug(data.name));
     formData.append("description", data.description);
     formData.append("dimensions", data.dimensions || "");
+    formData.append("status", data.status);
     formData.append("weight", data.weight ? data.weight.toString() : "");
     formData.append("price", data.price.toString());
     formData.append("quantity", data.quantity.toString());
@@ -100,8 +133,10 @@ export default function Page() {
       }
     }
 
+    console.log(data.images);
+
     try {
-      const product = await createProduct(formData).unwrap();
+      await updateProduct(formData).unwrap();
 
       toast({
         title: "Success!",
@@ -109,7 +144,7 @@ export default function Page() {
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
 
-      router.push(`/admin/products/${product.data.id}`);
+      router.push(`/admin/products/${params.params.id}`);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -122,7 +157,7 @@ export default function Page() {
 
   return (
     <section className="flex w-full flex-1 flex-col">
-      <Header title="Create New Product" />
+      <Header title="Update Product" />
       <main className="mt-10 flex w-full flex-1 flex-col rounded-2xl">
         <div className="mb-10 flex">
           <Button
@@ -134,7 +169,7 @@ export default function Page() {
           </Button>
         </div>
 
-        {seriesLoading || brandLoading || gradeLoading ? (
+        {dataLoading || seriesLoading || brandLoading || gradeLoading ? (
           <div className="flex h-[480px] items-center justify-center">
             <div className="flex flex-col items-center gap-3">
               <Ellipsis size={32} color="#333333" className="animate-pulse" />
@@ -155,7 +190,9 @@ export default function Page() {
                     control={form.control}
                     name="images"
                     label="Images"
-                    required
+                    defaultImageURLs={[...product!.data.images].sort(
+                      (a, b) => a.displayOrder - b.displayOrder
+                    )}
                   />
                 </div>
                 <div className="flex h-fit flex-1 flex-col gap-4 rounded-3xl bg-white p-10">
@@ -277,9 +314,9 @@ export default function Page() {
                     <Button
                       className="flex-center mt-4 flex w-[320px] gap-3 rounded-full bg-primary py-6 font-lexend font-semibold text-white hover:bg-[#372174]"
                       type="submit"
-                      disabled={isLoading}
+                      disabled={updateLoading}
                     >
-                      {isLoading ? (
+                      {updateLoading ? (
                         <LoaderCircle
                           size={16}
                           color="white"
@@ -288,9 +325,9 @@ export default function Page() {
                       ) : (
                         <SaveIcon size={16} color="white" />
                       )}
-                      {isLoading
-                        ? "Creating New Product.."
-                        : "Create New Product"}
+                      {updateLoading
+                        ? "Updating product data.."
+                        : "Update Product"}
                     </Button>
                   </div>
                 </div>

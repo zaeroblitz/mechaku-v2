@@ -24,3 +24,12 @@ export function formatToRupiah(value: number): string {
     maximumFractionDigits: 0,
   }).format(value);
 }
+
+export function generateSlug(text: string): string {
+  return text
+    .toLowerCase() // ubah menjadi huruf kecil
+    .replace(/[^\w\s-]/g, "") // hapus karakter khusus
+    .trim() // hapus spasi di awal dan akhir
+    .replace(/\s+/g, "-") // ubah spasi menjadi tanda hubung
+    .replace(/--+/g, "-"); // menghilangkan tanda hubung ganda
+}

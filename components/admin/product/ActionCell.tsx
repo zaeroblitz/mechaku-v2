@@ -2,6 +2,7 @@
 
 // Modules
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Row } from "@tanstack/react-table";
 
@@ -27,7 +28,9 @@ interface ActionsCellProps {
 }
 
 const ActionCell = ({ row }: ActionsCellProps) => {
-  const grade = row.original;
+  const product = row.original;
+  console.log("🚀 ~ file: ActionCell.tsx:32 ~ ActionCell ~ product:", product);
+  const router = useRouter();
   const { toast } = useToast();
 
   const handleCopyId = (id: string) => {
@@ -56,21 +59,21 @@ const ActionCell = ({ row }: ActionsCellProps) => {
           <DropdownMenuSeparator className="bg-slate-200" />
           <DropdownMenuItem
             className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100"
-            onClick={() => handleCopyId(grade.id)}
+            onClick={() => handleCopyId(product.id)}
           >
             <Copy size={10} color="#333333" />
             <span>Copy ID</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100"
-            onClick={() => {}}
+            onClick={() => router.push(`/admin/products/${product.id}`)}
           >
             <Info size={10} color="#333333" />
             <span>Open Details</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100"
-            onClick={() => {}}
+            onClick={() => router.push(`/admin/products/edit/${product.id}`)}
           >
             <Pencil size={10} color="#333333" />
             <span>Edit</span>

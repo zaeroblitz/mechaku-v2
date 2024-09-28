@@ -4,13 +4,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface IProductImage {
   id: string;
+  productId: string;
   imageUrl: string;
   altText: string;
+  isPrimary: boolean;
+  displayOrder: number;
 }
 
 export interface IProduct {
   id: string;
   name: string;
+  slug: string;
   description: string;
   dimensions: string;
   weight: number;
@@ -59,6 +63,13 @@ export const productsApi = createApi({
       }),
       providesTags: ["products"],
     }),
+    getProductById: builder.query<ProductResponse, string>({
+      query: (id) => ({
+        method: "GET",
+        url: `/products/${id}`,
+      }),
+      providesTags: ["products"],
+    }),
     createProduct: builder.mutation<ProductResponse, FormData>({
       query: (formData) => ({
         url: "/products",
@@ -67,7 +78,32 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["products"],
     }),
+    updateProduct: builder.mutation<ProductResponse, FormData>({
+      query: (formData) => ({
+        url: "/products",
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: ["products"],
+    }),
+    updateProductStatus: builder.mutation<
+      ProductResponse,
+      { id: string; status: string }
+    >({
+      query: (data) => ({
+        url: "/products/update-status",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["products"],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useCreateProductMutation } = productsApi;
+export const {
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useUpdateProductStatusMutation,
+} = productsApi;

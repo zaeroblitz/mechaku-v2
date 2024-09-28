@@ -82,59 +82,70 @@ export default function NumberInput<TFieldValues extends FieldValues>({
         field,
       }: {
         field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
-      }) => (
-        <FormItem className="w-full">
-          <FormLabel className="font-lexend text-form-label">
-            {label} {required && <span className="text-form-negative">*</span>}
-          </FormLabel>
-          <FormControl>
-            <div className={`flex ${(unit || icon) && "relative"}`}>
-              {unit && (
-                <div
-                  ref={unitRef}
-                  className={`flex-center absolute top-1 flex h-5/6 gap-3 rounded-full bg-neutral-200/50 px-6 font-lexend text-sm text-form-label ${unitPosition === "left" ? "left-1" : "right-1"}`}
-                >
-                  {unit}
-                </div>
-              )}
+      }) => {
+        if (field.value) {
+          if (isPrice) {
+            setFormattedValue(formatToRupiah(field.value.toString()));
+          } else {
+            setFormattedValue(field.value.toString());
+          }
+        }
 
-              {icon && (
-                <div
-                  ref={iconRef}
-                  className={`flex-center absolute top-1 flex h-5/6 gap-3 rounded-full bg-neutral-200/50 px-6 font-lexend text-sm text-form-label ${unitPosition === "left" ? "right-1" : "left-1"}`}
-                >
-                  {icon}
-                </div>
-              )}
+        return (
+          <FormItem className="w-full">
+            <FormLabel className="font-lexend text-form-label">
+              {label}{" "}
+              {required && <span className="text-form-negative">*</span>}
+            </FormLabel>
+            <FormControl>
+              <div className={`flex ${(unit || icon) && "relative"}`}>
+                {unit && (
+                  <div
+                    ref={unitRef}
+                    className={`flex-center absolute top-1 flex h-5/6 gap-3 rounded-full bg-neutral-200/50 px-6 font-lexend text-sm text-form-label ${unitPosition === "left" ? "left-1" : "right-1"}`}
+                  >
+                    {unit}
+                  </div>
+                )}
 
-              <Input
-                type="text"
-                placeholder={placeholder}
-                className={`rounded-2xl border border-form-border bg-form-background p-5 font-lexend text-form-input ${className}`}
-                style={{
-                  paddingLeft: `${leftPadding}px`,
-                  paddingRight: `${rightPadding}px`,
-                }}
-                {...field}
-                value={formattedValue}
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^\d]/g, "");
-                  const numberValue = Number(numericValue);
+                {icon && (
+                  <div
+                    ref={iconRef}
+                    className={`flex-center absolute top-1 flex h-5/6 gap-3 rounded-full bg-neutral-200/50 px-6 font-lexend text-sm text-form-label ${unitPosition === "left" ? "right-1" : "left-1"}`}
+                  >
+                    {icon}
+                  </div>
+                )}
 
-                  if (isPrice) {
-                    setFormattedValue(formatToRupiah(numberValue));
-                  } else {
-                    setFormattedValue(numericValue);
-                  }
+                <Input
+                  type="text"
+                  placeholder={placeholder}
+                  className={`rounded-2xl border border-form-border bg-form-background p-5 font-lexend text-form-input ${className}`}
+                  style={{
+                    paddingLeft: `${leftPadding}px`,
+                    paddingRight: `${rightPadding}px`,
+                  }}
+                  {...field}
+                  value={formattedValue}
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^\d]/g, "");
+                    const numberValue = Number(numericValue);
 
-                  field.onChange(numberValue);
-                }}
-              />
-            </div>
-          </FormControl>
-          <FormMessage className="font-lexend text-form-negative" />
-        </FormItem>
-      )}
+                    if (isPrice) {
+                      setFormattedValue(formatToRupiah(numberValue));
+                    } else {
+                      setFormattedValue(numericValue);
+                    }
+
+                    field.onChange(numberValue);
+                  }}
+                />
+              </div>
+            </FormControl>
+            <FormMessage className="font-lexend text-form-negative" />
+          </FormItem>
+        );
+      }}
     />
   );
 }
