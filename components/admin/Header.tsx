@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header = ({ title }: HeaderProps) => {
   return (
-    <div className="ml-14 flex justify-between">
+    <div className="flex flex-col-reverse justify-between xl:ml-14 xl:flex-row">
       <h1 className="font-poppins text-3xl font-bold leading-10 text-[#18120f]">
         {title}
       </h1>
@@ -37,7 +37,7 @@ const Header = ({ title }: HeaderProps) => {
             <p className="font-lexend text-base font-semibold text-[#18120f]">
               Mechaku Admin
             </p>
-            <p className="font-lexend text-sm text-[#6D6D6D]">Admin</p>
+            <p className="font-lexend text-sm text-form-icon">Admin</p>
           </div>
         </div>
       </div>

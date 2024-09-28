@@ -30,7 +30,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className={`${toggle ? "w-32" : "w-[320px]"}`}>
+    <div className={`${toggle ? "w-32" : "w-[320px]"} hidden xl:block`}>
       <aside
         className={`scrollbar-sidebar-admin fixed inset-y-8 flex-col overflow-y-scroll rounded-3xl bg-primary p-6 font-poppins text-white
               ${toggle === false ? "w-[296px]" : "w-fit"}`}

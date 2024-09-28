@@ -1,3 +1,12 @@
+import FloatingDock from "@/components/FloatingDock";
+import SidebarAlt from "@/components/SidebarAlt";
+
 export default function Home() {
-  return <div>Mechaku Shop</div>;
+  return (
+    <>
+      <SidebarAlt />
+      <FloatingDock />
+      <div>Mechaku Shop</div>
+    </>
+  );
 }
