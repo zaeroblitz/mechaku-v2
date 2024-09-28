@@ -56,12 +56,13 @@ export default function Page({ params }: ParamsProps) {
         toast({
           title: "Success!",
           description: "Series status updated successfully!",
+          className: "rounded-xl bg-emerald-50 text-emerald-800",
         });
       } catch (error) {
         toast({
-          variant: "destructive",
           title: "Uh oh! Something went wrong.",
           description: "There was a problem when updating series status.",
+          className: "rounded-xl bg-rose-50 text-rose-800",
         });
       }
     }, 500);
@@ -74,7 +75,7 @@ export default function Page({ params }: ParamsProps) {
         <div className="mb-10 flex">
           <Button
             className="flex-center flex space-x-2 rounded-full bg-accent-purple px-10 py-3 hover:bg-accent-purple/50"
-            onClick={() => router.back()}
+            onClick={() => router.push("/admin/series")}
           >
             <MoveLeft size={16} color="white" />
             <p className="text-center font-lexend text-white">Back</p>
@@ -83,19 +84,19 @@ export default function Page({ params }: ParamsProps) {
 
         {isLoading ? (
           <>
-            <Skeleton className="mb-2 h-[480px] w-1/2 animate-pulse rounded-2xl bg-slate-200" />
-            <Skeleton className="mb-2 h-8 w-24 animate-pulse rounded-xl bg-slate-200" />
-            <Skeleton className="mb-2 h-8 w-20 animate-pulse rounded-xl bg-slate-200" />
-            <Skeleton className="h-[120px] w-[240px] animate-pulse rounded-2xl bg-slate-200" />
+            <Skeleton className="mb-2 h-[480px] w-full animate-pulse rounded-2xl bg-slate-200" />
+            <Skeleton className="mb-2 h-8 w-3/4 animate-pulse rounded-xl bg-slate-200" />
+            <Skeleton className="mb-2 h-8 w-3/4 animate-pulse rounded-xl bg-slate-200" />
+            <Skeleton className="h-[120px] w-3/4 animate-pulse rounded-2xl bg-slate-200" />
           </>
         ) : (
-          <div className="flex w-1/2 rounded-3xl bg-white p-10">
+          <div className="flex w-full rounded-3xl bg-white p-10 xl:w-1/2">
             {series?.data ? (
               <div className="flex w-full flex-col font-lexend">
                 <div className="mb-6 flex justify-end">
                   <div className="flex gap-2">
                     <Button
-                      className="gap-2 rounded-2xl bg-neutral-200 px-8 py-2 text-center font-lexend text-accent-gray-alt hover:bg-neutral-300"
+                      className="gap-2 rounded-2xl bg-neutral-200 px-8 py-2 text-center font-lexend text-xs text-accent-gray-alt hover:bg-neutral-300 lg:text-sm"
                       onClick={() => handleUpdateStatus()}
                       disabled={updateLoading}
                     >
@@ -109,11 +110,11 @@ export default function Page({ params }: ParamsProps) {
                         <Settings2 size={16} color="#737373" />
                       )}
                       {updateLoading
-                        ? "Updating Series Status.."
+                        ? "Updating Status.."
                         : `Set to ${series.data.isActive ? "Inactive" : "Active"}`}
                     </Button>
                     <Button
-                      className="gap-2 rounded-2xl bg-primary px-8 py-2 text-center font-lexend text-white"
+                      className="gap-2 rounded-2xl bg-primary px-8 py-2 text-center font-lexend text-xs text-white lg:text-sm"
                       onClick={() =>
                         router.push(`/admin/series/edit/${series.data.id}`)
                       }

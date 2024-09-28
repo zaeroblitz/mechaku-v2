@@ -74,14 +74,14 @@ export default function Page() {
         <div className="mb-10 flex">
           <Button
             className="flex-center flex space-x-2 rounded-full bg-accent-purple px-10 py-3 hover:bg-accent-purple/50"
-            onClick={() => router.back()}
+            onClick={() => router.push("/admin/series")}
           >
             <MoveLeft size={16} color="white" />
             <p className="text-center font-lexend text-white">Back</p>
           </Button>
         </div>
 
-        <div className="flex w-1/2 rounded-3xl bg-white p-10">
+        <div className="flex w-full rounded-3xl bg-white p-10 lg:w-3/4 xl:w-1/2">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

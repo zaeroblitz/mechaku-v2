@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <AdminToggleProvider>
       <TooltipProvider>
-        <div className="flex min-h-screen w-full bg-[#F1F4FA] p-8">
+        <div className="flex min-h-screen w-full bg-[#F1F4FA] p-4 lg:p-8">
           <Sidebar />
           <FloatingMenu />
 

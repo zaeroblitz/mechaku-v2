@@ -13,7 +13,7 @@ const SeriesCard = ({ item }: { item: ISeries }) => {
         <Image
           src={item.image}
           alt={item.title}
-          width={480}
+          width={420}
           height={300}
           className="size-auto rounded-2xl object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -22,7 +22,7 @@ const SeriesCard = ({ item }: { item: ISeries }) => {
           {item.title}
         </p>
         {item.author && (
-          <div className="absolute bottom-4 left-4 rounded-lg bg-[#372176fc] px-2 py-1 font-lexend text-sm font-light text-white">
+          <div className="absolute bottom-4 left-10 rounded-lg bg-[#372176fc] px-2 py-1 font-lexend text-sm font-light text-white sm:left-4">
             {item.author}
           </div>
         )}

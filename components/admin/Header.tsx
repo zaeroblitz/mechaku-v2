@@ -9,8 +9,8 @@ interface HeaderProps {
 
 const Header = ({ title }: HeaderProps) => {
   return (
-    <div className="flex flex-col-reverse justify-between xl:ml-14 xl:flex-row">
-      <h1 className="font-poppins text-3xl font-bold leading-10 text-[#18120f]">
+    <div className="flex flex-col-reverse justify-between gap-3 xl:ml-14 xl:flex-row">
+      <h1 className="font-poppins text-2xl font-bold leading-10 text-[#18120f] lg:text-3xl">
         {title}
       </h1>
 

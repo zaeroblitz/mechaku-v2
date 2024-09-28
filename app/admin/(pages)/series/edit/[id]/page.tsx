@@ -97,13 +97,13 @@ export default function Page({ params }: ParamsProps) {
   };
 
   return (
-    <section className="flex w-full flex-1 flex-col">
+    <section className="mb-24 flex w-full flex-1 flex-col">
       <Header title="Update Series" />
       <main className="mt-10 flex w-full flex-1 flex-col rounded-2xl">
         <div className="mb-10 flex">
           <Button
             className="flex-center flex space-x-2 rounded-full bg-accent-purple px-10 py-3 hover:bg-accent-purple/50"
-            onClick={() => router.back()}
+            onClick={() => router.push(`/admin/series/${params.id}`)}
           >
             <MoveLeft size={16} color="white" />
             <p className="text-center font-lexend text-white">Back</p>
@@ -112,13 +112,13 @@ export default function Page({ params }: ParamsProps) {
 
         {dataLoading ? (
           <>
-            <Skeleton className="mb-2 h-[480px] w-1/2 animate-pulse rounded-2xl bg-slate-200" />
-            <Skeleton className="mb-2 h-8 w-24 animate-pulse rounded-xl bg-slate-200" />
-            <Skeleton className="mb-2 h-8 w-20 animate-pulse rounded-xl bg-slate-200" />
-            <Skeleton className="h-[120px] w-[240px] animate-pulse rounded-2xl bg-slate-200" />
+            <Skeleton className="mb-2 h-[480px] w-full animate-pulse rounded-2xl bg-slate-200" />
+            <Skeleton className="mb-2 h-8 w-3/4 animate-pulse rounded-xl bg-slate-200" />
+            <Skeleton className="mb-2 h-8 w-3/4 animate-pulse rounded-xl bg-slate-200" />
+            <Skeleton className="h-[120px] w-3/4 animate-pulse rounded-2xl bg-slate-200" />
           </>
         ) : (
-          <div className="flex w-1/2 rounded-3xl bg-white p-10">
+          <div className="flex w-full rounded-3xl bg-white p-10 lg:w-3/4 xl:w-1/2">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
