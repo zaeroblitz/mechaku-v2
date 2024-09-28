@@ -81,7 +81,7 @@ export default function Page({ params }: ParamsProps) {
         <div className="mb-10 flex">
           <Button
             className="flex-center flex space-x-2 rounded-full bg-accent-purple px-10 py-6 hover:bg-accent-purple/50"
-            onClick={() => router.back()}
+            onClick={() => router.push("/admin/products")}
           >
             <MoveLeft size={16} color="white" />
             <p className="text-center font-lexend text-white">Back</p>

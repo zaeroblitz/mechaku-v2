@@ -32,6 +32,10 @@ import { UploadForm } from "./UploadForm";
 import { ImagePreview } from "./ImagePreview";
 import { DefaultImage } from "./DefaultImage";
 import { IProductImage } from "@/services/products";
+import ImageOrder from "./ImageOrder";
+
+// Icons
+import { Settings2 } from "lucide-react";
 
 interface MultiImagesUploadProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
@@ -59,6 +63,7 @@ export default function MultiImagesUpload<TFieldValues extends FieldValues>({
     IProductImage[] | undefined
   >(defaultImageURLs);
   const [validFiles, setValidFiles] = useState<File[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -180,78 +185,101 @@ export default function MultiImagesUpload<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => {
         return (
-          <FormItem>
-            <FormLabel className="font-lexend text-form-label">
-              {label}{" "}
-              {required && <span className="text-form-negative">*</span>}
-            </FormLabel>
-            <FormControl>
-              <div className="flex-center mt-4 flex-col gap-6">
-                <UploadForm
-                  required={required}
-                  field={field}
-                  onChange={(e) => handleImageChange(e, field.onChange)}
-                />
-
-                {defaultImages && defaultImages.length > 0 && (
-                  <div className="flex w-full flex-1 flex-col gap-3">
-                    <FormLabel className="font-lexend text-form-label">
-                      <div className="flex w-full justify-between">Images:</div>
-                    </FormLabel>
-                    <div className="flex flex-wrap gap-4">
-                      {defaultImages?.map((image, index) => (
-                        <DefaultImage
-                          key={index}
-                          url={image.imageUrl}
-                          imageId={image.id}
-                          productId={image.productId}
-                          onImageDelete={handleImageDelete}
-                        />
-                      ))}
-                    </div>
+          <>
+            <FormItem>
+              {defaultImageURLs && defaultImageURLs.length > 0 && (
+                <div className="flex w-full items-center justify-end">
+                  <div
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex w-fit items-center gap-2 rounded-2xl bg-orange-50 px-6 py-3 text-orange-500 transition duration-300 hover:cursor-pointer hover:bg-orange-500 hover:text-orange-50"
+                  >
+                    <Settings2 width={14} />
+                    <p className="font-lexend font-bold">Arrange Images</p>
                   </div>
-                )}
+                </div>
+              )}
+              <FormLabel className="font-lexend text-form-label">
+                {label}{" "}
+                {required && <span className="text-form-negative">*</span>}
+              </FormLabel>
+              <FormControl>
+                <div className="flex-center mt-4 flex-col gap-6">
+                  <UploadForm
+                    required={required}
+                    field={field}
+                    onChange={(e) => handleImageChange(e, field.onChange)}
+                  />
 
-                {previewImages.length > 0 && (
-                  <div className="flex w-full flex-1 flex-col gap-3">
-                    <FormLabel className="flex flex-col gap-1 font-lexend text-form-label">
-                      New Images Preview:
-                      <span className="italic text-neutral-400/75">
-                        (drag and drop to rearrange)
-                      </span>
-                    </FormLabel>
+                  {defaultImages && defaultImages.length > 0 && (
+                    <div className="flex w-full flex-1 flex-col gap-3">
+                      <FormLabel className="font-lexend text-form-label">
+                        <div className="flex w-full justify-between">
+                          Images:
+                        </div>
+                      </FormLabel>
+                      <div className="flex flex-wrap gap-4">
+                        {defaultImages?.map((image, index) => (
+                          <DefaultImage
+                            key={index}
+                            url={image.imageUrl}
+                            imageId={image.id}
+                            productId={image.productId}
+                            onImageDelete={handleImageDelete}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-                    <div className="flex w-full flex-wrap gap-4">
-                      <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={(event) =>
-                          handleDragEndImages(event, field.onChange)
-                        }
-                      >
-                        <SortableContext
-                          items={previewImages.map((image) => image.index)}
-                          strategy={verticalListSortingStrategy}
+                  {previewImages.length > 0 && (
+                    <div className="flex w-full flex-1 flex-col gap-3">
+                      <FormLabel className="flex flex-col gap-1 font-lexend text-form-label">
+                        New Images Preview:
+                        <span className="italic text-neutral-400/75">
+                          (drag and drop to rearrange)
+                        </span>
+                      </FormLabel>
+
+                      <div className="flex w-full flex-wrap gap-4">
+                        <DndContext
+                          sensors={sensors}
+                          collisionDetection={closestCenter}
+                          onDragEnd={(event) =>
+                            handleDragEndImages(event, field.onChange)
+                          }
                         >
-                          {previewImages.map((image, index) => (
-                            <>
-                              <ImagePreview
-                                key={image.index}
-                                index={image.index}
-                                url={image.url}
-                                order={index}
-                              />
-                            </>
-                          ))}
-                        </SortableContext>
-                      </DndContext>
+                          <SortableContext
+                            items={previewImages.map((image) => image.index)}
+                            strategy={verticalListSortingStrategy}
+                          >
+                            {previewImages.map((image, index) => (
+                              <>
+                                <ImagePreview
+                                  key={image.index}
+                                  index={image.index}
+                                  url={image.url}
+                                  order={index}
+                                />
+                              </>
+                            ))}
+                          </SortableContext>
+                        </DndContext>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            </FormControl>
-            <FormMessage className="font-lexend text-form-negative" />
-          </FormItem>
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage className="font-lexend text-form-negative" />
+            </FormItem>
+
+            {defaultImageURLs && defaultImageURLs.length > 0 && isModalOpen && (
+              <ImageOrder
+                productId={defaultImageURLs[0].productId}
+                images={defaultImageURLs}
+                onClose={() => setIsModalOpen(false)}
+              />
+            )}
+          </>
         );
       }}
     />

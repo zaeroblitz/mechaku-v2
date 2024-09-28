@@ -1,9 +1,14 @@
 import BaseResponse from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IProductImage } from "./products";
 
 interface IDeleteProductImageParams {
   id: string;
   productId: string;
+}
+
+interface IUpdateProductImageOrderParams {
+  images: IProductImage[];
 }
 
 export const productImagesApi = createApi({
@@ -27,7 +32,24 @@ export const productImagesApi = createApi({
       }),
       invalidatesTags: ["products"],
     }),
+    updateProductImageOrder: builder.mutation<
+      BaseResponse,
+      IUpdateProductImageOrderParams
+    >({
+      query: (data) => ({
+        url: "/product-images",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["products"],
+    }),
   }),
 });
 
-export const { useDeleteProductImageMutation } = productImagesApi;
+export const {
+  useDeleteProductImageMutation,
+  useUpdateProductImageOrderMutation,
+} = productImagesApi;

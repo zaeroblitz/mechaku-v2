@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import Response from "@/lib/api.response";
+import { IProductImage } from "@/services/products";
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
   try {
@@ -74,6 +75,48 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     return Response({
       success: false,
       message: "Failed to delete selected product image!",
+      data: error,
+      status: 500,
+    });
+  }
+}
+
+export async function PUT(req: NextRequest, res: NextResponse) {
+  try {
+    const payload = await req.json();
+    const images: IProductImage[] = payload.images;
+
+    if (images.length === 0) {
+      return Response({
+        success: false,
+        message: "No images provided!",
+        data: null,
+        status: 400,
+      });
+    }
+
+    for (let index = 0; index < images.length; index++) {
+      const item = images[index];
+
+      await prisma.productImage.update({
+        where: { id: item.id },
+        data: {
+          altText: item.altText,
+          isPrimary: index === 0,
+          displayOrder: index + 1,
+        },
+      });
+    }
+
+    return Response({
+      success: true,
+      message: "Successfully update product images order!",
+      status: 200,
+    });
+  } catch (error) {
+    return Response({
+      success: false,
+      message: "Failed to update product images order!",
       data: error,
       status: 500,
     });

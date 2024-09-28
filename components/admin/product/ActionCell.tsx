@@ -29,7 +29,6 @@ interface ActionsCellProps {
 
 const ActionCell = ({ row }: ActionsCellProps) => {
   const product = row.original;
-  console.log("🚀 ~ file: ActionCell.tsx:32 ~ ActionCell ~ product:", product);
   const router = useRouter();
   const { toast } = useToast();
 

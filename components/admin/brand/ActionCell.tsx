@@ -81,7 +81,6 @@ const ActionCell = ({ row }: ActionsCellProps) => {
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
     } catch (error) {
-      console.error("There was a problem when updating brand data.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
@@ -109,7 +108,6 @@ const ActionCell = ({ row }: ActionsCellProps) => {
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
     } catch (error) {
-      console.error("There was a problem when updating brand status.");
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",

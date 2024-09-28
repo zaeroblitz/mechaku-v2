@@ -133,14 +133,12 @@ export default function Page(params: ParamsProps) {
       }
     }
 
-    console.log(data.images);
-
     try {
       await updateProduct(formData).unwrap();
 
       toast({
         title: "Success!",
-        description: "Product created successfully!",
+        description: "Product updated successfully!",
         className: "rounded-xl bg-emerald-50 text-emerald-800",
       });
 
@@ -162,7 +160,7 @@ export default function Page(params: ParamsProps) {
         <div className="mb-10 flex">
           <Button
             className="flex-center flex space-x-2 rounded-full bg-accent-purple px-10 py-6 hover:bg-accent-purple/50"
-            onClick={() => router.back()}
+            onClick={() => router.push("/admin/products")}
           >
             <MoveLeftIcon size={16} color="white" />
             <p className="text-center font-lexend text-white">Back</p>
@@ -189,7 +187,7 @@ export default function Page(params: ParamsProps) {
                   <MultiImagesUpload
                     control={form.control}
                     name="images"
-                    label="Images"
+                    label="Upload New Images"
                     defaultImageURLs={[...product!.data.images].sort(
                       (a, b) => a.displayOrder - b.displayOrder
                     )}

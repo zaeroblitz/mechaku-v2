@@ -35,12 +35,12 @@ export function ImagePreview({
         height={180}
         className="rounded-2xl object-cover"
       />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-neutral-800 opacity-80 mix-blend-multiply" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <span className="text-center text-4xl font-bold text-white">
           {order + 1}
         </span>
       </div>
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-neutral-800 opacity-50 mix-blend-multiply" />
     </div>
   );
 }
