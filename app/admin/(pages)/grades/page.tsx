@@ -114,7 +114,7 @@ export default function Page() {
         </main>
       </section>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-white p-10 font-lexend">
+        <DialogContent className="rounded-2xl bg-white p-10 font-lexend">
           <DialogHeader>
             <DialogTitle>Create New Grade</DialogTitle>
           </DialogHeader>

@@ -157,7 +157,7 @@ const ActionCell = ({ row }: ActionsCellProps) => {
       </DropdownMenu>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-white p-10 font-lexend">
+        <DialogContent className="rounded-2xl bg-white p-10 font-lexend">
           <DialogHeader>
             <DialogTitle>Edit Grade</DialogTitle>
           </DialogHeader>
