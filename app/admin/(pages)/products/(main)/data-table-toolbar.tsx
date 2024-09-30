@@ -33,7 +33,7 @@ export function DataTableToolbar<TData>({
 
   return (
     <>
-      <div className="flex w-fit flex-col gap-4 rounded-2xl border border-dashed px-8 py-6 font-poppins">
+      <div className="flex w-full flex-col gap-4 rounded-2xl border border-dashed p-4 font-poppins md:w-fit md:px-8 md:py-6">
         <div className="flex flex-col gap-4">
           {/* Product Name Filter */}
           <div className="flex flex-col gap-2">
@@ -53,7 +53,7 @@ export function DataTableToolbar<TData>({
           {/* Price Filter */}
           <div className="flex w-full items-center gap-3">
             {table.getColumn("price") && (
-              <div className="flex gap-2">
+              <div className="flex w-full flex-col gap-2 lg:flex-row">
                 <div className="flex flex-col gap-2">
                   <Label className="text-form-label">Min Price</Label>
                   <Input

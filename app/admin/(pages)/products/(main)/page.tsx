@@ -49,7 +49,7 @@ export default function Page() {
           ) : isError ? (
             <ErrorState text="There was something went wrong." />
           ) : products && products.data.length > 0 ? (
-            <div className="max-w-screen-2xl overflow-x-auto rounded-2xl bg-white p-8">
+            <div className="max-w-screen-2xl overflow-x-auto rounded-2xl bg-white p-6 md:p-8">
               <DataTable columns={columns} data={products.data} />
             </div>
           ) : (

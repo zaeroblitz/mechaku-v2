@@ -16,12 +16,12 @@ export function UploadForm<TFieldValues extends FieldValues>({
   onChange,
 }: UploadFormProps<TFieldValues>) {
   return (
-    <div className="flex-center relative flex w-full flex-col rounded-2xl border-2 border-dashed border-form-border py-14 font-lexend">
+    <div className="flex-center relative flex size-full flex-col rounded-2xl border-2 border-dashed border-form-border py-14 font-lexend">
       <Input
         type="file"
         accept="image/*"
         multiple
-        className="absolute inset-0 z-50 size-full cursor-pointer opacity-0"
+        className="absolute inset-0 z-50 size-full cursor-pointer  opacity-0"
         onChange={onChange}
         onBlur={field.onBlur}
         name={field.name}

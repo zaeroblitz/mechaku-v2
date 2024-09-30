@@ -187,86 +187,92 @@ export default function MultiImagesUpload<TFieldValues extends FieldValues>({
         return (
           <>
             <FormItem>
-              {defaultImageURLs && defaultImageURLs.length > 0 && (
-                <div className="flex w-full items-center justify-end">
-                  <div
-                    onClick={() => setIsModalOpen(true)}
-                    className="flex w-fit items-center gap-2 rounded-2xl bg-orange-50 px-6 py-3 text-orange-500 transition duration-300 hover:cursor-pointer hover:bg-orange-500 hover:text-orange-50"
-                  >
-                    <Settings2 width={14} />
-                    <p className="font-lexend font-bold">Arrange Images</p>
-                  </div>
-                </div>
-              )}
-              <FormLabel className="font-lexend text-form-label">
-                {label}{" "}
-                {required && <span className="text-form-negative">*</span>}
-              </FormLabel>
               <FormControl>
-                <div className="flex-center mt-4 flex-col gap-6">
-                  <UploadForm
-                    required={required}
-                    field={field}
-                    onChange={(e) => handleImageChange(e, field.onChange)}
-                  />
+                <div className="mt-4 flex flex-col gap-6 2xl:flex-row">
+                  <div className="flex w-full flex-col justify-center gap-3 rounded-2xl bg-white px-8 py-6 md:px-10 md:py-8 2xl:max-w-md">
+                    <FormLabel className="font-lexend text-form-label">
+                      {label}{" "}
+                      {required && (
+                        <span className="text-form-negative">*</span>
+                      )}
+                    </FormLabel>
+                    <UploadForm
+                      required={required}
+                      field={field}
+                      onChange={(e) => handleImageChange(e, field.onChange)}
+                    />
+                  </div>
 
-                  {defaultImages && defaultImages.length > 0 && (
-                    <div className="flex w-full flex-1 flex-col gap-3">
-                      <FormLabel className="font-lexend text-form-label">
-                        <div className="flex w-full justify-between">
-                          Images:
-                        </div>
-                      </FormLabel>
-                      <div className="flex flex-wrap gap-4">
-                        {defaultImages?.map((image, index) => (
-                          <DefaultImage
-                            key={index}
-                            url={image.imageUrl}
-                            imageId={image.id}
-                            productId={image.productId}
-                            onImageDelete={handleImageDelete}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {previewImages.length > 0 && (
-                    <div className="flex w-full flex-1 flex-col gap-3">
-                      <FormLabel className="flex flex-col gap-1 font-lexend text-form-label">
-                        New Images Preview:
-                        <span className="italic text-neutral-400/75">
-                          (drag and drop to rearrange)
-                        </span>
-                      </FormLabel>
-
-                      <div className="flex w-full flex-wrap gap-4">
-                        <DndContext
-                          sensors={sensors}
-                          collisionDetection={closestCenter}
-                          onDragEnd={(event) =>
-                            handleDragEndImages(event, field.onChange)
-                          }
-                        >
-                          <SortableContext
-                            items={previewImages.map((image) => image.index)}
-                            strategy={verticalListSortingStrategy}
+                  <div className="flex w-fit flex-col gap-6">
+                    {defaultImages && defaultImages.length > 0 && (
+                      <div className="flex flex-col gap-3 rounded-2xl bg-white p-8 md:p-10">
+                        <div className="flex w-full items-center justify-end">
+                          <div
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex w-fit items-center gap-2 rounded-2xl bg-purple-50 px-6 py-3 text-xs text-accent-purple transition duration-300 hover:cursor-pointer hover:bg-accent-purple hover:text-purple-50 lg:text-sm"
                           >
-                            {previewImages.map((image, index) => (
-                              <>
-                                <ImagePreview
-                                  key={image.index}
-                                  index={image.index}
-                                  url={image.url}
-                                  order={index}
-                                />
-                              </>
-                            ))}
-                          </SortableContext>
-                        </DndContext>
+                            <Settings2 width={14} />
+                            <p className="font-lexend font-bold">
+                              Arrange Images
+                            </p>
+                          </div>
+                        </div>
+                        <FormLabel className="font-lexend text-form-label">
+                          <div className="flex w-full justify-between">
+                            Images:
+                          </div>
+                        </FormLabel>
+                        <div className="flex flex-wrap gap-4">
+                          {defaultImages?.map((image, index) => (
+                            <DefaultImage
+                              key={index}
+                              url={image.imageUrl}
+                              imageId={image.id}
+                              productId={image.productId}
+                              onImageDelete={handleImageDelete}
+                            />
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+
+                    {previewImages.length > 0 && (
+                      <div className="flex flex-col gap-3 rounded-2xl bg-white p-8 md:p-10">
+                        <FormLabel className="flex flex-col gap-1 font-lexend text-form-label">
+                          New Images Preview:
+                          <span className="italic text-neutral-400/75">
+                            (drag and drop to rearrange)
+                          </span>
+                        </FormLabel>
+
+                        <div className="flex flex-wrap gap-4">
+                          <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={(event) =>
+                              handleDragEndImages(event, field.onChange)
+                            }
+                          >
+                            <SortableContext
+                              items={previewImages.map((image) => image.index)}
+                              strategy={verticalListSortingStrategy}
+                            >
+                              {previewImages.map((image, index) => (
+                                <>
+                                  <ImagePreview
+                                    key={image.index}
+                                    index={image.index}
+                                    url={image.url}
+                                    order={index}
+                                  />
+                                </>
+                              ))}
+                            </SortableContext>
+                          </DndContext>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </FormControl>
               <FormMessage className="font-lexend text-form-negative" />

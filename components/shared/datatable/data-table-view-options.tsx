@@ -39,7 +39,7 @@ export function DataTableViewOptions<TData>({
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="ml-auto flex items-center gap-2 rounded-2xl px-6 py-3 font-poppins"
+          className="ml-auto mt-6 flex items-center gap-2 rounded-2xl px-6 py-3 font-poppins"
         >
           <Columns2 size={16} color="#333333" /> Columns
         </Button>

@@ -149,16 +149,14 @@ export default function Page() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex w-full flex-col gap-5"
             >
-              <div className="flex gap-6">
-                <div className="flex h-fit w-1/3 flex-col rounded-3xl bg-white p-10">
-                  <MultiImagesUpload
-                    control={form.control}
-                    name="images"
-                    label="Images"
-                    required
-                  />
-                </div>
-                <div className="flex h-fit flex-1 flex-col gap-4 rounded-3xl bg-white p-10">
+              <div className="flex flex-col gap-6">
+                <MultiImagesUpload
+                  control={form.control}
+                  name="images"
+                  label="Images"
+                  required
+                />
+                <div className="flex h-fit w-full flex-1 flex-col gap-4 rounded-3xl bg-white p-10 lg:w-4/5">
                   <TextInput
                     control={form.control}
                     name="name"
@@ -174,13 +172,13 @@ export default function Page() {
                     placeholder="Type product description"
                   />
 
-                  <div className="flex w-full items-start gap-6">
+                  <div className="flex w-full flex-col items-start gap-6 lg:flex-row">
                     <TextInput
                       control={form.control}
                       name="dimensions"
                       label="Dimensions"
                       icon={<PackageIcon size={14} />}
-                      placeholder="Type product dimensions (100 x 50 x 5)"
+                      placeholder="Dimensions (100 x 50 x 5)"
                     />
 
                     <NumberInput
@@ -190,18 +188,18 @@ export default function Page() {
                       unit="kg"
                       unitPosition="right"
                       icon={<WeightIcon size={14} />}
-                      placeholder="Type product weight (kg)"
+                      placeholder="Weight (kg)"
                     />
                   </div>
 
-                  <div className="flex w-full items-start gap-6">
+                  <div className="flex w-full flex-col items-start gap-6 lg:flex-row">
                     <NumberInput
                       control={form.control}
                       name="price"
                       label="Price"
                       icon={<Banknote size={14} />}
                       unitPosition="right"
-                      placeholder="Type product price (Rp.)"
+                      placeholder="Price (Rp 100.000)"
                       required
                       isPrice
                     />
@@ -212,16 +210,16 @@ export default function Page() {
                       label="Quantity"
                       unitPosition="right"
                       icon={<BoxIcon size={14} />}
-                      placeholder="Type product quantity"
+                      placeholder="Quantity"
                       required
                     />
                   </div>
 
-                  <div className="flex w-full items-start gap-6">
+                  <div className="flex w-full flex-col items-start gap-6 lg:flex-row">
                     <Dropdown
                       control={form.control}
                       name="seriesId"
-                      placeholder="Select product series"
+                      placeholder="Select series"
                       label="Series"
                       icon={<FilmIcon size={14} />}
                       required
@@ -239,7 +237,7 @@ export default function Page() {
                     <Dropdown
                       control={form.control}
                       name="brandId"
-                      placeholder="Select product brand"
+                      placeholder="Select brand"
                       label="Brand"
                       icon={<TagIcon size={14} />}
                       required
@@ -257,7 +255,7 @@ export default function Page() {
                     <Dropdown
                       control={form.control}
                       name="gradeId"
-                      placeholder="Select product grade"
+                      placeholder="Select grade"
                       label="Grade"
                       icon={<SparkleIcon size={14} />}
                       required
@@ -273,7 +271,7 @@ export default function Page() {
                     />
                   </div>
 
-                  <div className="flex justify-end">
+                  <div className="flex justify-center lg:justify-end">
                     <Button
                       className="flex-center mt-4 flex w-[320px] gap-3 rounded-full bg-primary py-6 font-lexend font-semibold text-white hover:bg-[#372174]"
                       type="submit"

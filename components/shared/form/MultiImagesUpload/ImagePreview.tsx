@@ -22,7 +22,7 @@ export function ImagePreview({
 
   return (
     <div
-      className="relative rounded-2xl"
+      className="relative aspect-[16/9] rounded-2xl"
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -30,7 +30,7 @@ export function ImagePreview({
     >
       <Image
         src={url}
-        alt="Preview"
+        alt={`preview-image-${index}"}`}
         width={180}
         height={180}
         className="rounded-2xl object-cover"

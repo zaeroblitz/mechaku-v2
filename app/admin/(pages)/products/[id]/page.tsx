@@ -102,11 +102,11 @@ export default function Page({ params }: ParamsProps) {
         {isError && <ErrorState text="There was something went wrong." />}
 
         {!isLoading && !isError && product && (
-          <div className="flex w-full flex-col rounded-3xl bg-white p-10 font-poppins">
-            <div className="mb-10 flex justify-between">
+          <div className="flex w-full flex-col rounded-3xl bg-white p-6 font-poppins lg:p-8 xl:p-10">
+            <div className="mb-10 flex flex-col-reverse justify-between gap-6 md:flex-row">
               <div
                 className={cn(
-                  "w-[200px] px-6 py-3 rounded-full font-bold flex flex-center",
+                  "w-[200px] px-6 py-3 rounded-full font-bold flex flex-center text-sm md:text-base",
                   product.data.status === "DRAFT" &&
                     "bg-neutral-50 text-neutral-500",
                   product.data.status === "AVAILABLE" &&
@@ -120,11 +120,12 @@ export default function Page({ params }: ParamsProps) {
                 {product.data.status}
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-end gap-4">
+                {/* Update Status */}
                 <DropdownMenu>
                   <DropdownMenuTrigger
                     disabled={updateLoading}
-                    className="flex-center flex w-[200px] gap-2 rounded-full bg-teal-50 py-4 font-bold text-teal-500 transition duration-300 hover:bg-teal-500 hover:text-teal-50"
+                    className="flex-center flex w-[148px] gap-2 rounded-full bg-teal-50 py-4 text-xs font-bold text-teal-500 transition duration-300 hover:bg-teal-500 hover:text-teal-50 md:w-[200px] md:text-sm"
                   >
                     <Settings2 size={14} />{" "}
                     {updateLoading ? "Updating..." : "Update Status"}
@@ -152,16 +153,17 @@ export default function Page({ params }: ParamsProps) {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
+                {/* Edit Product */}
                 <Link
                   href={`/admin/products/edit/${product.data.id}`}
-                  className="flex-center flex w-[200px] gap-2 rounded-full bg-purple-50 py-4 font-bold text-accent-purple transition duration-300 hover:bg-accent-purple hover:text-purple-50"
+                  className="flex-center flex w-[148px] gap-2 rounded-full bg-purple-50 py-4 text-xs font-bold text-accent-purple transition duration-300 hover:bg-accent-purple hover:text-purple-50 md:w-[200px] md:text-sm"
                 >
-                  <Pencil size={14} /> Edit Product
+                  <Pencil className="size-3 md:size-4" /> Edit Product
                 </Link>
               </div>
             </div>
 
-            <div className="flex gap-10">
+            <div className="flex flex-col gap-6 lg:gap-10 2xl:flex-row">
               <div className="flex max-w-xl flex-wrap gap-3">
                 {[...product.data.images]
                   .sort((a, b) => a.displayOrder - b.displayOrder)
@@ -183,33 +185,33 @@ export default function Page({ params }: ParamsProps) {
               </div>
 
               <div className="flex w-full flex-col gap-4">
-                <h1 className="line-clamp-2 text-[32px] font-bold text-primary">
+                <h1 className="line-clamp-2 text-[28px] font-bold text-primary md:text-[32px]">
                   {product.data.name}
                 </h1>
-                <p className="text-xl font-semibold text-emerald-500">
+                <p className="text-lg font-semibold text-emerald-500 md:text-xl">
                   {formatToRupiah(product.data.price)}
                 </p>
                 <div className="flex flex-col gap-2">
-                  <p className="text-lg text-secondary">
+                  <p className="text-base text-secondary md:text-lg">
                     Series:{" "}
                     <span className="font-medium text-accent-purple">
                       {product.data.series.title}
                     </span>
                   </p>
-                  <p className="text-lg text-secondary">
+                  <p className="text-base text-secondary md:text-lg">
                     Brand:{" "}
                     <span className="font-medium text-accent-purple">
                       {product.data.brand.name}
                     </span>
                   </p>
-                  <p className="text-lg text-secondary">
+                  <p className="text-base text-secondary md:text-lg">
                     Grade:{" "}
                     <span className="font-medium text-accent-purple">
                       {product.data.grade.name}
                     </span>
                   </p>
                   {product.data.dimensions && (
-                    <p className="text-lg text-secondary">
+                    <p className="text-base text-secondary md:text-lg">
                       Dimensions:{" "}
                       <span className="font-medium text-accent-purple">
                         {product.data.dimensions}
@@ -217,7 +219,7 @@ export default function Page({ params }: ParamsProps) {
                     </p>
                   )}
                   {product.data.weight && (
-                    <p className="text-lg text-secondary">
+                    <p className="text-base text-secondary md:text-lg">
                       Weight:{" "}
                       <span className="font-medium text-accent-purple">
                         {product.data.weight} kg
@@ -225,9 +227,11 @@ export default function Page({ params }: ParamsProps) {
                     </p>
                   )}
                 </div>
-                <div className="mt-3 flex flex-col gap-1 rounded-2xl bg-slate-50 p-8">
-                  <p className="text-lg text-secondary">Description:</p>
-                  <p className="text-lg font-light text-accent-gray">
+                <div className="mt-3 flex flex-col gap-1 rounded-2xl bg-slate-50 p-5 md:p-8">
+                  <p className="text-base text-secondary md:text-lg">
+                    Description:
+                  </p>
+                  <p className="text-base font-light text-accent-gray md:text-lg">
                     {product.data.description}
                   </p>
                 </div>

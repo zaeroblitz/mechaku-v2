@@ -62,12 +62,12 @@ export function DefaultImage({
   };
 
   return (
-    <div className="relative">
+    <div className="relative aspect-[16/9]">
       <Image
         src={url}
-        alt="Previous Images"
-        width={200}
-        height={200}
+        alt={`image-${imageId}`}
+        width={180}
+        height={180}
         className="rounded-2xl object-cover"
       />
 
