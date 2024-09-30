@@ -23,7 +23,7 @@ export function DataTableToolbar<TData>({
   return (
     <>
       <div className="flex flex-col gap-4 py-4 font-poppins">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 md:flex-row">
           <Input
             className="max-w-sm rounded-2xl border border-form-border bg-slate-50 p-6 text-form-input"
             placeholder="Filter brand name..."

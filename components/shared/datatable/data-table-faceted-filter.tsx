@@ -47,7 +47,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Button
           variant="outline"
           className={cn(
-            "rounded-xl border-dashed px-10 py-6",
+            "max-w-sm rounded-xl border-dashed px-10 py-6",
             classname ?? classname
           )}
         >
