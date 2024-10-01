@@ -58,7 +58,7 @@ export function DataTableFacetedFilter<TData, TValue>({
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                className="rounded-lg bg-neutral-100 px-2 py-1 font-normal text-neutral-600 lg:hidden"
               >
                 {selectedValues.size}
               </Badge>

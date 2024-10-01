@@ -11,7 +11,7 @@ import ActionCell from "@/components/admin/brand/ActionCell";
 import { IBrand } from "@/services/brands";
 
 // Utils
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 export const columns: ColumnDef<IBrand>[] = [
   {
@@ -63,11 +63,20 @@ export const columns: ColumnDef<IBrand>[] = [
     cell: ({ row }) => {
       const isActive = row.getValue("status") as boolean;
       const text = isActive ? "Active" : "Inactive";
-      const className = isActive
-        ? "bg-green-100 text-form-positive border-green-200"
-        : "bg-rose-100 text-form-negative";
 
-      return <Badge className={`${className} font-light`}>{text}</Badge>;
+      return (
+        <Badge
+          className={cn(
+            "px-4 py-2 lg:px-6 lg:py-3 text-center rounded-2xl font-semibold select-none",
+            isActive &&
+              "bg-emerald-50 text-emerald-500 hover:bg-emerald-500 hover:text-emerald-50 duration-300 transition",
+            !isActive &&
+              "bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-rose-50 duration-300 transition"
+          )}
+        >
+          {text}
+        </Badge>
+      );
     },
     filterFn: (row, columnId, filterValue) => {
       const isActive = row.getValue(columnId) as boolean;

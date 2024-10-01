@@ -1,10 +1,11 @@
 // Modu;es
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Control,
   FieldValues,
   Path,
   ControllerRenderProps,
+  useWatch,
 } from "react-hook-form";
 
 // Shadcn Components
@@ -49,7 +50,18 @@ export default function NumberInput<TFieldValues extends FieldValues>({
   const [rightPadding, setRightPadding] = useState(20);
   const unitRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
-  const [formattedValue, setFormattedValue] = useState("");
+
+  const value = useWatch({
+    control,
+    name,
+  });
+
+  const formattedValue = useMemo(() => {
+    if (value) {
+      return isPrice ? formatToRupiah(value.toString()) : value.toString();
+    }
+    return "";
+  }, [value, isPrice]);
 
   useEffect(() => {
     if (unitRef.current && iconRef.current) {
@@ -83,14 +95,6 @@ export default function NumberInput<TFieldValues extends FieldValues>({
       }: {
         field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
       }) => {
-        if (field.value) {
-          if (isPrice) {
-            setFormattedValue(formatToRupiah(field.value.toString()));
-          } else {
-            setFormattedValue(field.value.toString());
-          }
-        }
-
         return (
           <FormItem className="w-full">
             <FormLabel className="font-lexend text-form-label">
@@ -130,13 +134,6 @@ export default function NumberInput<TFieldValues extends FieldValues>({
                   onChange={(e) => {
                     const numericValue = e.target.value.replace(/[^\d]/g, "");
                     const numberValue = Number(numericValue);
-
-                    if (isPrice) {
-                      setFormattedValue(formatToRupiah(numberValue));
-                    } else {
-                      setFormattedValue(numericValue);
-                    }
-
                     field.onChange(numberValue);
                   }}
                 />

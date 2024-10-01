@@ -94,25 +94,6 @@ export default function Page(params: ParamsProps) {
     defaultValues,
   });
 
-  useEffect(() => {
-    if (product) {
-      form.reset({
-        name: product?.data?.name || "",
-        slug: product?.data?.slug || "",
-        description: product?.data?.description || "",
-        dimensions: product?.data?.dimensions || "",
-        weight: product?.data?.weight || 0,
-        price: product?.data?.price || 0,
-        quantity: product?.data?.quantity || 0,
-        status: product?.data?.status || "DRAFT",
-        seriesId: product?.data?.seriesId || "",
-        brandId: product?.data?.brandId || "",
-        gradeId: product?.data?.gradeId || "",
-        images: undefined,
-      });
-    }
-  }, [product, form]);
-
   const onSubmit = async (data: z.infer<typeof NewProductSchema>) => {
     const formData = new FormData();
     formData.append("id", params.params.id);
@@ -152,6 +133,25 @@ export default function Page(params: ParamsProps) {
       });
     }
   };
+
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        name: product?.data?.name || "",
+        slug: product?.data?.slug || "",
+        description: product?.data?.description || "",
+        dimensions: product?.data?.dimensions || "",
+        weight: product?.data?.weight || 0,
+        price: product?.data?.price || 0,
+        quantity: product?.data?.quantity || 0,
+        status: product?.data?.status || "DRAFT",
+        seriesId: product?.data?.seriesId || "",
+        brandId: product?.data?.brandId || "",
+        gradeId: product?.data?.gradeId || "",
+        images: undefined,
+      });
+    }
+  }, [product, form]);
 
   return (
     <section className="flex w-full flex-1 flex-col">

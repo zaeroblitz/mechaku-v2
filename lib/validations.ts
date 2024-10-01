@@ -92,3 +92,29 @@ export const NewProductSchema = z.object({
       ),
   ]),
 });
+
+export const NewVoucherSchema = z
+  .object({
+    code: z.string().min(1, "Voucher code is required").max(32),
+    description: z.string().optional(),
+    type: z.string(),
+    value: z.number().min(0),
+    startDate: z.date().optional(),
+    endDate: z.date().optional(),
+    usageLimit: z.number().optional(),
+    usageCount: z.number().optional(),
+    minPurchaseAmount: z.number().optional(),
+    isActive: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      if (data.startDate && data.endDate) {
+        return data.endDate > data.startDate;
+      }
+      return true;
+    },
+    {
+      message: "End date must be later than start date",
+      path: ["endDate"],
+    }
+  );

@@ -10,20 +10,20 @@ export async function GET(req: NextRequest, params: Params) {
     if (!id) {
       return Response({
         success: false,
-        message: "Invalid series ID!",
+        message: "Invalid voucher ID!",
         data: null,
         status: 400,
       });
     }
 
-    const series = await prisma.series.findUnique({
+    const voucher = await prisma.voucher.findUnique({
       where: { id },
     });
 
-    if (!series) {
+    if (!voucher) {
       return Response({
         success: false,
-        message: "Series not found!",
+        message: "Voucher not found!",
         data: null,
         status: 404,
       });
@@ -31,14 +31,14 @@ export async function GET(req: NextRequest, params: Params) {
 
     return Response({
       success: true,
-      message: "Successfully get series by ID!",
-      data: series,
+      message: "Successfully get voucher by ID!",
+      data: voucher,
       status: 200,
     });
   } catch (error) {
     return Response({
       success: false,
-      message: "Failed to get series by ID!",
+      message: "Failed to get voucher by ID!",
       data: error,
       status: 500,
     });
