@@ -2,14 +2,11 @@
 import React from "react";
 import { Table } from "@tanstack/react-table";
 
-// Icons
-import { XIcon } from "lucide-react";
-
 // Components
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { DataTableViewOptions } from "@/components/shared/datatable/data-table-view-options";
 import { DataTableFacetedFilter } from "@/components/shared/datatable/data-table-faceted-filter";
+import ResetButton from "@/components/admin/ResetButton";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -51,14 +48,7 @@ export function DataTableToolbar<TData>({
         </div>
         <div className="flex w-fit">
           {isFiltered && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-              className="gap-2 rounded-xl bg-rose-50 px-5 py-2 text-center text-rose-400"
-            >
-              <XIcon className="size-4" />
-              Reset
-            </Button>
+            <ResetButton handleClick={() => table.resetColumnFilters()} />
           )}
         </div>
       </div>

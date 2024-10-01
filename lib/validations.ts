@@ -118,3 +118,11 @@ export const NewVoucherSchema = z
       path: ["endDate"],
     }
   );
+
+export const NewPaymentMethodSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Payment Method name is required!")
+    .max(32, "Payment Method name must less than 32 characters!"),
+  isActive: z.boolean().optional(),
+});

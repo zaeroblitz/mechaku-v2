@@ -5,6 +5,7 @@ import { gradesApi } from "@/services/grades";
 import { productsApi } from "@/services/products";
 import { productImagesApi } from "@/services/product-images";
 import { vouchersApi } from "@/services/vouchers";
+import { paymentMethodApi } from "@/services/payment-methods";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [productsApi.reducerPath]: productsApi.reducer,
     [productImagesApi.reducerPath]: productImagesApi.reducer,
     [vouchersApi.reducerPath]: vouchersApi.reducer,
+    [paymentMethodApi.reducerPath]: paymentMethodApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -23,6 +25,7 @@ export const store = configureStore({
       productsApi.middleware,
       productImagesApi.middleware,
       vouchersApi.middleware,
+      paymentMethodApi.middleware,
     ]),
 });
 

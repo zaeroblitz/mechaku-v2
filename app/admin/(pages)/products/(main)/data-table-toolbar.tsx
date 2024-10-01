@@ -1,16 +1,17 @@
 // Modules
 import React from "react";
+
 // Components
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table } from "@tanstack/react-table";
 import { DataTableViewOptions } from "@/components/shared/datatable/data-table-view-options";
 import { DataTableFacetedFilter } from "@/components/shared/datatable/data-table-faceted-filter";
-// Icons
-import { XIcon } from "lucide-react";
+import ResetButton from "@/components/admin/ResetButton";
+
 // Types
 import { IBrand, IGrade, ISeries } from "./columns";
+
 // Utils
 import { formatToRupiah } from "@/lib/utils";
 
@@ -171,14 +172,7 @@ export function DataTableToolbar<TData>({
         {/* Reset Button */}
         <div className="flex w-fit">
           {isFiltered && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-              className="gap-2 rounded-xl bg-rose-50 px-5 py-2 text-center text-rose-400"
-            >
-              <XIcon className="size-4" />
-              Reset
-            </Button>
+            <ResetButton handleClick={() => table.resetColumnFilters()} />
           )}
         </div>
       </div>
