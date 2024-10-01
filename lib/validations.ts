@@ -126,3 +126,24 @@ export const NewPaymentMethodSchema = z.object({
     .max(32, "Payment Method name must less than 32 characters!"),
   isActive: z.boolean().optional(),
 });
+
+export const NewRoleSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Role name is required!")
+    .max(32, "Role name must less than 32 characters!"),
+  description: z.string().min(1, "Role description is required"),
+  permissions: z
+    .array(z.string())
+    .refine((value) => value.some((item) => item), {
+      message: "You have to select at least one item.",
+    }),
+});
+
+export const NewPermissionSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Permission name is required!")
+    .max(32, "Permission name must less than 32 characters!"),
+  description: z.string().min(1, "Permission description is required"),
+});

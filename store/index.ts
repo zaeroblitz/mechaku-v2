@@ -6,6 +6,8 @@ import { productsApi } from "@/services/products";
 import { productImagesApi } from "@/services/product-images";
 import { vouchersApi } from "@/services/vouchers";
 import { paymentMethodApi } from "@/services/payment-methods";
+import { rolesApi } from "@/services/roles";
+import { permissionsApi } from "@/services/permissions";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +18,8 @@ export const store = configureStore({
     [productImagesApi.reducerPath]: productImagesApi.reducer,
     [vouchersApi.reducerPath]: vouchersApi.reducer,
     [paymentMethodApi.reducerPath]: paymentMethodApi.reducer,
+    [rolesApi.reducerPath]: rolesApi.reducer,
+    [permissionsApi.reducerPath]: permissionsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -26,6 +30,8 @@ export const store = configureStore({
       productImagesApi.middleware,
       vouchersApi.middleware,
       paymentMethodApi.middleware,
+      rolesApi.middleware,
+      permissionsApi.middleware,
     ]),
 });
 

@@ -86,13 +86,13 @@ export default function FloatingMenu() {
                                 icon={
                                   <Icon
                                     name={subItem.icon}
-                                    size={24}
+                                    size={20}
                                     color="white"
                                   />
                                 }
                                 content={<p>{subItem.label}</p>}
                               />
-                              <p className={`flex-1 text-lg`}>
+                              <p className={`flex-1 text-sm md:text-lg`}>
                                 {subItem.label}
                               </p>
                             </Link>

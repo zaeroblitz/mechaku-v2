@@ -199,8 +199,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       status: 201,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:203 ~ PUT ~ error):", error);
-
     return Response({
       success: false,
       status: 500,
