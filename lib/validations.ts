@@ -147,3 +147,16 @@ export const NewPermissionSchema = z.object({
     .max(32, "Permission name must less than 32 characters!"),
   description: z.string().min(1, "Permission description is required"),
 });
+
+export const NewAdminSchema = z.object({
+  username: z
+    .string()
+    .min(1, "Username is required!")
+    .max(32, "Username must less than 32 characters!"),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(4, "Password must be at least 4 characters long")
+    .max(12, "Password must be less than 12 characters long"),
+  roleId: z.string().min(1, "Role is required"),
+});
