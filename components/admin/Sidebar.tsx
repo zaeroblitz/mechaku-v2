@@ -15,6 +15,7 @@ import { adminSidebar } from "@/constants";
 import Icon from "@/components/shared/Icon";
 import TooltipIcon from "@/components/shared/TooltipIcon";
 import { useAdminToggle } from "@/context/AdminToggleProvider";
+import { signOut } from "next-auth/react";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -196,7 +197,14 @@ const Sidebar = () => {
               </Link>
 
               {/* Logout */}
-              <Link href="/admin/logout" className="flex-center flex gap-4">
+              <div
+                onClick={() =>
+                  signOut({
+                    callbackUrl: "/admin",
+                  })
+                }
+                className="flex-center flex gap-4 hover:cursor-pointer"
+              >
                 <TooltipIcon
                   classname="ml-10 bg-[#170645]"
                   icon={<Icon name="LogOut" size={24} color="white" />}
@@ -207,7 +215,7 @@ const Sidebar = () => {
                 >
                   Logout
                 </p>
-              </Link>
+              </div>
             </div>
           </div>
         </div>

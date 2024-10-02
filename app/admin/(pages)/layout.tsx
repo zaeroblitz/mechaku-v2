@@ -5,7 +5,7 @@ import { AdminToggleProvider } from "@/context/AdminToggleProvider";
 import Sidebar from "@/components/admin/Sidebar";
 import FloatingMenu from "@/components/admin/FloatingMenu";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AdminToggleProvider>
       <TooltipProvider>
@@ -18,6 +18,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </TooltipProvider>
     </AdminToggleProvider>
   );
-};
-
-export default Layout;
+}

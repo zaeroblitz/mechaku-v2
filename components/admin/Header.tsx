@@ -1,13 +1,19 @@
+"use client";
+
 import React from "react";
-import TooltipIcon from "@/components/shared/TooltipIcon";
+import { useSession } from "next-auth/react";
 import { Search, Bell } from "lucide-react";
+
+import TooltipIcon from "@/components/shared/TooltipIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface HeaderProps {
   title: string;
 }
 
-const Header = ({ title }: HeaderProps) => {
+export default function Header({ title }: HeaderProps) {
+  const { data } = useSession();
+
   return (
     <div className="flex flex-col-reverse justify-between gap-3 xl:ml-14 xl:flex-row">
       <h1 className="font-poppins text-2xl font-bold leading-10 text-[#18120f] lg:text-3xl">
@@ -30,19 +36,19 @@ const Header = ({ title }: HeaderProps) => {
         <div className="flex items-center space-x-4">
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>AM</AvatarFallback>
+            <AvatarFallback>ADM</AvatarFallback>
           </Avatar>
 
           <div className="flex flex-col space-y-0">
             <p className="font-lexend text-base font-semibold text-[#18120f]">
-              Mechaku Admin
+              {data?.user.username}
             </p>
-            <p className="font-lexend text-sm text-form-icon">Admin</p>
+            <p className="font-lexend text-sm text-form-icon">
+              {data?.user.role}
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Header;
+}
