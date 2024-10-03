@@ -37,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`${inter.variable} ${lexend.variable} ${poppins.variable}`}
       >
         <Provider>{children}</Provider>

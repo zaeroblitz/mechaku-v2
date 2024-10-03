@@ -15,12 +15,13 @@ import { adminSidebar } from "@/constants";
 import Icon from "@/components/shared/Icon";
 import TooltipIcon from "@/components/shared/TooltipIcon";
 import { useAdminToggle } from "@/context/AdminToggleProvider";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const Sidebar = () => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const { toggle, setToggle } = useAdminToggle();
+  const { data } = useSession();
 
   useEffect(() => {
     setMounted(true);
@@ -183,7 +184,10 @@ const Sidebar = () => {
           <div className="w-full items-center justify-between text-lg font-light">
             <div className="flex flex-col gap-5">
               {/* Settings */}
-              <Link href="/admin/settings" className="flex-center flex gap-4">
+              <Link
+                href={`/admin/settings/${data?.user.id}`}
+                className="flex-center flex gap-4"
+              >
                 <TooltipIcon
                   classname="ml-10 bg-[#170645]"
                   icon={<Icon name="Settings" size={24} color="white" />}

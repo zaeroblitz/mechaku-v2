@@ -160,3 +160,17 @@ export const NewAdminSchema = z.object({
     .max(12, "Password must be less than 12 characters long"),
   roleId: z.string().min(1, "Role is required"),
 });
+
+export const UpdateAdminSchema = z.object({
+  username: z
+    .string()
+    .min(1, "Username is required!")
+    .max(32, "Username must less than 32 characters!"),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(0)
+    .max(12, "Password must be less than 12 characters long")
+    .optional(),
+  roleId: z.string().min(1, "Role is required"),
+});

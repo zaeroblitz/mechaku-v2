@@ -1,32 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+// Modules
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-
-import { AdminLoginSchema } from "@/lib/validations";
-
-import { signIn } from "next-auth/react";
-import { useToast } from "@/hooks/use-toast";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+// Icons
+import { LogIn, Mail } from "lucide-react";
+
+// Shadcn Components
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { AdminLoginSchema } from "@/lib/validations";
+import { useToast } from "@/hooks/use-toast";
+
+// Custom Components
+import TextInput from "@/components/shared/form/TextInput";
+import Password from "@/components/shared/form/Password";
 
 const Page = () => {
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
+
+  const { status } = useSession();
 
   const form = useForm<z.infer<typeof AdminLoginSchema>>({
     resolver: zodResolver(AdminLoginSchema),
@@ -52,7 +54,7 @@ const Page = () => {
         toast({
           variant: "destructive",
           title: "Something went wrong",
-          description: "Please check your email and password",
+          description: "Incorrect email/username or password.",
           className: "rounded-xl bg-pink-50 text-pink-800",
         });
       }
@@ -68,8 +70,14 @@ const Page = () => {
     }
   }
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/admin/dashboard");
+    }
+  }, [status, router]);
+
   return (
-    <main className="flex h-screen w-full items-center justify-center bg-[#F1F4FA] px-20 py-10">
+    <main className="flex h-screen w-full items-center justify-center bg-[#F1F4FA] px-8 py-4 md:px-12 md:py-8 lg:px-20 lg:py-10">
       <section className="flex size-full max-w-screen-2xl flex-col">
         <div className="mb-auto flex items-center">
           <Image
@@ -77,61 +85,47 @@ const Page = () => {
             width={160}
             height={48}
             alt="logo"
-            className="object-contain"
+            className="size-auto object-contain"
+            priority
           />
         </div>
 
         <div className="flex-center flex w-full flex-1">
-          <div className="h-auto w-1/3 rounded-2xl bg-white px-10 py-12">
-            <h1 className="text-center font-poppins text-4xl font-bold leading-10 text-primary">
+          <div className="h-auto w-full rounded-2xl bg-white px-10 py-12 lg:w-2/3 2xl:w-1/3">
+            <h1 className="text-center font-poppins text-3xl font-bold leading-10 text-primary lg:text-4xl">
               Sign In
             </h1>
             <p className="mt-5 text-center font-lexend text-base font-normal leading-none text-accent-gray">
-              Welcome back to Mechaku Admin.
+              Welcome to Mechaku Admin.
             </p>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mt-8 flex flex-col gap-4"
               >
-                <FormField
+                <TextInput
                   control={form.control}
                   name="identifier"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email or Username</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Type your email or username"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Email or Username"
+                  placeholder="johndoe@email.com"
+                  icon={<Mail size={14} />}
+                  required
                 />
-                <FormField
+                <Password
                   control={form.control}
                   name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Type your password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Password"
+                  placeholder="*********"
+                  required
                 />
                 <Button
-                  className="rounded-xl bg-primary text-white"
+                  className="flex items-center gap-2 rounded-2xl bg-primary py-6 font-semibold text-white"
                   type="submit"
                   disabled={isLoading}
                 >
+                  <span>
+                    <LogIn size={14} />
+                  </span>
                   {isLoading ? "Loading..." : "Sign In"}
                 </Button>
               </form>

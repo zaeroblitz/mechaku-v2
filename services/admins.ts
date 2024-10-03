@@ -32,6 +32,14 @@ interface AdminParams {
   isActive?: boolean;
 }
 
+interface UpdateAdminParams {
+  id: string;
+  email: string;
+  roleId: string;
+  password?: string;
+  isActive?: boolean;
+}
+
 export const adminsApi = createApi({
   reducerPath: "adminsApi",
   baseQuery: fetchBaseQuery({
@@ -57,9 +65,30 @@ export const adminsApi = createApi({
       }),
       providesTags: ["admins"],
     }),
-    updateAdmin: builder.mutation<AdminResponse, AdminParams>({
+    getAdminById: builder.query<AdminResponse, string>({
+      query: (id) => ({
+        method: "GET",
+        url: `/admins/${id}`,
+      }),
+      providesTags: ["admins"],
+    }),
+    updateAdmin: builder.mutation<AdminResponse, UpdateAdminParams>({
       query: (data) => ({
         url: "/admins",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["admins"],
+    }),
+    updateAdminStatus: builder.mutation<
+      AdminResponse,
+      { id: string; status: boolean }
+    >({
+      query: (data) => ({
+        url: "/admins/update-status",
         method: "PUT",
         body: data,
         headers: {
@@ -74,5 +103,7 @@ export const adminsApi = createApi({
 export const {
   useCreateAdminMutation,
   useGetAllAdminsQuery,
+  useGetAdminByIdQuery,
   useUpdateAdminMutation,
+  useUpdateAdminStatusMutation,
 } = adminsApi;

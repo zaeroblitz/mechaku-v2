@@ -40,15 +40,19 @@ import { Form } from "@/components/ui/form";
 
 // Custom Components
 import TextInput from "@/components/shared/form/TextInput";
+import SingleSelect from "@/components/shared/form/SingleSelect";
+import Password from "@/components/shared/form/Password";
 
 // Query
 import { useGetAllRolesQuery } from "@/services/roles";
-import { IAdmin, useUpdateAdminMutation } from "@/services/admins";
+import {
+  IAdmin,
+  useUpdateAdminMutation,
+  useUpdateAdminStatusMutation,
+} from "@/services/admins";
 
 // Schema
-import { NewAdminSchema } from "@/lib/validations";
-import SingleSelect from "@/components/shared/form/SingleSelect";
-import Password from "@/components/shared/form/Password";
+import { UpdateAdminSchema } from "@/lib/validations";
 
 interface ActionsCellProps {
   row: Row<IAdmin>;
@@ -61,9 +65,10 @@ const ActionCell = ({ row }: ActionsCellProps) => {
 
   const { data: roles, isLoading: rolesLoading } = useGetAllRolesQuery();
   const [updateAdmin, { isLoading }] = useUpdateAdminMutation();
+  const [updateAdminStatus] = useUpdateAdminStatusMutation();
 
-  const form = useForm<z.infer<typeof NewAdminSchema>>({
-    resolver: zodResolver(NewAdminSchema),
+  const form = useForm<z.infer<typeof UpdateAdminSchema>>({
+    resolver: zodResolver(UpdateAdminSchema),
     defaultValues: {
       username: admin.username,
       email: admin.email,
@@ -84,7 +89,35 @@ const ActionCell = ({ row }: ActionsCellProps) => {
     setOpen(true);
   };
 
-  const onSubmit = async (values: z.infer<typeof NewAdminSchema>) => {
+  const handleChangeStatus = async () => {
+    try {
+      toast({
+        title: "Updating admin status...",
+        description: "Please wait while we update the admin status.",
+        className: "rounded-xl bg-white",
+      });
+
+      await updateAdminStatus({
+        id: admin.id,
+        status: !admin.isActive,
+      }).unwrap();
+
+      toast({
+        title: "Success!",
+        description: "Admin status updated successfully!",
+        className: "rounded-xl bg-emerald-50 text-emerald-800",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem when updating admin status.",
+        className: "rounded-xl bg-pink-50 text-pink-800",
+      });
+    }
+  };
+
+  const onSubmit = async (values: z.infer<typeof UpdateAdminSchema>) => {
     try {
       const data = {
         id: admin.id,
@@ -144,7 +177,7 @@ const ActionCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex items-center gap-1 rounded-lg hover:cursor-pointer hover:bg-slate-100"
-            onClick={() => {}}
+            onClick={handleChangeStatus}
           >
             <Settings2 size={10} color="#333333" />
             <span>Set to {admin.isActive ? "Inactive" : "Active"}</span>
@@ -189,7 +222,7 @@ const ActionCell = ({ row }: ActionsCellProps) => {
                   name="password"
                   label="Password"
                   placeholder="*********"
-                  required
+                  required={false}
                 />
 
                 {roles && roles.data.length > 0 && (

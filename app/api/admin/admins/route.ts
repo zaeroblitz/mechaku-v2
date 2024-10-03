@@ -68,11 +68,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
   try {
     const { id, username, email, password, roleId } = await req.json();
 
-    // Validations
-    NewAdminSchema.parse({ username, email, password, roleId });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Check for valid admin ID
     if (!id) {
       return Response({
@@ -97,15 +92,27 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       });
     }
 
+    // Data to update
+    let data;
+    if (password) {
+      data = {
+        username,
+        email,
+        password: await bcrypt.hash(password, 10),
+        role: { connect: { id: roleId } },
+      };
+    } else {
+      data = {
+        username,
+        email,
+        role: { connect: { id: roleId } },
+      };
+    }
+
     // Update admin
     const updatedAdmin = await prisma.admin.update({
       where: { id },
-      data: {
-        username,
-        email,
-        password: hashedPassword,
-        role: { connect: { id: roleId } },
-      },
+      data,
     });
 
     return Response({

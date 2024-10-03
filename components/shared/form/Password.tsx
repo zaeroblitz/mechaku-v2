@@ -34,7 +34,7 @@ export default function Password<TFieldValues extends FieldValues>({
   name,
   label,
   placeholder,
-  required = false,
+  required = true,
   className = "",
 }: PasswordProps<TFieldValues>) {
   const [paddingLeft, setPaddingLeft] = useState(20);
@@ -78,6 +78,7 @@ export default function Password<TFieldValues extends FieldValues>({
               </div>
 
               <Input
+                required={required}
                 type={showPassword ? "text" : "password"}
                 placeholder={placeholder}
                 className={`rounded-2xl border border-form-border bg-form-background p-5 font-lexend text-form-input ${className}`}
