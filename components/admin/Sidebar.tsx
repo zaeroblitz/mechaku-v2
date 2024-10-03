@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+
 import {
   Accordion,
   AccordionContent,
@@ -19,9 +20,9 @@ import { signOut, useSession } from "next-auth/react";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { data } = useSession();
   const [mounted, setMounted] = useState(false);
   const { toggle, setToggle } = useAdminToggle();
-  const { data } = useSession();
 
   useEffect(() => {
     setMounted(true);
@@ -83,10 +84,7 @@ const Sidebar = () => {
                         className={`no-underline hover:no-underline ${toggle ? "flex-col space-y-2" : "flex-row"}`}
                       >
                         <div className="flex items-center justify-start">
-                          <Link
-                            href={sidebar.route}
-                            className="flex items-center gap-4"
-                          >
+                          <div className="flex items-center gap-4">
                             <TooltipIcon
                               classname="ml-10 bg-[#170645]"
                               icon={
@@ -105,7 +103,7 @@ const Sidebar = () => {
                             >
                               {sidebar.label}
                             </p>
-                          </Link>
+                          </div>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>

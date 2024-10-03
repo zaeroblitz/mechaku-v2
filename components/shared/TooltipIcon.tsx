@@ -14,7 +14,9 @@ interface TooltipProps {
 const TooltipIcon = ({ icon, content, classname }: TooltipProps) => {
   return (
     <Tooltip>
-      <TooltipTrigger>{icon}</TooltipTrigger>
+      <TooltipTrigger asChild>
+        <span>{icon}</span>
+      </TooltipTrigger>
 
       <TooltipContent className={`rounded-lg p-2 ${classname}`} side="bottom">
         {content}
