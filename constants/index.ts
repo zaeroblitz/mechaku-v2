@@ -76,3 +76,16 @@ export const adminSidebar: SidebarLink[] = [
     route: "/admin/users",
   },
 ];
+
+export const avatars = [
+  { path: "/assets/avatars/archer.png", label: "archer" },
+  { path: "/assets/avatars/artist.png", label: "artist" },
+  { path: "/assets/avatars/fairy.png", label: "fairy" },
+  { path: "/assets/avatars/invisible-man.png", label: "invisible-man" },
+  { path: "/assets/avatars/ninja.png", label: "ninja" },
+  { path: "/assets/avatars/princess.png", label: "princess" },
+  { path: "/assets/avatars/robot.png", label: "robot" },
+  { path: "/assets/avatars/superwoman.png", label: "superwoman" },
+  { path: "/assets/avatars/tree.png", label: "tree" },
+  { path: "/assets/avatars/viking.png", label: "viking" },
+];

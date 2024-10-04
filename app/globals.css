@@ -20,8 +20,47 @@ body {
   .flex-start {
     @apply flex justify-start items-center;
   }
-}
 
+  .h1-auth-mobile {
+    @apply text-primary text-3xl font-bold font-poppins leading-10;
+  }
+
+  .h1-auth-desktop {
+    @apply text-primary text-4xl font-bold font-poppins leading-10;
+  }
+
+  .regular-text-mobile {
+    @apply text-secondary text-sm font-normal font-inter leading-snug;
+  }
+
+  .regular-text-desktop {
+    @apply text-secondary text-base font-normal font-inter leading-snug;
+  }
+
+  .button-cta-mobile {
+    @apply text-accent-purple text-sm font-semibold font-poppins leading-none;
+  }
+
+  .button-cta-desktop {
+    @apply text-accent-purple text-base font-semibold font-poppins leading-none;
+  }
+
+  .form-label-mobile {
+    @apply text-form-label text-xs font-normal font-inter uppercase leading-tight;
+  }
+
+  .form-label-desktop {
+    @apply text-form-label text-sm font-normal font-inter uppercase leading-snug;
+  }
+
+  .form-input-mobile {
+    @apply text-accent-gray-alt text-sm font-normal font-inter leading-snug;
+  }
+
+  .text-cta {
+    @apply text-primary text-sm font-normal font-poppins leading-none;
+  }
+}
 .scrollbar-sidebar-admin::-webkit-scrollbar {
   width: 9px;
   height: 3px;

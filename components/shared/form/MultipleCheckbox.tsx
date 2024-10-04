@@ -68,7 +68,7 @@ export default function MultipleCheckbox<TFieldValues extends FieldValues>({
 
                           return field.onChange(updatedPermissions);
                         }}
-                        className="size-5 rounded-md border border-slate-200 data-[state=checked]:bg-accent-purple text-violet-50"
+                        className="size-5 rounded-md border border-slate-200 text-violet-50 data-[state=checked]:bg-accent-purple"
                       />
                     </FormControl>
                     <FormLabel className="font-normal">{item.label}</FormLabel>

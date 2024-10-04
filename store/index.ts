@@ -9,6 +9,7 @@ import { paymentMethodApi } from "@/services/payment-methods";
 import { rolesApi } from "@/services/roles";
 import { permissionsApi } from "@/services/permissions";
 import { adminsApi } from "@/services/admins";
+import { usersApi } from "@/services/user";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     [rolesApi.reducerPath]: rolesApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
     [adminsApi.reducerPath]: adminsApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -35,6 +37,7 @@ export const store = configureStore({
       rolesApi.middleware,
       permissionsApi.middleware,
       adminsApi.middleware,
+      usersApi.middleware,
     ]),
 });
 

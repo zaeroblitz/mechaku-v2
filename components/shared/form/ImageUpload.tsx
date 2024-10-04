@@ -16,6 +16,7 @@ interface ImageUploadProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
   label: string;
   required?: boolean;
+  imagePreviewSize?: { width: number; height: number };
   defaultImageURL?: string;
 }
 
@@ -24,6 +25,7 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
   name,
   label,
   required = false,
+  imagePreviewSize = { width: 680, height: 380 },
   defaultImageURL,
 }: ImageUploadProps<TFieldValues>) {
   const { toast } = useToast();
@@ -42,6 +44,8 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
             title: "Error",
             description:
               "File size limit exceeded. Please upload a file less than 5MB.",
+            className:
+              "bg-rose-50 text-rose-500 rounded-2xl border-none font-lexend",
           });
           return;
         }
@@ -51,6 +55,8 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
             variant: "destructive",
             title: "Error",
             description: "Only.jpg,.png, and.webp formats are supported.",
+            className:
+              "bg-rose-50 text-rose-500 rounded-2xl border-none font-lexend",
           });
           return;
         }
@@ -81,9 +87,9 @@ export default function ImageUpload<TFieldValues extends FieldValues>({
                   <Image
                     src={previewImage}
                     alt="Preview"
-                    width={680}
-                    height={380}
-                    className="size-auto rounded-2xl object-cover"
+                    width={imagePreviewSize.width}
+                    height={imagePreviewSize.height}
+                    className="size-auto rounded-2xl object-cover object-center"
                   />
                   <div className="absolute inset-0 h-auto w-full rounded-2xl bg-gradient-to-b from-transparent to-[#170645] opacity-0 mix-blend-multiply duration-500 group-hover:opacity-100 group-hover:transition-opacity" />
                   <div className="flex-center absolute flex size-full flex-col font-lexend opacity-0 transition-opacity duration-500 group-hover:opacity-100">
