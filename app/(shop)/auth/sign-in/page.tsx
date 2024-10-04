@@ -1,12 +1,14 @@
 "use client";
 
 // Modules
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { signIn, useSession } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // Icons
 import { Mail } from "lucide-react";
@@ -14,6 +16,7 @@ import { Mail } from "lucide-react";
 // Shadcn Components
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 // Custom Components
 import TextInput from "@/components/shared/form/TextInput";
@@ -25,6 +28,12 @@ import { UserSignInSchema } from "@/lib/validations";
 import Banner from "@/components/shop/auth/Banner";
 
 export default function Page() {
+  const { toast } = useToast();
+  const { status } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const form = useForm<z.infer<typeof UserSignInSchema>>({
     resolver: zodResolver(UserSignInSchema),
     defaultValues: {
@@ -32,6 +41,44 @@ export default function Page() {
       password: "",
     },
   });
+
+  async function onSubmit(values: z.infer<typeof UserSignInSchema>) {
+    try {
+      setIsLoading(true);
+      const user = await signIn("user-login", {
+        email: values.email,
+        password: values.password,
+        callbackUrl: searchParams.get("callbackUrl") || "/",
+        redirect: false,
+      });
+
+      if (!user?.error) {
+        router.push(user?.url || "/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Something went wrong",
+          description: "Incorrect email/username or password.",
+          className: "rounded-xl bg-pink-50 text-pink-800",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem when login.",
+        className: "rounded-xl bg-pink-50 text-pink-800",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   return (
     <div className="flex-center flex h-screen w-full bg-white p-4 md:px-10 md:py-16 lg:py-10">
@@ -68,7 +115,7 @@ export default function Page() {
           {/* Form */}
           <Form {...form}>
             <form
-              onSubmit={() => {}}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="flex w-full flex-col gap-3 lg:gap-4"
             >
               {/* Email */}
@@ -98,7 +145,6 @@ export default function Page() {
                   control={form.control}
                   name="remind"
                   label="Remind me"
-                  required
                 />
 
                 <Link
@@ -112,9 +158,10 @@ export default function Page() {
               {/* Sign In Button */}
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="mt-6 w-full rounded-[36px] bg-primary px-4 py-6 font-poppins text-sm font-bold leading-none text-white lg:text-base"
               >
-                Sign In
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
           </Form>

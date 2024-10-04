@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 // Schema
 import RadioButton from "@/components/shared/form/RadioButton";
-import ImageUpload from "@/components/shared/form/ImageUpload";
+import AvatarUpload from "@/components/shared/form/AvatarUpload";
 import SingleCheckbox from "@/components/shared/form/SingleCheckbox";
 
 // Utils
@@ -94,21 +94,17 @@ export default function UploadVatar({ form, isLoading }: UploadAvatarProps) {
         )}
 
         {avatarType === "upload" && (
-          <ImageUpload
+          <AvatarUpload
             control={control}
             label="Upload own avatar"
             name="image"
-            imagePreviewSize={{
-              width: 200,
-              height: 200,
-            }}
             required
           />
         )}
       </div>
 
       {/* Terms */}
-      <div className="flex w-full justify-start">
+      <div className="flex w-full justify-start pl-6 sm:pl-12">
         <SingleCheckbox
           control={form.control}
           name="agreement"
@@ -119,7 +115,7 @@ export default function UploadVatar({ form, isLoading }: UploadAvatarProps) {
       <Button
         type="submit"
         disabled={isLoading}
-        className="mt-6 w-full rounded-[36px] bg-primary px-4 py-6 font-poppins text-sm font-bold leading-none text-white lg:text-base"
+        className="mt-6 w-full max-w-[400px] rounded-[36px] bg-primary px-4 py-6 font-poppins text-sm font-bold leading-none text-white lg:text-base"
       >
         Sign Up
       </Button>
