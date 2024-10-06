@@ -60,6 +60,30 @@ body {
   .text-cta {
     @apply text-primary text-sm font-normal font-poppins leading-none;
   }
+
+  .shop-header-active {
+    @apply text-secondary text-sm font-semibold font-poppins uppercase leading-snug tracking-tight;
+  }
+
+  .shop-header-default {
+    @apply text-secondary text-sm font-normal font-poppins uppercase leading-snug tracking-tight;
+  }
+
+  .h1-hero-desktop {
+    @apply text-primary text-7xl font-bold font-poppins leading-[120%] tracking-tighter w-full;
+  }
+
+  .h1-hero-mobile {
+    @apply text-primary text-5xl font-bold font-poppins leading-[120%] tracking-tighter w-[300px];
+  }
+
+  .subtitle-desktop {
+    @apply text-secondary/25 text-base font-normal font-inter leading-[160%];
+  }
+
+  .subtitle-mobile {
+    @apply text-secondary/25 text-sm font-normal font-inter leading-[150%];
+  }
 }
 .scrollbar-sidebar-admin::-webkit-scrollbar {
   width: 9px;
@@ -78,6 +102,24 @@ body {
 
 .scrollbar-sidebar-admin::-webkit-scrollbar-thumb:hover {
   background: transparent;
+}
+
+.featured-collections-slider .slick-track {
+  display: flex !important;
+}
+
+.featured-collections-slider .slick-slide {
+  height: inherit !important;
+}
+
+.featured-collections-slider .slick-slide > div {
+  height: 100%;
+}
+
+.carousel-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 @layer base {

@@ -77,6 +77,25 @@ export const adminSidebar: SidebarLink[] = [
   },
 ];
 
+export const shopPages = [
+  {
+    name: "Home",
+    path: "/",
+  },
+  {
+    name: "Products",
+    path: "/products",
+  },
+  {
+    name: "Series",
+    path: "/series",
+  },
+  {
+    name: "Community",
+    path: "/community",
+  },
+];
+
 export const avatars = [
   { path: "/assets/avatars/archer.png", label: "archer" },
   { path: "/assets/avatars/artist.png", label: "artist" },
@@ -88,4 +107,14 @@ export const avatars = [
   { path: "/assets/avatars/superwoman.png", label: "superwoman" },
   { path: "/assets/avatars/tree.png", label: "tree" },
   { path: "/assets/avatars/viking.png", label: "viking" },
+];
+
+export const series = [
+  { path: "/assets/series/gundam.svg", label: "gundam" },
+  { path: "/assets/series/zoids.svg", label: "zoids" },
+  { path: "/assets/series/digimon.svg", label: "digimon" },
+  { path: "/assets/series/pokemon.svg", label: "pokemon" },
+  { path: "/assets/series/one-piece.svg", label: "one-piece" },
+  { path: "/assets/series/naruto.svg", label: "naruto" },
+  { path: "/assets/series/transformers.svg", label: "transformers" },
 ];

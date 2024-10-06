@@ -91,6 +91,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           type: "user",
+          avatar: user.avatar,
         };
       },
     }),
@@ -104,6 +105,7 @@ export const authOptions: NextAuthOptions = {
         token.username = user.username;
         token.name = user.name;
         token.role = user.role;
+        token.avatar = user.avatar;
       }
       return token;
     },
@@ -115,6 +117,7 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username as string;
         session.user.name = token.name as string;
         session.user.role = token.role as string;
+        session.user.avatar = token.avatar as string;
       }
       return session;
     },
