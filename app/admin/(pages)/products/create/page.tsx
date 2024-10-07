@@ -43,7 +43,7 @@ import { useGetAllGradesQuery } from "@/services/grades";
 import { useCreateProductMutation } from "@/services/products";
 
 // Utils
-import { generateSlug } from "@/lib/utils";
+import { generateSlug, genereateRandomString } from "@/lib/utils";
 
 export default function Page() {
   const router = useRouter();
@@ -85,7 +85,10 @@ export default function Page() {
   const onSubmit = async (data: z.infer<typeof NewProductSchema>) => {
     const formData = new FormData();
     formData.append("name", data.name);
-    formData.append("slug", generateSlug(data.name));
+    formData.append(
+      "slug",
+      `${generateSlug(data.name)}-${genereateRandomString(8)}`
+    );
     formData.append("description", data.description);
     formData.append("dimensions", data.dimensions || "");
     formData.append("weight", data.weight ? data.weight.toString() : "");

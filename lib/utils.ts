@@ -33,3 +33,11 @@ export function generateSlug(text: string): string {
     .replace(/\s+/g, "-") // ubah spasi menjadi tanda hubung
     .replace(/--+/g, "-"); // menghilangkan tanda hubung ganda
 }
+
+export function genereateRandomString(length: number): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  return Array.from({ length }, () =>
+    characters.charAt(Math.floor(Math.random() * characters.length))
+  ).join("");
+}

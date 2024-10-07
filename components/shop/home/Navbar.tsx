@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 // Icons
-import { Search, ShoppingBag } from "lucide-react";
+import { Search } from "lucide-react";
 
 // Shadcn Components
 import {
@@ -85,7 +85,7 @@ export default function Navbar() {
         {/* Carts & Profile */}
         {status === "authenticated" && (
           <div className="flex items-center gap-4">
-            <Button className="flex-center flex gap-3 rounded-full border border-slate-100 bg-white px-8 py-3 text-form-label transition duration-300 hover:border-slate-200 hover:bg-slate-50">
+            {/* <Button className="flex-center flex gap-3 rounded-full border border-slate-100 bg-white px-8 py-3 text-form-label transition duration-300 hover:border-slate-200 hover:bg-slate-50">
               <ShoppingBag size={16} />
               <p className="font-poppins text-sm font-medium leading-snug">
                 Carts
@@ -93,7 +93,7 @@ export default function Navbar() {
               <div className="flex-center flex h-6 w-8 rounded-full bg-secondary text-center font-poppins text-xs font-bold text-white">
                 19
               </div>
-            </Button>
+            </Button> */}
 
             <Avatar className="cursor-pointer">
               <AvatarImage

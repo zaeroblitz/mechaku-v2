@@ -137,7 +137,7 @@ export default function ProductList() {
                 setQuery(newQuery);
               }}
             />
-            <div className="w-full flex h-fit flex-wrap gap-x-8 gap-y-4 lg:gap-x-8 lg:gap-y-6">
+            <div className="flex h-fit w-full flex-wrap gap-x-8 gap-y-4 lg:gap-x-8 lg:gap-y-6">
               {products &&
                 products.data.length > 0 &&
                 products.data.map((product) => (
@@ -154,7 +154,7 @@ export default function ProductList() {
 
               {!products ||
                 (products.data.length === 0 && (
-                  <div className="flex size-full flex-center">
+                  <div className="flex-center flex size-full">
                     <EmptyState text="No products found." />
                   </div>
                 ))}
@@ -170,7 +170,7 @@ function LoadingSkeleton() {
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
       <Skeleton className="block h-[50px] w-[240px] rounded-lg bg-slate-200 lg:hidden" />
-      <Skeleton className="hidden h-[800px] w-[500px] rounded-2xl bg-slate-200 lg:block" />
+      <Skeleton className="hidden h-[800px] w-[700px] rounded-2xl bg-slate-200 lg:block" />
 
       <div className="flex flex-wrap gap-x-12 gap-y-6">
         <Skeleton className="h-[320px] w-[180px] rounded-2xl bg-slate-200 lg:w-[240px]" />
