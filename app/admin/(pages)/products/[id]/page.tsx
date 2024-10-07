@@ -23,8 +23,8 @@ import { useToast } from "@/hooks/use-toast";
 
 // Custom Components
 import Header from "@/components/admin/Header";
-import ImageModal from "@/components/shared/ImageModal";
-import ErrorState from "@/components/shared/ErrorState";
+import ImageModal from "@/components/shared/utils/ImageModal";
+import ErrorState from "@/components/shared/state/ErrorState";
 
 // Types
 import { ParamsProps } from "@/types";

@@ -9,8 +9,8 @@ import { Ellipsis, Plus } from "lucide-react";
 
 // Components
 import Header from "@/components/admin/Header";
-import EmptyState from "@/components/shared/EmptyState";
-import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/state/EmptyState";
+import ErrorState from "@/components/shared/state/ErrorState";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 
@@ -18,7 +18,7 @@ import { columns } from "./columns";
 import { useGetProductsQuery } from "@/services/products";
 
 export default function Page() {
-  const { data: products, isLoading, isError } = useGetProductsQuery();
+  const { data: products, isLoading, isError } = useGetProductsQuery("");
 
   return (
     <>

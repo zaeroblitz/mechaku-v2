@@ -5,8 +5,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <div className="w-full max-w-screen-2xl  px-10  2xl:px-[100px]">
-      <div className="flex flex-col bg-[#070707] p-5 md:p-8 lg:p-12 2xl:p-20">
+    <div className="w-full max-w-screen-2xl">
+      <div className="flex flex-col bg-[#070707] p-5 px-10 md:p-8 lg:p-12 2xl:p-20  2xl:px-[100px]">
         <div className="flex flex-col items-start border-b border-[#323232] pb-12 lg:flex-row">
           <div className="mb-8 mr-0 flex flex-col md:mr-12 lg:mb-0 xl:gap-6 2xl:mr-auto">
             <Image

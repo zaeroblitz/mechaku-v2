@@ -29,7 +29,7 @@ export default function Navbar() {
   const { data, status } = useSession();
 
   return (
-    <div className="flex-center sticky flex w-full max-w-screen-2xl items-center rounded-b-[48px] border border-slate-100 bg-white px-[40px] py-5 shadow-2xl shadow-slate-100 2xl:px-[100px]">
+    <div className="flex-center sticky flex w-full max-w-screen-2xl items-center rounded-b-[48px] border border-slate-100 bg-white px-[40px] py-5 shadow-2xl shadow-slate-50 2xl:px-[100px]">
       {/* Logo */}
       <Image
         src="/assets/images/logo-text.svg"

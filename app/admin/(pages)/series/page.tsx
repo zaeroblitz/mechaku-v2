@@ -9,7 +9,7 @@ import { Plus } from "lucide-react";
 
 // Components
 import Header from "@/components/admin/Header";
-import EmptyState from "@/components/shared/EmptyState";
+import EmptyState from "@/components/shared/state/EmptyState";
 import SeriesCard from "@/components/admin/series/SeriesCard";
 import SeriesSkeleton from "@/components/admin/series/SeriesSkeleton";
 

@@ -1,4 +1,4 @@
-import { selectedIcons } from "@/components/shared/Icon";
+import { selectedIcons } from "@/components/admin/Icon";
 
 export interface SidebarLink {
   icon: keyof typeof selectedIcons;

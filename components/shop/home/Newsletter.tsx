@@ -5,7 +5,7 @@ import React from "react";
 
 export default function Newsletter() {
   return (
-    <div className="flex-center flex w-full max-w-screen-2xl px-10 2xl:px-[100px]">
+    <div className="flex-center flex w-full max-w-screen-2xl">
       <div className="flex-center relative flex w-full flex-col bg-[#070707] px-5 py-20 md:px-[100px]">
         <div className="flex-center relative z-50 flex flex-col">
           <h6 className="mb-2 text-center font-inter text-3xl font-bold leading-10 text-white md:text-5xl">

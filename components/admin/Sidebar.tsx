@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/accordion";
 
 import { adminSidebar } from "@/constants";
-import Icon from "@/components/shared/Icon";
-import TooltipIcon from "@/components/shared/TooltipIcon";
+import Icon from "@/components/admin/Icon";
+import TooltipIcon from "@/components/shared/utils/TooltipIcon";
 import { useAdminToggle } from "@/context/AdminToggleProvider";
 import { signOut, useSession } from "next-auth/react";
 

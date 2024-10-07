@@ -4,7 +4,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { Search, Bell } from "lucide-react";
 
-import TooltipIcon from "@/components/shared/TooltipIcon";
+import TooltipIcon from "@/components/shared/utils/TooltipIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface HeaderProps {

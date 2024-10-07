@@ -9,6 +9,10 @@ body {
 }
 
 @layer utilities {
+  .bg-muted {
+    @apply bg-neutral-100;
+  }
+
   .flex-center {
     @apply flex justify-center items-center;
   }

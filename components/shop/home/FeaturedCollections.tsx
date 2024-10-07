@@ -109,7 +109,7 @@ const settings = {
 };
 
 export default function FeaturedCollections() {
-  const { data: products, isLoading } = useGetProductsQuery();
+  const { data: products, isLoading } = useGetProductsQuery("");
   const sliderRef = useRef(null);
 
   return (

@@ -24,8 +24,8 @@ import { useToast } from "@/hooks/use-toast";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import Header from "@/components/admin/Header";
-import EmptyState from "@/components/shared/EmptyState";
-import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/state/EmptyState";
+import ErrorState from "@/components/shared/state/ErrorState";
 import TextInput from "@/components/shared/form/TextInput";
 
 // Schema

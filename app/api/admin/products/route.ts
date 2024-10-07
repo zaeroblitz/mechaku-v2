@@ -210,7 +210,75 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
+    const { searchParams } = new URL(req.url);
+
+    // Extract filter parameters
+    const series = searchParams.getAll("series");
+    const brands = searchParams.getAll("brands");
+    const grades = searchParams.getAll("grades");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const name = searchParams.get("name");
+    const sortBy = searchParams.get("sortBy");
+
+    // Extract pagination parameters
+    const page = parseInt(searchParams.get("page") ?? "1");
+    const limit = parseInt(searchParams.get("perPage") ?? "10");
+    const skip = (page - 1) * limit;
+
+    // Where clauses
+    const where: any = {};
+
+    if (series.length > 0) {
+      where.seriesId = { in: series };
+    }
+
+    if (brands.length > 0) {
+      where.brandId = { in: brands };
+    }
+
+    if (grades.length > 0) {
+      where.gradeId = { in: grades };
+    }
+
+    if (minPrice || maxPrice) {
+      where.price = {};
+      if (minPrice) where.price.gte = parseFloat(minPrice);
+      if (maxPrice) where.price.lte = parseFloat(maxPrice);
+    }
+
+    if (name) {
+      where.name = { contains: name.toLowerCase() };
+    }
+
+    // Sort by clause
+    const orderBy: any = {};
+
+    if (sortBy) {
+      switch (sortBy) {
+        case "newest":
+          orderBy.createdAt = "desc";
+          break;
+
+        case "lowest_price":
+          orderBy.price = "asc";
+          break;
+
+        case "highest_price":
+          orderBy.price = "desc";
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    // Get total count of pagination
+    const totalCount = await prisma.product.count({ where });
+
+    // Fetch product with filtering and pagination
     const products = await prisma.product.findMany({
+      where,
       include: {
         series: {
           select: {
@@ -240,20 +308,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         },
       },
-      orderBy: { createdAt: "desc" },
+      orderBy,
+      skip,
+      take: limit,
     });
-
-    if (!products) {
-      return Response({
-        success: false,
-        status: 404,
-        message: "No products found!",
-      });
-    }
 
     return Response({
       success: true,
       data: products,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+        totalItems: totalCount,
+        itemsPerPage: limit,
+      },
       message: "Successfully products data!",
     });
   } catch (error) {

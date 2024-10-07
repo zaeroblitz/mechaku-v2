@@ -5,8 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { adminSidebar } from "@/constants";
 import Link from "next/link";
-import TooltipIcon from "../shared/TooltipIcon";
-import Icon from "../shared/Icon";
+import TooltipIcon from "../shared/utils/TooltipIcon";
+import Icon from "./Icon";
 import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";

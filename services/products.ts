@@ -56,10 +56,10 @@ export const productsApi = createApi({
   }),
   tagTypes: ["products"],
   endpoints: (builder) => ({
-    getProducts: builder.query<GetAllProductResponse, void>({
-      query: () => ({
+    getProducts: builder.query<GetAllProductResponse, string | undefined>({
+      query: (searchParams) => ({
         method: "GET",
-        url: "/products",
+        url: `/products?${searchParams}`,
       }),
       providesTags: ["products"],
     }),

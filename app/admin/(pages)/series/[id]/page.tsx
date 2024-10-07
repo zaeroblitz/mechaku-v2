@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // Custom Components
 import Header from "@/components/admin/Header";
-import EmptyState from "@/components/shared/EmptyState";
+import EmptyState from "@/components/shared/state/EmptyState";
 
 // Types
 import { ParamsProps } from "@/types";
