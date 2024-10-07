@@ -22,7 +22,11 @@ export async function GET(req: NextRequest, params: Params) {
         brand: true,
         grade: true,
         series: true,
-        images: true,
+        images: {
+          orderBy: {
+            displayOrder: "asc",
+          },
+        },
       },
     });
 

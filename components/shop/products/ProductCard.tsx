@@ -1,6 +1,7 @@
-import { formatToRupiah } from "@/lib/utils";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { formatToRupiah } from "@/lib/utils";
 
 interface Props {
   id: string;
@@ -19,8 +20,13 @@ export default function ProductCard({
   name,
   price,
 }: Props) {
+  const router = useRouter();
+
   return (
-    <div className="flex h-fit w-[180px] cursor-pointer flex-col rounded-2xl border border-[#ecedf2] bg-white p-4 lg:w-[240px]">
+    <div
+      onClick={() => router.push(`/products/${slug}?param=${id}`)}
+      className="flex h-fit w-[180px] cursor-pointer flex-col rounded-2xl border border-[#ecedf2] bg-white p-4 lg:w-[240px]"
+    >
       <Image
         src={imageUrl}
         alt={name}

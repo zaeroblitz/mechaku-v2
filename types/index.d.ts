@@ -16,3 +16,7 @@ export default interface BaseResponse {
 export interface ParamsProps {
   params: { id: string };
 }
+
+export interface ParamsSlugProps {
+  params: { slug: string };
+}
