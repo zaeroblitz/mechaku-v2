@@ -30,7 +30,7 @@ export default function ProductGallery({ imageUrls }: Props) {
   return (
     <div className="flex-center flex flex-col gap-8">
       {/* Image Preview */}
-      <div className="relative select-none rounded-3xl border border-slate-100 p-8">
+      <div className="relative select-none rounded-3xl p-8">
         <Image
           src={imageUrls[currentImageIndex].url}
           alt={imageUrls[currentImageIndex].alt}

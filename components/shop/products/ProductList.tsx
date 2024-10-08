@@ -44,7 +44,7 @@ export default function ProductList() {
       ) : (
         <>
           <div className="flex justify-between">
-            <div className="flex flex-col gap-2 md:flex-row">
+            <div className="flex w-full flex-col gap-2 md:flex-row">
               <TextInput
                 placeholder="Find your favourite collection"
                 icon={<Search size={16} />}
@@ -69,7 +69,7 @@ export default function ProductList() {
               </Button>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-3 lg:flex">
               <SingleSelect
                 label="Sort by"
                 placeholder="Sort by"
@@ -94,49 +94,75 @@ export default function ProductList() {
           </div>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-            <Filter
-              series={series?.data}
-              brands={brands?.data}
-              grades={grades?.data}
-              onFilterChange={(values) => {
-                const newQuery = new URLSearchParams(query);
+            <div className="flex items-center justify-between gap-3">
+              <Filter
+                series={series?.data}
+                brands={brands?.data}
+                grades={grades?.data}
+                onFilterChange={(values) => {
+                  const newQuery = new URLSearchParams(query);
 
-                if (values.series) {
-                  newQuery.delete("series");
-                  values.series.forEach((seriesId) =>
-                    newQuery.append("series", seriesId)
-                  );
-                }
+                  if (values.series) {
+                    newQuery.delete("series");
+                    values.series.forEach((seriesId) =>
+                      newQuery.append("series", seriesId)
+                    );
+                  }
 
-                if (values.brands) {
-                  newQuery.delete("brands");
-                  values.brands.forEach((brand) =>
-                    newQuery.append("brands", brand)
-                  );
-                }
+                  if (values.brands) {
+                    newQuery.delete("brands");
+                    values.brands.forEach((brand) =>
+                      newQuery.append("brands", brand)
+                    );
+                  }
 
-                if (values.grades) {
-                  newQuery.delete("grades");
-                  values.grades.forEach((grade) =>
-                    newQuery.append("grades", grade)
-                  );
-                }
+                  if (values.grades) {
+                    newQuery.delete("grades");
+                    values.grades.forEach((grade) =>
+                      newQuery.append("grades", grade)
+                    );
+                  }
 
-                if (values.minPrice) {
-                  newQuery.set("minPrice", values.minPrice.toString());
-                } else {
-                  newQuery.delete("minPrice");
-                }
+                  if (values.minPrice) {
+                    newQuery.set("minPrice", values.minPrice.toString());
+                  } else {
+                    newQuery.delete("minPrice");
+                  }
 
-                if (values.maxPrice) {
-                  newQuery.set("maxPrice", values.maxPrice.toString());
-                } else {
-                  newQuery.delete("maxPrice");
-                }
+                  if (values.maxPrice) {
+                    newQuery.set("maxPrice", values.maxPrice.toString());
+                  } else {
+                    newQuery.delete("maxPrice");
+                  }
 
-                setQuery(newQuery);
-              }}
-            />
+                  setQuery(newQuery);
+                }}
+              />
+
+              <div className="block lg:hidden">
+                <SingleSelect
+                  label="Sort by"
+                  width={180}
+                  placeholder="Sort by"
+                  options={[
+                    { label: "Newest", value: "newest" },
+                    { label: "Lowest Price", value: "lowest_price" },
+                    { label: "Highest Price", value: "highest_price" },
+                  ]}
+                  onSelectChange={(value) => {
+                    const newQuery = new URLSearchParams(query);
+
+                    if (value) {
+                      newQuery.set("sortBy", value);
+                    } else {
+                      newQuery.delete("sortBy");
+                    }
+
+                    setQuery(newQuery);
+                  }}
+                />
+              </div>
+            </div>
             <div className="flex h-fit w-full flex-wrap gap-x-8 gap-y-4 lg:gap-x-8 lg:gap-y-6">
               {products &&
                 products.data.length > 0 &&

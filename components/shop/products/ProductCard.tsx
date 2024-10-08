@@ -25,7 +25,7 @@ export default function ProductCard({
   return (
     <div
       onClick={() => router.push(`/products/${slug}?param=${id}`)}
-      className="flex h-fit w-[180px] cursor-pointer flex-col rounded-2xl border border-[#ecedf2] bg-white p-4 lg:w-[240px]"
+      className="flex h-fit w-[180px] shrink-0 cursor-pointer flex-col rounded-2xl border border-[#ecedf2] bg-white p-4 lg:w-[240px]"
     >
       <Image
         src={imageUrl}

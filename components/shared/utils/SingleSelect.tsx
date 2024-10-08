@@ -23,7 +23,7 @@ export default function SingleSelect({
   label,
   placeholder,
   options,
-  width = 24,
+  width = 240,
   onSelectChange,
 }: Props) {
   const [value, setValue] = useState("");
