@@ -12,7 +12,7 @@ export default function ProductDescription({ description }: Props) {
           Description
         </p>
       </div>
-      <p className="font-inter text-sm text-secondary lg:text-base ">
+      <p className="max-w-screen-lg font-inter text-sm text-secondary lg:text-base">
         {description}
       </p>
     </div>
