@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Footer from "@/components/shop/home/Footer";
 import Navbar from "@/components/shop/home/Navbar";
 import PersonalData from "@/components/shop/my-profile/PersonalData";
+import PersonalAddress from "@/components/shop/my-profile/PersonalAddress";
 
 export default function MyProfile() {
   return (
@@ -33,8 +34,8 @@ export default function MyProfile() {
             <TabsContent value="account">
               <PersonalData />
             </TabsContent>
-            <TabsContent value="password">
-              Change your password here.
+            <TabsContent value="address">
+              <PersonalAddress />
             </TabsContent>
           </Tabs>
         </div>

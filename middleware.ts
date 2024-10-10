@@ -46,7 +46,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check if the user has the admin or superadmin role
-    if (token.role !== "Admin" && token.role !== "Super Admin") {
+    if (token.role !== "Admin" && token.role !== "Superadmin") {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
       (request.nextUrl.pathname === "/admin/admins" ||
         request.nextUrl.pathname === "/admin/roles" ||
         request.nextUrl.pathname === "/admin/permissions") &&
-      token.role !== "Super Admin"
+      token.role !== "Superadmin"
     ) {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }

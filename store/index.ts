@@ -10,6 +10,10 @@ import { rolesApi } from "@/services/roles";
 import { permissionsApi } from "@/services/permissions";
 import { adminsApi } from "@/services/admins";
 import { usersApi } from "@/services/user";
+import { provincesApi } from "@/services/provinces";
+import { regenciesApi } from "@/services/regencies";
+import { districtsApi } from "@/services/districts";
+import { villagesApi } from "@/services/villages";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +28,10 @@ export const store = configureStore({
     [permissionsApi.reducerPath]: permissionsApi.reducer,
     [adminsApi.reducerPath]: adminsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
+    [provincesApi.reducerPath]: provincesApi.reducer,
+    [regenciesApi.reducerPath]: regenciesApi.reducer,
+    [districtsApi.reducerPath]: districtsApi.reducer,
+    [villagesApi.reducerPath]: villagesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -38,6 +46,10 @@ export const store = configureStore({
       permissionsApi.middleware,
       adminsApi.middleware,
       usersApi.middleware,
+      provincesApi.middleware,
+      regenciesApi.middleware,
+      districtsApi.middleware,
+      villagesApi.middleware,
     ]),
 });
 

@@ -86,29 +86,16 @@ model CartItem {
 }
 
 model Wishlist {
-  id        String         @id @default(uuid())
-  userId    String         @map("user_id")
-  label     String
-  items     WishlistItem[]
-  createdAt DateTime       @default(now()) @map("created_at")
-  updatedAt DateTime       @updatedAt @map("updated_at")
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  productId String   @map("product_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
   @@map("wishlists")
-}
-
-model WishlistItem {
-  id         String   @id @default(uuid())
-  wishlistId String   @map("wishlist_id")
-  productId  String   @map("product_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-
-  wishlist Wishlist @relation(fields: [wishlistId], references: [id])
-  product  Product  @relation(fields: [productId], references: [id])
-
-  @@map("wishlist_items")
 }
 
 model UserAddress {
@@ -116,8 +103,10 @@ model UserAddress {
   userId       String   @map("user_id")
   label        String
   address      String   @db.LongText
-  state        String
-  city         String
+  provinceId   String   @map("province_id")
+  regencyId    String   @map("regency_id")
+  districtId   String   @map("district_id")
+  villageId    String   @map("village_id")
   zipCode      String   @map("zip_code")
   phone_number String?  @map("phone_number")
   isPrimary    Boolean  @map("is_primary")
@@ -182,7 +171,7 @@ model Product {
   reviews          ProductReview[]
   discounts        ProductDiscount[]
   cartItems        CartItem[]
-  wishlistItems    WishlistItem[]
+  wishlistItems    Wishlist[]
   transactionItems TransactionItem[]
   createdAt        DateTime          @default(now()) @map("created_at")
   updatedAt        DateTime          @updatedAt @map("updated_at")
@@ -372,4 +361,56 @@ model Admin {
   role Role @relation(fields: [roleId], references: [id])
 
   @@map("admins")
+}
+
+model Province {
+  id         String    @id @default(uuid())
+  provinceId String    @unique @map("province_id")
+  name       String
+  regencies  Regency[]
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@map("provinces")
+}
+
+model Regency {
+  id         String     @id @default(uuid())
+  provinceId String     @map("province_id")
+  regencyId  String     @unique @map("regency_id")
+  name       String
+  districts  District[]
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+
+  province Province @relation(fields: [provinceId], references: [provinceId])
+
+  @@map("regencies")
+}
+
+model District {
+  id         String    @id @default(uuid())
+  regencyId  String    @map("regency_id")
+  districtId String    @unique @map("district_id")
+  name       String
+  villages   Village[]
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  regency Regency @relation(fields: [regencyId], references: [regencyId])
+
+  @@map("districts")
+}
+
+model Village {
+  id         String   @id @default(uuid())
+  villageId  String   @map("village_id")
+  districtId String   @map("district_id")
+  name       String
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  district District @relation(fields: [districtId], references: [districtId])
+
+  @@map("villages")
 }
