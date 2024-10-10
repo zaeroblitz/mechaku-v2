@@ -113,58 +113,60 @@ export default function FeaturedCollections() {
   const sliderRef = useRef(null);
 
   return (
-    <div className="flex-center flex w-full max-w-screen-2xl flex-col gap-10 md:gap-12">
-      <h6 className="font-poppins text-4xl font-bold leading-10 text-primary md:text-5xl">
-        Featured Collections
-      </h6>
+    <section className="flex-center flex w-full">
+      <div className="flex-center flex w-full flex-col gap-10 md:gap-12">
+        <h6 className="font-poppins text-2xl font-bold leading-10 text-primary sm:text-4xl md:text-5xl">
+          Featured Collections
+        </h6>
 
-      <div className="relative w-full max-w-[90vw] md:max-w-[80vw]">
-        {isLoading ? (
-          <>
-            <div className="hidden xl:block">
-              <div className="flex-center flex gap-4">
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
+        <div className="relative w-full max-w-[90vw] md:max-w-[80vw]">
+          {isLoading ? (
+            <>
+              <div className="hidden xl:block">
+                <div className="flex-center flex gap-4">
+                  <SkeletonCard />
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </div>
               </div>
-            </div>
 
-            <div className="hidden md:block xl:hidden">
-              <div className="flex-center flex gap-4">
-                <SkeletonCard />
-                <SkeletonCard />
+              <div className="hidden md:block xl:hidden">
+                <div className="flex-center flex gap-4">
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </div>
               </div>
-            </div>
 
-            <div className="block md:hidden">
-              <div className="flex-center flex">
-                <SkeletonCard />
+              <div className="block md:hidden">
+                <div className="flex-center flex">
+                  <SkeletonCard />
+                </div>
               </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <Slider ref={sliderRef} {...settings}>
-              {products &&
-                products.data.length > 0 &&
-                products.data.map((product) => (
-                  <div key={product.id} className="px-2">
-                    <Card
-                      id={product.id}
-                      slug={product.slug}
-                      name={product.name}
-                      image={product.images[0].imageUrl}
-                      series={product.series.title}
-                      brand={product.brand.name}
-                    />
-                  </div>
-                ))}
-            </Slider>
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white/40 to-transparent"></div>
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white/40 to-transparent"></div>
-          </>
-        )}
+            </>
+          ) : (
+            <>
+              <Slider ref={sliderRef} {...settings}>
+                {products &&
+                  products.data.length > 0 &&
+                  products.data.map((product) => (
+                    <div key={product.id} className="px-2">
+                      <Card
+                        id={product.id}
+                        slug={product.slug}
+                        name={product.name}
+                        image={product.images[0].imageUrl}
+                        series={product.series.title}
+                        brand={product.brand.name}
+                      />
+                    </div>
+                  ))}
+              </Slider>
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white/40 to-transparent"></div>
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white/40 to-transparent"></div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -74,19 +74,27 @@ body {
   }
 
   .h1-hero-desktop {
-    @apply text-primary text-7xl font-bold font-poppins leading-[120%] tracking-tighter w-full;
+    @apply flex flex-col text-primary text-start text-7xl font-bold font-poppins leading-[120%] tracking-tighter w-full;
+  }
+
+  .h1-hero-tablet {
+    @apply flex flex-col text-primary text-start text-5xl font-bold font-poppins leading-[120%] tracking-tighter;
   }
 
   .h1-hero-mobile {
-    @apply text-primary text-5xl font-bold font-poppins leading-[120%] tracking-tighter w-[300px];
+    @apply flex flex-col text-primary text-center text-4xl font-bold font-poppins leading-[120%] tracking-tighter;
   }
 
   .subtitle-desktop {
-    @apply text-secondary/25 text-base font-normal font-inter leading-[160%];
+    @apply text-secondary/25 text-start text-base font-normal font-inter leading-[160%];
+  }
+
+  .subtitle-tablet {
+    @apply text-secondary/25 text-start text-sm font-normal font-inter leading-[150%];
   }
 
   .subtitle-mobile {
-    @apply text-secondary/25 text-sm font-normal font-inter leading-[150%];
+    @apply text-secondary/25 text-center text-xs font-normal font-inter leading-[150%];
   }
 }
 .scrollbar-sidebar-admin::-webkit-scrollbar {

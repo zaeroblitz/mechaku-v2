@@ -37,98 +37,101 @@ export default function Navbar() {
   const { data, status } = useSession();
 
   return (
-    <div className="flex-center sticky flex w-full max-w-screen-2xl items-center rounded-b-[48px] border border-slate-100 bg-white px-[40px] py-5 shadow-2xl shadow-slate-50 2xl:px-[100px]">
-      {/* Logo */}
-      <Image
-        src="/assets/images/logo-text.svg"
-        alt="logo"
-        width={164}
-        height={32}
-        className="object-contain"
-      />
+    <nav className="flex-center sticky flex w-full border-b border-slate-100 bg-white px-[40px] py-5 2xl:px-[100px]">
+      <div className="flex-center flex w-full max-w-screen-2xl">
+        {/* Logo */}
+        <Image
+          src="/assets/images/logo-text.svg"
+          alt="logo"
+          width={164}
+          height={32}
+          className="object-contain"
+        />
 
-      <NavigationMenu className="mx-auto hidden lg:block">
-        <NavigationMenuList className="flex-center flex gap-10">
-          {shopPages.map((page) => (
-            <NavigationMenuItem key={page.path}>
-              <Link href={page.path} legacyBehavior passHref>
-                <NavigationMenuLink
-                  className={cn(
-                    "transition-all duration-300 ease-in-out",
-                    pathname === page.path
-                      ? "shop-header-active"
-                      : "shop-header-default",
-                    pathname === page.path && "border-b-2 border-accent-purple"
-                  )}
-                >
-                  {page.name.toUpperCase()}
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+        <NavigationMenu className="mx-auto hidden lg:block">
+          <NavigationMenuList className="flex-center flex gap-10">
+            {shopPages.map((page) => (
+              <NavigationMenuItem key={page.path}>
+                <Link href={page.path} legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={cn(
+                      "transition-all duration-300 ease-in-out",
+                      pathname === page.path
+                        ? "shop-header-active"
+                        : "shop-header-default",
+                      pathname === page.path &&
+                        "border-b-2 border-accent-purple"
+                    )}
+                  >
+                    {page.name.toUpperCase()}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
 
-      <div className="hidden items-center gap-4 lg:flex">
-        {/* Search */}
-        <Button className="flex-center flex gap-3 rounded-full border border-slate-100 bg-white px-8 py-3 text-form-label transition duration-300 hover:border-slate-200 hover:bg-slate-50">
-          <Search size={16} />
-          <p className="font-poppins text-sm font-medium leading-snug">
-            Search
-          </p>
-        </Button>
-
-        {/* Sign In */}
-        {status === "unauthenticated" && (
-          <Link
-            href="/auth/sign-in"
-            className="flex-center flex w-[148px] gap-3 rounded-full border border-primary bg-primary px-12 py-2 text-white transition duration-300 hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/80"
-          >
+        <div className="hidden items-center gap-4 lg:flex">
+          {/* Search */}
+          <Button className="flex-center flex gap-3 rounded-full border border-slate-100 bg-white px-8 py-3 text-form-label transition duration-300 hover:border-slate-200 hover:bg-slate-50">
+            <Search size={16} />
             <p className="font-poppins text-sm font-medium leading-snug">
-              Sign In
+              Search
             </p>
-          </Link>
-        )}
+          </Button>
 
-        {/* Profile */}
-        {status === "authenticated" && (
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar className="cursor-pointer">
-                <AvatarImage
-                  src={data.user.avatar}
-                  alt="avatar"
-                  className="bg-slate-300"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-xl bg-white p-3 text-slate-600">
-              <DropdownMenuLabel>Hi, {data.user.name}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
-                <User size={14} />
-                <Link href="/my-profile">My Profile</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
-                <ShoppingBag size={14} />
-                <Link href="/my-carts">My Carts</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
-                <CreditCard size={14} />
-                <Link href="/my-transactions">My Transactions</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100"
-                onClick={() => signOut()}
-              >
-                <LogOut size={14} />
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+          {/* Sign In */}
+          {status === "unauthenticated" && (
+            <Link
+              href="/auth/sign-in"
+              className="flex-center flex w-[148px] gap-3 rounded-full border border-primary bg-primary px-12 py-2 text-white transition duration-300 hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/80"
+            >
+              <p className="font-poppins text-sm font-medium leading-snug">
+                Sign In
+              </p>
+            </Link>
+          )}
+
+          {/* Profile */}
+          {status === "authenticated" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage
+                    src={data.user.avatar}
+                    alt="avatar"
+                    className="bg-slate-300"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-xl bg-white p-3 text-slate-600">
+                <DropdownMenuLabel>Hi, {data.user.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                  <User size={14} />
+                  <Link href="/my-profile">My Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                  <ShoppingBag size={14} />
+                  <Link href="/my-carts">My Carts</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                  <CreditCard size={14} />
+                  <Link href="/my-transactions">My Transactions</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100"
+                  onClick={() => signOut()}
+                >
+                  <LogOut size={14} />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
