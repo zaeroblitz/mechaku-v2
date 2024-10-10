@@ -2,10 +2,11 @@ import { NextRequest } from "next/server";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { prisma } from "@/lib/prisma";
 import Response from "@/lib/api.response";
+import bcrypt from "bcrypt";
 
-export async function GET(req: NextRequest, params: Params) {
+export async function PUT(req: NextRequest, params: Params) {
   try {
-    const id = params.params.id;
+    const { id, password } = await req.json();
 
     if (!id) {
       return Response({
@@ -29,16 +30,29 @@ export async function GET(req: NextRequest, params: Params) {
       });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
     return Response({
       success: true,
-      message: "Successfully get user by ID!",
-      data: user,
+      message: "Successfully update password!",
+      data: updatedUser,
       status: 200,
     });
   } catch (error) {
+    console.log(
+      "🚀 ~ [USER-UPDATE-PASSWORD] ~ file: route.ts:49 ~ PUT ~ error:",
+      error
+    );
     return Response({
       success: false,
-      message: "Failed to get user by ID!",
+      message: "Failed to get update password!",
       data: error,
       status: 500,
     });

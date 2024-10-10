@@ -5,10 +5,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 // Icons
-import { Search } from "lucide-react";
+import { CreditCard, LogOut, Search, ShoppingBag, User } from "lucide-react";
 
 // Shadcn Components
 import {
@@ -17,6 +17,14 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -82,28 +90,43 @@ export default function Navbar() {
           </Link>
         )}
 
-        {/* Carts & Profile */}
+        {/* Profile */}
         {status === "authenticated" && (
-          <div className="flex items-center gap-4">
-            {/* <Button className="flex-center flex gap-3 rounded-full border border-slate-100 bg-white px-8 py-3 text-form-label transition duration-300 hover:border-slate-200 hover:bg-slate-50">
-              <ShoppingBag size={16} />
-              <p className="font-poppins text-sm font-medium leading-snug">
-                Carts
-              </p>
-              <div className="flex-center flex h-6 w-8 rounded-full bg-secondary text-center font-poppins text-xs font-bold text-white">
-                19
-              </div>
-            </Button> */}
-
-            <Avatar className="cursor-pointer">
-              <AvatarImage
-                src={data.user.avatar}
-                alt="avatar"
-                className="bg-slate-300"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="cursor-pointer">
+                <AvatarImage
+                  src={data.user.avatar}
+                  alt="avatar"
+                  className="bg-slate-300"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="rounded-xl bg-white p-3 text-slate-600">
+              <DropdownMenuLabel>Hi, {data.user.name}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                <User size={14} />
+                <Link href="/my-profile">My Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                <ShoppingBag size={14} />
+                <Link href="/my-carts">My Carts</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                <CreditCard size={14} />
+                <Link href="/my-transactions">My Transactions</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100"
+                onClick={() => signOut()}
+              >
+                <LogOut size={14} />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </div>
     </div>

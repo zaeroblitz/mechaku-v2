@@ -225,3 +225,35 @@ export const UserSignUpSchema = z
     message: "You need to upload an avatar",
     path: ["avatarType"],
   });
+
+export const UpdateUserSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters long")
+    .max(24, "Name must be less than 24 characters long"),
+  email: z.string().email("Email is required"),
+  phoneNumber: z.number({ message: "Phone number is required" }),
+  avatarType: z.enum(["preset", "upload"]).optional(),
+  presetAvatar: z.string().optional(),
+  image: z
+    .instanceof(File, { message: "Please upload a file!" })
+    .refine((file) => file.size <= MAX_FILE_SIZE, "Max file size is 5MB")
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+      "Only JPEG, PNG, and WebP formats are supported."
+    )
+    .optional(),
+});
+
+export const UpdateUserPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(4, "Password must be at least 4 characters long")
+      .max(24, "Password must be less than 24 characters long"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });

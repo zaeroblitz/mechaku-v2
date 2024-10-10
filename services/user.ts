@@ -5,7 +5,7 @@ export interface IUser {
   id: string;
   name: string;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
   avatar: string;
   createdAt: string;
   updatedAt: string;
@@ -30,7 +30,38 @@ export const usersApi = createApi({
       }),
       invalidatesTags: ["users"],
     }),
+    getUserById: builder.query<UserResponse, string | null | undefined>({
+      query: (id) => ({
+        method: "GET",
+        url: `/user/${id}`,
+      }),
+      providesTags: ["users"],
+    }),
+    updateUser: builder.mutation<UserResponse, FormData>({
+      query: (formData) => ({
+        url: "/user",
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: ["users"],
+    }),
+    updatePassword: builder.mutation<
+      UserResponse,
+      { id: string; password: string }
+    >({
+      query: (data) => ({
+        url: "/user/update-password",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
-export const { useCreateUserMutation } = usersApi;
+export const {
+  useCreateUserMutation,
+  useGetUserByIdQuery,
+  useUpdateUserMutation,
+  useUpdatePasswordMutation,
+} = usersApi;

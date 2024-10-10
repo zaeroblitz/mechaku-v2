@@ -24,6 +24,7 @@ interface TextInputProps<TFieldValues extends FieldValues> {
   placeholder: string;
   icon?: React.ReactNode;
   required?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -34,6 +35,7 @@ export default function TextInput<TFieldValues extends FieldValues>({
   placeholder,
   icon,
   required = false,
+  disabled = false,
   className = "",
 }: TextInputProps<TFieldValues>) {
   const [paddingLeft, setPaddingLeft] = useState(20);
@@ -71,6 +73,8 @@ export default function TextInput<TFieldValues extends FieldValues>({
 
               <Input
                 type="text"
+                required={required}
+                disabled={disabled}
                 placeholder={placeholder}
                 className={`rounded-2xl border border-form-border bg-form-background p-5 font-lexend text-form-input ${className}`}
                 style={{ paddingLeft: icon ? `${paddingLeft}px` : "20px" }}
