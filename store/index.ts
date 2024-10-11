@@ -14,6 +14,9 @@ import { provincesApi } from "@/services/provinces";
 import { regenciesApi } from "@/services/regencies";
 import { districtsApi } from "@/services/districts";
 import { villagesApi } from "@/services/villages";
+import { cartsApi } from "@/services/carts";
+import { wishlistsApi } from "@/services/wishlists";
+import { addressApi } from "@/services/address";
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +35,9 @@ export const store = configureStore({
     [regenciesApi.reducerPath]: regenciesApi.reducer,
     [districtsApi.reducerPath]: districtsApi.reducer,
     [villagesApi.reducerPath]: villagesApi.reducer,
+    [cartsApi.reducerPath]: cartsApi.reducer,
+    [wishlistsApi.reducerPath]: wishlistsApi.reducer,
+    [addressApi.reducerPath]: addressApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -50,6 +56,9 @@ export const store = configureStore({
       regenciesApi.middleware,
       districtsApi.middleware,
       villagesApi.middleware,
+      cartsApi.middleware,
+      wishlistsApi.middleware,
+      addressApi.middleware,
     ]),
 });
 
