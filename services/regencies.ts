@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface IRegency {
   id: string;
-  province_id: string;
-  regencie_id: string;
+  provinceId: string;
+  regencieId: string;
   name: string;
   createdAt: string;
   updatedAt: string;
@@ -48,14 +48,11 @@ export const regenciesApi = createApi({
       }),
       providesTags: ["regencies"],
     }),
-    getRegencyById: builder.query<RegencyResponse, RegencyParams>({
+    getRegencyById: builder.query<GetAllRegenciesResponse, RegencyParams>({
       query: (data) => ({
         method: "GET",
         url: "/regencies",
         params: data,
-        headers: {
-          "Content-Type": "application/json",
-        },
       }),
       providesTags: ["regencies"],
     }),

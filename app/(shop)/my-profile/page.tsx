@@ -17,15 +17,15 @@ export default function MyProfile() {
 
         <div className="flex-center flex">
           <Tabs defaultValue="account" className="flex w-full flex-col gap-5">
-            <TabsList className="w-full gap-6 rounded-lg bg-white font-poppins text-primary">
+            <TabsList className="w-fit gap-6 rounded-lg bg-white font-poppins text-primary">
               <TabsTrigger
-                className="w-full rounded-lg bg-slate-50 p-2 text-slate-500 data-[state=active]:bg-accent-purple data-[state=active]:text-white"
+                className="w-full rounded-2xl bg-slate-50 px-8 py-2 text-slate-500 data-[state=active]:bg-accent-purple data-[state=active]:text-white"
                 value="account"
               >
                 Account
               </TabsTrigger>
               <TabsTrigger
-                className="w-full rounded-lg bg-slate-50 p-2 text-slate-500 data-[state=active]:bg-accent-purple data-[state=active]:text-white"
+                className="w-full rounded-2xl bg-slate-50 px-8 py-2 text-slate-500 data-[state=active]:bg-accent-purple data-[state=active]:text-white"
                 value="address"
               >
                 Shopping Address

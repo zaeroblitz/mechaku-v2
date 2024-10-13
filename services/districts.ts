@@ -48,7 +48,7 @@ export const districtsApi = createApi({
       }),
       providesTags: ["districts"],
     }),
-    getDistrictById: builder.query<DistrictResponse, DistrictParams>({
+    getDistrictById: builder.query<GetAllDistrictsResponse, DistrictParams>({
       query: (data) => ({
         method: "GET",
         url: "/districts",

@@ -55,6 +55,7 @@ export default function Page() {
       toast({
         title: "Success!",
         description: "Series created successfully!",
+        className: "rounded-2xl bg-emerald-50 text-emerald-800",
       });
 
       router.push("/admin/series");
@@ -62,7 +63,7 @@ export default function Page() {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem when create new series.",
+        className: "rounded-2xl bg-rose-50 text-rose-800",
       });
     }
   };

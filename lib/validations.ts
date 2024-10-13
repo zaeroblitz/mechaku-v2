@@ -257,3 +257,27 @@ export const UpdateUserPasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const UserAddressSchema = z.object({
+  userId: z.string({ required_error: "User ID is required" }),
+  label: z.string({ required_error: "Label is required" }),
+  address: z.string({ required_error: "Address is required" }),
+  province: z.string({ required_error: "Province is required" }),
+  city: z.string({ required_error: "City is required" }),
+  district: z.string({ required_error: "District  is required" }),
+  village: z.string({ required_error: "Village is required" }),
+  zipCode: z.number({ required_error: "Zip Code is required" }),
+  phoneNumber: z.number().optional(),
+});
+
+export const UpdateUserAddressSchema = z.object({
+  id: z.string({ required_error: "ID is required" }),
+  label: z.string({ required_error: "Label is required" }),
+  address: z.string({ required_error: "Address is required" }),
+  province: z.string({ required_error: "Province is required" }),
+  city: z.string({ required_error: "City is required" }),
+  district: z.string({ required_error: "District  is required" }),
+  village: z.string({ required_error: "Village is required" }),
+  zipCode: z.number({ required_error: "Zip Code is required" }),
+  phoneNumber: z.number().optional(),
+});

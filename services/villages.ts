@@ -48,7 +48,7 @@ export const villagesApi = createApi({
       }),
       providesTags: ["villages"],
     }),
-    getVillageById: builder.query<VillageResponse, VillageParams>({
+    getVillageById: builder.query<GetAllVillagesResponse, VillageParams>({
       query: (data) => ({
         method: "GET",
         url: "/villages",

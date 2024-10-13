@@ -55,7 +55,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const { districtId, regencyId } = await req.json();
+    const districtId = req.nextUrl.searchParams.get("districtId");
+    const regencyId = req.nextUrl.searchParams.get("regencyId");
+
+    if (!districtId && !regencyId) {
+      return Response({
+        success: false,
+        message: "Please provide districtId or regencyId!",
+        status: 400,
+      });
+    }
 
     let data;
     if (districtId) {
@@ -66,12 +75,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     if (regencyId) {
       data = await prisma.district.findMany({
-        where: { regencyId },
+        where: { regency: { id: regencyId } },
       });
-    }
-
-    if (!districtId && !regencyId) {
-      data = await prisma.district.findMany({ include: { regency: true } });
     }
 
     return Response({

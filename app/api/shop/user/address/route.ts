@@ -16,6 +16,12 @@ export async function GET(req: NextRequest) {
 
     const address = await prisma.userAddress.findMany({
       where: { userId },
+      include: {
+        province: true,
+        regency: true,
+        district: true,
+        village: true,
+      },
     });
 
     return Response({

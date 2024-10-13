@@ -6,6 +6,7 @@ import Image from "next/image";
 import Slider from "react-slick";
 import { ArrowUpRight, MoveLeft, MoveRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import EmptyState from "@/components/shared/state/EmptyState";
 import { useGetProductsQuery } from "@/services/products";
 
 interface CardProps {
@@ -121,29 +122,8 @@ export default function FeaturedCollections() {
 
         <div className="relative w-full max-w-[90vw] md:max-w-[80vw]">
           {isLoading ? (
-            <>
-              <div className="hidden xl:block">
-                <div className="flex-center flex gap-4">
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </div>
-              </div>
-
-              <div className="hidden md:block xl:hidden">
-                <div className="flex-center flex gap-4">
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </div>
-              </div>
-
-              <div className="block md:hidden">
-                <div className="flex-center flex">
-                  <SkeletonCard />
-                </div>
-              </div>
-            </>
-          ) : (
+            <LoadingSkeleton />
+          ) : products && products.data.length > 0 ? (
             <>
               <Slider ref={sliderRef} {...settings}>
                 {products &&
@@ -164,9 +144,38 @@ export default function FeaturedCollections() {
               <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white/40 to-transparent"></div>
               <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white/40 to-transparent"></div>
             </>
+          ) : (
+            <EmptyState text="No featured products found!" />
           )}
         </div>
       </div>
     </section>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <>
+      <div className="hidden xl:block">
+        <div className="flex-center flex gap-4">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      </div>
+
+      <div className="hidden md:block xl:hidden">
+        <div className="flex-center flex gap-4">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      </div>
+
+      <div className="block md:hidden">
+        <div className="flex-center flex">
+          <SkeletonCard />
+        </div>
+      </div>
+    </>
   );
 }

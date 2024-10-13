@@ -48,11 +48,20 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const { regencyId, provinceId } = await req.json();
+    const regencyId = req.nextUrl.searchParams.get("regencyId");
+    const provinceId = req.nextUrl.searchParams.get("provinceId");
+
+    if (!regencyId && !provinceId) {
+      return Response({
+        success: false,
+        message: "Please provide regencyId or provinceId!",
+        status: 400,
+      });
+    }
 
     let data;
     if (regencyId) {
-      data = await prisma.regency.findUnique({
+      data = await prisma.regency.findMany({
         where: { regencyId },
         include: { province: true },
       });
@@ -60,13 +69,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     if (provinceId) {
       data = await prisma.regency.findMany({
-        where: { provinceId },
+        where: { province: { id: provinceId } },
         include: { province: true },
       });
-    }
-
-    if (!regencyId && !provinceId) {
-      data = await prisma.regency.findMany({ include: { province: true } });
     }
 
     return Response({

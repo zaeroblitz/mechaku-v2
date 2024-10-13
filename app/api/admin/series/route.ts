@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { UTApi } from "uploadthing/server";
 import { prisma } from "@/lib/prisma";
 import { NewSeriesSchema, UpdateSeriesSchema } from "@/lib/validations";
 import Response from "@/lib/api.response";
-
-const utapi = new UTApi();
+import { storage } from "@/lib/firebase.config";
+import { uploadFile } from "@/lib/upload";
+import { deleteObject, ref } from "firebase/storage";
 
 async function handleImage(series: any, image: File) {
   let imageUrl = series.image;
@@ -12,15 +12,14 @@ async function handleImage(series: any, image: File) {
   if (image) {
     // Remove existing image
     if (series.image) {
-      const imageKey = series.image.substring(
-        series.image.lastIndexOf("/") + 1
-      );
-      await utapi.deleteFiles(imageKey);
+      const imageRef = ref(storage, series.image);
+
+      await deleteObject(imageRef);
     }
 
     // Upload image
-    const imageResponse = await utapi.uploadFiles(image);
-    imageUrl = imageResponse.data!.url;
+    const imageResponse = await uploadFile(image, "series");
+    imageUrl = imageResponse.url;
   }
 
   return imageUrl;
@@ -39,8 +38,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     NewSeriesSchema.parse({ title, description, author, isActive, image });
 
     // Upload image
-    const imageResponse = await utapi.uploadFiles(image);
-    const imageUrl = imageResponse.data?.url;
+    const imageResponse = await uploadFile(image, "series");
+    const imageUrl = imageResponse.url;
 
     if (imageUrl) {
       const newSeries = await prisma.series.create({

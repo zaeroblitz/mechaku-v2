@@ -41,7 +41,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const { provinceId } = await req.json();
+    const provinceId = req.nextUrl.searchParams.get("provinceId");
 
     let data;
     if (provinceId) {

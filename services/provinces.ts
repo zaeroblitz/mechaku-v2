@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface IProvince {
   id: string;
-  province_id: string;
+  provinceId: string;
   name: string;
   createdAt: string;
   updatedAt: string;
@@ -51,9 +51,6 @@ export const provincesApi = createApi({
         method: "GET",
         url: "/provinces",
         params: data,
-        headers: {
-          "Content-Type": "application/json",
-        },
       }),
       providesTags: ["provinces"],
     }),

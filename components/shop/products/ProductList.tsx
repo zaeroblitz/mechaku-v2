@@ -1,20 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
+import { Search } from "lucide-react";
+
+// Components
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import Filter from "./Filter";
 import ProductCard from "./ProductCard";
+import TextInput from "@/components/shared/utils/TextInput";
+import EmptyState from "@/components/shared/state/EmptyState";
+import SingleSelect from "@/components/shared/utils/SingleSelect";
 
 // Services
 import { useGetAllSeriesQuery } from "@/services/series";
 import { useGetAllBrandsQuery } from "@/services/brands";
 import { useGetAllGradesQuery } from "@/services/grades";
 import { useGetProductsQuery } from "@/services/products";
-import { Skeleton } from "@/components/ui/skeleton";
-import TextInput from "@/components/shared/utils/TextInput";
-import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import SingleSelect from "@/components/shared/utils/SingleSelect";
-import EmptyState from "@/components/shared/state/EmptyState";
 
 export default function ProductList() {
   const [query, setQuery] = useState<URLSearchParams>(new URLSearchParams());
@@ -41,7 +43,7 @@ export default function ProductList() {
     <div className="flex flex-col gap-6 lg:gap-8">
       {isLoading ? (
         <LoadingSkeleton />
-      ) : (
+      ) : products && products.data.length > 0 ? (
         <>
           <div className="flex justify-between">
             <div className="flex w-full flex-col gap-2 md:flex-row">
@@ -187,6 +189,8 @@ export default function ProductList() {
             </div>
           </div>
         </>
+      ) : (
+        <EmptyState text="No products found." />
       )}
     </div>
   );

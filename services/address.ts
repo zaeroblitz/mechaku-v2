@@ -1,16 +1,25 @@
 import BaseResponse from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IProvince } from "./provinces";
+import { IRegency } from "./regencies";
+import { IDistrict } from "./districts";
+import { IVillage } from "./villages";
 
 export interface IAddress {
   id: string;
   user_id: string;
   label: string;
   address: string;
-  province_id: string;
-  regency_id: string;
-  district_id: string;
-  village_id: string;
-  zip_code: string;
+  provinceId: string;
+  province: IProvince;
+  regencyId: string;
+  regency: IRegency;
+  districtId: string;
+  district: IDistrict;
+  villageId: string;
+  village: IVillage;
+  zipCode: string;
+  phone_number?: string;
   created_at: string;
   updated_at: string;
 }
@@ -24,7 +33,7 @@ interface UserAddresssResponse extends BaseResponse {
 }
 
 interface GetAddressParams {
-  userId: string;
+  userId?: string;
 }
 
 interface CreateAddressParams {
@@ -58,7 +67,7 @@ interface RemoveAddressParams {
 export const addressApi = createApi({
   reducerPath: "addressApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/admin/shop/address",
+    baseUrl: "/api/shop/user/address",
   }),
   tagTypes: ["address"],
   endpoints: (builder) => ({
@@ -67,6 +76,13 @@ export const addressApi = createApi({
         url: "/",
         method: "GET",
         params: data,
+      }),
+      providesTags: ["address"],
+    }),
+    getAddressById: builder.query<AddressResponse, string>({
+      query: (id) => ({
+        method: "GET",
+        url: `/${id}`,
       }),
       providesTags: ["address"],
     }),
@@ -108,6 +124,7 @@ export const addressApi = createApi({
 
 export const {
   useGetAllAddresssQuery,
+  useGetAddressByIdQuery,
   useCreateAddressMutation,
   useUpdateAddressMutation,
   useRemoveAddressMutation,

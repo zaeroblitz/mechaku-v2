@@ -113,7 +113,11 @@ model UserAddress {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  province Province @relation(fields: [provinceId], references: [id])
+  regency  Regency  @relation(fields: [regencyId], references: [id])
+  district District @relation(fields: [districtId], references: [id])
+  village  Village  @relation(fields: [villageId], references: [id])
 
   @@map("user_addresses")
 }
@@ -364,12 +368,13 @@ model Admin {
 }
 
 model Province {
-  id         String    @id @default(uuid())
-  provinceId String    @unique @map("province_id")
-  name       String
-  regencies  Regency[]
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
+  id          String        @id @default(uuid())
+  provinceId  String        @unique @map("province_id")
+  name        String
+  regencies   Regency[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  UserAddress UserAddress[]
 
   @@map("provinces")
 }
@@ -383,7 +388,8 @@ model Regency {
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
 
-  province Province @relation(fields: [provinceId], references: [provinceId])
+  province    Province      @relation(fields: [provinceId], references: [provinceId])
+  UserAddress UserAddress[]
 
   @@map("regencies")
 }
@@ -397,20 +403,22 @@ model District {
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
 
-  regency Regency @relation(fields: [regencyId], references: [regencyId])
+  regency     Regency       @relation(fields: [regencyId], references: [regencyId])
+  UserAddress UserAddress[]
 
   @@map("districts")
 }
 
 model Village {
   id         String   @id @default(uuid())
-  villageId  String   @map("village_id")
   districtId String   @map("district_id")
+  villageId  String   @map("village_id")
   name       String
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  district District @relation(fields: [districtId], references: [districtId])
+  district    District      @relation(fields: [districtId], references: [districtId])
+  UserAddress UserAddress[]
 
   @@map("villages")
 }

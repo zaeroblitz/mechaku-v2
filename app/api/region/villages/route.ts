@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import Response from "@/lib/api.response";
+import fs from "fs";
+import path from "path";
+import { parse } from "csv-parse/sync";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const provinceRes = await fetch(
+    /*  const provinceRes = await fetch(
       "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
     );
     const provinces = await provinceRes.json();
@@ -38,6 +41,29 @@ export async function POST(req: NextRequest, res: NextResponse) {
           }
         }
       }
+    } */
+
+    const csvFilePath = path.join(process.cwd(), "public/csv", "villages.csv");
+    const fileContent = fs.readFileSync(csvFilePath, "utf-8");
+
+    // Parse CSV
+    const records = parse(fileContent, {
+      columns: false,
+      skip_empty_lines: true,
+      trim: true,
+      bom: true,
+      delimiter: ",",
+    });
+
+    // Simpan data ke database menggunakan Prisma
+    for (const record of records) {
+      await prisma.village.create({
+        data: {
+          villageId: record[0],
+          districtId: record[1],
+          name: record[2],
+        },
+      });
     }
 
     return Response({
@@ -59,11 +85,20 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const { districtId, villageId } = await req.json();
+    const districtId = req.nextUrl.searchParams.get("districtId");
+    const villageId = req.nextUrl.searchParams.get("villageId");
+
+    if (!districtId && !villageId) {
+      return Response({
+        success: false,
+        message: "Please provide either districtId or villageId!",
+        status: 400,
+      });
+    }
 
     let data;
     if (villageId) {
-      data = await prisma.village.findUnique({
+      data = await prisma.village.findMany({
         where: { id: villageId },
         include: { district: true },
       });
@@ -71,13 +106,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     if (districtId) {
       data = await prisma.village.findMany({
-        where: { districtId },
+        where: { district: { id: districtId } },
         include: { district: true },
       });
-    }
-
-    if (!villageId && !districtId) {
-      data = await prisma.village.findMany({ include: { district: true } });
     }
 
     return Response({
