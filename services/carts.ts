@@ -1,21 +1,22 @@
 import BaseResponse from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IProduct } from "./products";
 
 export interface ICartItem {
   id: string;
-  cart_id: string;
-  product_id: string;
+  cartId: string;
+  product: IProduct;
   quantity: number;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICart {
   id: string;
-  user_id: string;
+  userId: string;
   items: ICartItem[];
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface CartResponse extends BaseResponse {
@@ -27,7 +28,7 @@ interface CartItemResponse extends BaseResponse {
 }
 
 interface GetCartParams {
-  userId: string;
+  userId?: string;
 }
 
 interface UpsertCartItemParams {
@@ -35,6 +36,11 @@ interface UpsertCartItemParams {
   userId: string;
   productId: string;
   quantity: number;
+}
+
+interface ActionCartItemParams {
+  id: string;
+  action: string;
 }
 
 interface RemoveCartITemParams {
@@ -67,6 +73,17 @@ export const cartsApi = createApi({
       }),
       invalidatesTags: ["carts"],
     }),
+    actionCartItem: builder.mutation<CartItemResponse, ActionCartItemParams>({
+      query: (data) => ({
+        url: "/item",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["carts"],
+    }),
     removeCartItem: builder.mutation<CartItemResponse, RemoveCartITemParams>({
       query: (data) => ({
         url: "/",
@@ -84,5 +101,6 @@ export const cartsApi = createApi({
 export const {
   useGetCartQuery,
   useUpsertCartItemMutation,
+  useActionCartItemMutation,
   useRemoveCartItemMutation,
 } = cartsApi;

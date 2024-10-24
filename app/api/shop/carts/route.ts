@@ -21,7 +21,20 @@ export async function GET(req: NextRequest) {
       },
       include: {
         user: true,
-        items: true,
+        items: {
+          include: {
+            product: {
+              include: {
+                images: {
+                  take: 1,
+                  orderBy: {
+                    displayOrder: "asc",
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
 

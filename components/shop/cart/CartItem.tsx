@@ -1,8 +1,32 @@
-import React from "react";
+"use client";
+
+// Modules
+import React, { useState } from "react";
 import Image from "next/image";
-import { Heart, Trash2 } from "lucide-react";
+
+// Icons
+import { Trash2 } from "lucide-react";
+
+// Components
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+// Utils
 import { formatToRupiah } from "@/lib/utils";
+import {
+  useActionCartItemMutation,
+  useRemoveCartItemMutation,
+} from "@/services/carts";
 
 export interface CartItemProps {
   id: string;
@@ -23,23 +47,42 @@ export default function CartItem({
   checked,
   onChecked,
 }: CartItemProps) {
+  const { toast } = useToast();
+  const [actionCartItem, { isLoading }] = useActionCartItemMutation();
+  const [removeCartItem, { isLoading: removeLoading }] =
+    useRemoveCartItemMutation();
+
   const handleCheckboxChange = (checked: boolean) => {
     onChecked(checked);
   };
 
-  // TODO: Implement logic to update quantity of item in cart
-  const handleQuantityCange = () => {
-    // Implement logic tho update quantity of item in cart
+  const handleQuantityChange = async (action: "increase" | "decrease") => {
+    try {
+      await actionCartItem({
+        action,
+        id,
+      }).unwrap();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update cart item",
+        className: "rounded-xl bg-rose-50 text-rose-800",
+        duration: 2000,
+      });
+    }
   };
 
-  // TODO: Implement logic to remove item from cart
-  const handleRemove = () => {
-    // Implement logic to remove item from cart
-  };
-
-  // TODO: Implement logic to add item to wishlist
-  const handleWishlist = () => {
-    // Implement logic to add item to wishlist
+  const handleRemove = async () => {
+    try {
+      await removeCartItem({ id }).unwrap();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to remove cart item",
+        className: "rounded-xl bg-rose-50 text-rose-800",
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -79,39 +122,80 @@ export default function CartItem({
               Quantity
             </p>
             <div className="flex items-center gap-3">
-              <div
-                onClick={handleQuantityCange}
-                className="flex-center flex size-4 rounded-md bg-accent-purple text-white md:size-5"
+              <Button
+                disabled={isLoading}
+                onClick={() => handleQuantityChange("decrease")}
+                className="flex-center flex size-4 w-fit cursor-pointer rounded-md bg-accent-purple p-0 text-white transition duration-300 hover:scale-110 md:size-5"
               >
                 -
-              </div>
+              </Button>
               <p className="font-lexend text-xs font-normal leading-tight text-neutral-500 md:text-sm">
                 {quantity}
               </p>
-              <div
-                onClick={handleQuantityCange}
-                className="flex-center flex size-4 rounded-md bg-accent-purple text-white md:size-5"
+              <Button
+                disabled={isLoading}
+                onClick={() => handleQuantityChange("increase")}
+                className="flex-center flex size-4 w-fit cursor-pointer rounded-md bg-accent-purple p-0 text-white transition duration-300 hover:scale-110 md:size-5"
               >
                 +
-              </div>
+              </Button>
             </div>
           </div>
 
-          {/* Delete & Fav */}
-          <div
-            className="flex items-center justify-end gap-4"
-            onClick={handleWishlist}
-          >
-            <div className="text-secondary">
-              <Heart size={20} className="size-4 md:size-5" />
-            </div>
-            <div className="text-secondary" onClick={handleRemove}>
-              <Trash2 size={20} className="size-4 md:size-5" />
-            </div>
+          {/* Delete */}
+          <div className="flex items-center justify-end gap-4">
+            <DeleteDialog isLoading={removeLoading} onDelete={handleRemove} />
           </div>
         </div>
       </div>
       <hr className="mt-4" />
     </>
+  );
+}
+
+interface DeleteDialogProps {
+  isLoading: boolean;
+  onDelete: () => void;
+}
+
+function DeleteDialog({ isLoading, onDelete }: DeleteDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        {" "}
+        <Button className="size-5 w-fit cursor-pointer bg-transparent p-0 text-secondary hover:bg-transparent lg:size-6">
+          <Trash2 size={20} className="size-4 md:size-5" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="rounded-2xl bg-white p-6 font-lexend">
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will remove this product from
+            your carts.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <Button
+            type="button"
+            className="rounded-xl bg-slate-50 px-6 py-4 text-center text-slate-700 transition  duration-300 hover:bg-slate-100"
+            onClick={() => setOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            className="rounded-xl bg-rose-50 px-6 py-4 text-center text-rose-700 transition duration-300 hover:bg-rose-100"
+            onClick={onDelete}
+            disabled={isLoading}
+          >
+            Remove
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
