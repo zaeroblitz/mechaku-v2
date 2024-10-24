@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 // Utils
 import { formatToRupiah } from "@/lib/utils";
 import { useUpsertCartItemMutation } from "@/services/carts";
+import { useCreateWishlistMutation } from "@/services/wishlists";
 
 interface SeriesProps {
   id: string;
@@ -47,6 +48,7 @@ export default function ProductInformation({
   const [qty, setQty] = useState(1);
   const { data: session, status } = useSession();
   const [upsertCartItem] = useUpsertCartItemMutation();
+  const [createWishlist] = useCreateWishlistMutation();
 
   const handleDecreaseQty = () => {
     if (qty > 1) {
@@ -75,7 +77,7 @@ export default function ProductInformation({
           userId: session.user.id,
           productId: id,
           quantity: qty,
-        });
+        }).unwrap();
 
         toast({
           title: "Added to cart",
@@ -87,6 +89,37 @@ export default function ProductInformation({
       toast({
         title: "Error",
         description: "Failed to add to cart. Please try again later.",
+        className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+      });
+    }
+  };
+
+  const handleWishlist = async () => {
+    try {
+      if (status === "unauthenticated") {
+        toast({
+          title: "Can't add to wishlist",
+          description: "Please login first.",
+          className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+        });
+      }
+
+      if (status === "authenticated") {
+        await createWishlist({
+          userId: session.user.id,
+          productId: id,
+        }).unwrap();
+
+        toast({
+          title: "Added to wishlist",
+          description: `${name} added to your wishlist`,
+          className: "bg-white text-slate-700 rounded-2xl font-lexend",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add to wishlist. Please try again later.",
         className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
       });
     }
@@ -167,7 +200,10 @@ export default function ProductInformation({
           </Button>
 
           {/* Add to Wishlists */}
-          <Button className="flex-center flex h-10 w-full rounded-lg border border-slate-200 bg-white transition duration-300 hover:bg-slate-50 md:w-10">
+          <Button
+            onClick={handleWishlist}
+            className="flex-center flex h-10 w-full rounded-lg border border-slate-200 bg-white transition duration-300 hover:bg-slate-50 md:w-10"
+          >
             <span className="text-accent-purple">
               <Heart size={14} />
             </span>

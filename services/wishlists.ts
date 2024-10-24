@@ -33,7 +33,7 @@ interface RemoveWishlistParams {
 export const wishlistsApi = createApi({
   reducerPath: "wishlistsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/admin/wishlists",
+    baseUrl: "/api/shop/wishlists",
   }),
   tagTypes: ["wishlists"],
   endpoints: (builder) => ({
