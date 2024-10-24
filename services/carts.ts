@@ -31,7 +31,7 @@ interface GetCartParams {
 }
 
 interface UpsertCartItemParams {
-  cartId: string;
+  cartId?: string;
   userId: string;
   productId: string;
   quantity: number;

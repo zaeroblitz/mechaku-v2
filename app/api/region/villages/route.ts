@@ -72,7 +72,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       status: 201,
     });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:27 ~ POST ~ error:", error);
+    console.error("🚀 ~ file: route.ts:27 ~ POST ~ error:", error);
 
     return Response({
       success: false,
@@ -118,7 +118,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ [GET VILLAGES] ~file: route.ts:64 ~ GET ~ error:", error);
+    console.error(
+      "🚀 ~ [GET VILLAGES] ~file: route.ts:64 ~ GET ~ error:",
+      error
+    );
 
     return Response({
       success: false,

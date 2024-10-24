@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       status: 201,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [INSERT PROVINCES] ~ file: route.ts:27 ~ POST ~ error:",
       error
     );
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [GET PROVINCES] ~ file: route.ts:43 ~ GET ~ error:",
       error
     );

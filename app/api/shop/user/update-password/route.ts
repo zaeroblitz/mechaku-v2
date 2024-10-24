@@ -46,7 +46,7 @@ export async function PUT(req: NextRequest, params: Params) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [USER-UPDATE-PASSWORD] ~ file: route.ts:49 ~ PUT ~ error:",
       error
     );

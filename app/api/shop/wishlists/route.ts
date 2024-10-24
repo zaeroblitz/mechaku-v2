@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [GET WISHLISTS] ~ file: route.ts:9 ~ GET ~ error:",
       error
     );
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       status: 201,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [INSERT WISHLIST] ~ file: route.ts:54 ~ POST ~ error:",
       error
     );
@@ -120,7 +120,7 @@ export async function DELETE(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [DELETE WISHLIST] ~ file: route.ts:91 ~ DELETE ~ error:",
       error
     );

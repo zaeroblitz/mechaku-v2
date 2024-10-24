@@ -53,7 +53,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       status: 201,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [Shop - Sign Up] ~ file: route.ts:33 ~ POST ~ error:",
       error
     );

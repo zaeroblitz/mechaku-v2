@@ -47,6 +47,7 @@ export default function Page({ params }: ParamsSlugProps) {
               />
 
               <ProductInformation
+                id={product.data.id}
                 name={product.data.name}
                 price={product.data.price}
                 series={product.data.series}

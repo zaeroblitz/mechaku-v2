@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ [GET CARTS] ~ file: route.ts:8 ~ GET ~ error:", error);
+    console.error("🚀 ~ [GET CARTS] ~ file: route.ts:8 ~ GET ~ error:", error);
 
     return Response({
       success: false,
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { cartId, userId, productId, quantity } = await req.json();
+    const { userId, productId, quantity } = await req.json();
 
     if (!userId || !productId || quantity <= 0) {
       return Response({
@@ -67,16 +67,14 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    let cart = cartId
-      ? await prisma.cart.findUnique({ where: { id: cartId } })
-      : null;
+    let cart = await prisma.cart.findUnique({ where: { userId } });
 
     if (!cart) {
       cart = await prisma.cart.create({ data: { userId } });
     }
 
     const existingCartItem = await prisma.cartItem.findFirst({
-      where: { cartId, productId },
+      where: { cartId: cart.id, productId },
     });
 
     let updatedQuantity;
@@ -90,7 +88,7 @@ export async function POST(req: NextRequest) {
     }
 
     const cartItem = await prisma.cartItem.upsert({
-      where: { id: cartId, productId },
+      where: { id: existingCartItem?.id ?? "", cartId: cart.id, productId },
       update: { quantity: updatedQuantity },
       create: { cartId: cart.id, productId, quantity: updatedQuantity },
     });
@@ -102,7 +100,7 @@ export async function POST(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [INSERT CART] ~ file: route.ts:50 ~ POST ~ error:",
       error
     );
@@ -147,7 +145,7 @@ export async function DELETE(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [DELETE CART]~ file: route.ts:122 ~ DELETE ~ error:",
       error
     );

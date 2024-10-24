@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log("🚀 ~ [GET ADDRESS]~ file: route.ts:9 ~ GET ~ error:", error);
+    console.error("🚀 ~ [GET ADDRESS]~ file: route.ts:9 ~ GET ~ error:", error);
 
     return Response({
       success: false,
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
       status: 201,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [INSERT ADDRESS] file: route.ts:43 ~ POST ~ error:",
       error
     );
@@ -152,7 +152,7 @@ export async function PUT(req: NextRequest) {
       status: 201,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [UPDATE ADDRESS] file: route.ts:43 ~ POST ~ error:",
       error
     );
@@ -197,7 +197,7 @@ export async function DELETE(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [DELETE ADDRESS] ~ file: route.ts:160 ~ DELETE ~ error:",
       error
     );

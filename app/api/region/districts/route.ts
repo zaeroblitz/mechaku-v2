@@ -39,7 +39,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       status: 201,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [INSERT DISTRICTS] ~ file: route.ts:27 ~ POST ~ error:",
       error
     );
@@ -86,7 +86,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       status: 200,
     });
   } catch (error) {
-    console.log(
+    console.error(
       "🚀 ~ [GET DISTRICTS] ~ file: route.ts:57 ~ GET ~ error:",
       error
     );

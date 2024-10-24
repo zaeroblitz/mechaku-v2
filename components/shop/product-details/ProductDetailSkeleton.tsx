@@ -3,7 +3,7 @@ import React from "react";
 
 export default function ProductDetailSkeleton() {
   return (
-    <div className="flex w-full flex-col gap-6 px-6 md:px-10 xl:px-16">
+    <div className="flex w-full max-w-screen-2xl flex-col gap-8 px-6 md:px-10 xl:px-16">
       <div className="flex flex-col gap-10 lg:flex-row">
         <div className="flex-center flex flex-col gap-6">
           <Skeleton className="size-[320px] rounded-2xl bg-slate-200 md:size-[500px]" />

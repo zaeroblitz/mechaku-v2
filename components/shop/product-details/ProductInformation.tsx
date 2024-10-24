@@ -1,8 +1,18 @@
+// Modules
 import React, { useState } from "react";
 import { Rating } from "react-simple-star-rating";
-import { formatToRupiah } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+
+// Icons
 import { Heart, Minus, Plus } from "lucide-react";
+
+// Components
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+
+// Utils
+import { formatToRupiah } from "@/lib/utils";
+import { useUpsertCartItemMutation } from "@/services/carts";
 
 interface SeriesProps {
   id: string;
@@ -15,6 +25,7 @@ interface BrandGradeProps {
 }
 
 interface Props {
+  id: string;
   name: string;
   price: number;
   series: SeriesProps;
@@ -24,6 +35,7 @@ interface Props {
 }
 
 export default function ProductInformation({
+  id,
   name,
   price,
   series,
@@ -31,7 +43,10 @@ export default function ProductInformation({
   grade,
   quantity,
 }: Props) {
+  const { toast } = useToast();
   const [qty, setQty] = useState(1);
+  const { data: session, status } = useSession();
+  const [upsertCartItem] = useUpsertCartItemMutation();
 
   const handleDecreaseQty = () => {
     if (qty > 1) {
@@ -42,6 +57,38 @@ export default function ProductInformation({
   const handleIncreaseQty = () => {
     if (qty < quantity) {
       setQty(qty + 1);
+    }
+  };
+
+  const handleAddCart = async () => {
+    try {
+      if (status === "unauthenticated") {
+        toast({
+          title: "Can't add to cart",
+          description: "Please login first.",
+          className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+        });
+      }
+
+      if (status === "authenticated") {
+        await upsertCartItem({
+          userId: session.user.id,
+          productId: id,
+          quantity: qty,
+        });
+
+        toast({
+          title: "Added to cart",
+          description: `${name} added to your cart`,
+          className: "bg-white text-slate-700 rounded-2xl font-lexend",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add to cart. Please try again later.",
+        className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+      });
     }
   };
 
@@ -110,7 +157,10 @@ export default function ProductInformation({
           </div>
 
           {/* Add to Cart */}
-          <Button className="flex-center flex h-10 w-full rounded-xl bg-accent-purple px-4 py-2 transition duration-300 hover:bg-accent-purple/80 md:w-[200px]">
+          <Button
+            onClick={handleAddCart}
+            className="flex-center flex h-10 w-full rounded-xl bg-accent-purple px-4 py-2 transition duration-300 hover:bg-accent-purple/80 md:w-[200px]"
+          >
             <p className="font-poppins text-sm font-medium text-white">
               Add to Cart
             </p>
