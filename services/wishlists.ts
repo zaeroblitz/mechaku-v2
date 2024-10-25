@@ -18,7 +18,7 @@ interface UserWishlistsResponse extends BaseResponse {
 }
 
 interface GetWihslistParams {
-  userId: string;
+  userId?: string;
 }
 
 interface CreateWishlistParams {

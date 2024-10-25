@@ -11,9 +11,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 
 // Utils
-import { formatToRupiah } from "@/lib/utils";
+import { cn, formatToRupiah } from "@/lib/utils";
 import { useUpsertCartItemMutation } from "@/services/carts";
-import { useCreateWishlistMutation } from "@/services/wishlists";
+import {
+  useCreateWishlistMutation,
+  useGetAllWishlistsQuery,
+  useRemoveWishlistMutation,
+} from "@/services/wishlists";
 
 interface SeriesProps {
   id: string;
@@ -45,10 +49,17 @@ export default function ProductInformation({
   quantity,
 }: Props) {
   const { toast } = useToast();
-  const [qty, setQty] = useState(1);
   const { data: session, status } = useSession();
+  const { data: wishlists } = useGetAllWishlistsQuery({
+    userId: session?.user.id,
+  });
   const [upsertCartItem] = useUpsertCartItemMutation();
   const [createWishlist] = useCreateWishlistMutation();
+  const [removeWishlist] = useRemoveWishlistMutation();
+  const [qty, setQty] = useState(1);
+  const isItemOnWishlist = wishlists?.data.find(
+    (wishlist) => wishlist.productId === id
+  );
 
   const handleDecreaseQty = () => {
     if (qty > 1) {
@@ -69,6 +80,7 @@ export default function ProductInformation({
           title: "Can't add to cart",
           description: "Please login first.",
           className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+          duration: 2000,
         });
       }
 
@@ -83,6 +95,7 @@ export default function ProductInformation({
           title: "Added to cart",
           description: `${name} added to your cart`,
           className: "bg-white text-slate-700 rounded-2xl font-lexend",
+          duration: 2000,
         });
       }
     } catch (error) {
@@ -90,6 +103,7 @@ export default function ProductInformation({
         title: "Error",
         description: "Failed to add to cart. Please try again later.",
         className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+        duration: 2000,
       });
     }
   };
@@ -101,26 +115,42 @@ export default function ProductInformation({
           title: "Can't add to wishlist",
           description: "Please login first.",
           className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+          duration: 2000,
         });
       }
 
       if (status === "authenticated") {
-        await createWishlist({
-          userId: session.user.id,
-          productId: id,
-        }).unwrap();
+        if (isItemOnWishlist) {
+          await removeWishlist({
+            id: isItemOnWishlist.id,
+          }).unwrap();
 
-        toast({
-          title: "Added to wishlist",
-          description: `${name} added to your wishlist`,
-          className: "bg-white text-slate-700 rounded-2xl font-lexend",
-        });
+          toast({
+            title: "Removed from wishlist",
+            description: `${name} removed from your wishlist`,
+            className: "bg-white text-slate-700 rounded-2xl font-lexend",
+            duration: 2000,
+          });
+        } else {
+          await createWishlist({
+            userId: session.user.id,
+            productId: id,
+          }).unwrap();
+
+          toast({
+            title: "Added to wishlist",
+            description: `${name} added to your wishlist`,
+            className: "bg-white text-slate-700 rounded-2xl font-lexend",
+            duration: 2000,
+          });
+        }
       }
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to add to wishlist. Please try again later.",
         className: "bg-rose-50 text-rose-500 rounded-2xl font-lexend",
+        duration: 2000,
       });
     }
   };
@@ -202,9 +232,17 @@ export default function ProductInformation({
           {/* Add to Wishlists */}
           <Button
             onClick={handleWishlist}
-            className="flex-center flex h-10 w-full rounded-lg border border-slate-200 bg-white transition duration-300 hover:bg-slate-50 md:w-10"
+            className={cn(
+              "flex-center flex h-10 w-full rounded-lg border border-rose-100 transition duration-300 md:w-10",
+              isItemOnWishlist && "bg-rose-500 hover:bg-rose-300",
+              !isItemOnWishlist && "bg-white hover:bg-slate-50"
+            )}
           >
-            <span className="text-accent-purple">
+            <span
+              className={cn(
+                isItemOnWishlist ? "text-rose-200" : "text-rose-500"
+              )}
+            >
               <Heart size={14} />
             </span>
           </Button>
