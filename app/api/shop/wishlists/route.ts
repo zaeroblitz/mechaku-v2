@@ -22,7 +22,19 @@ export async function GET(req: NextRequest) {
         },
       },
       include: {
-        product: true,
+        product: {
+          include: {
+            series: true,
+            brand: true,
+            grade: true,
+            images: {
+              take: 1,
+              orderBy: {
+                displayOrder: "asc",
+              },
+            },
+          },
+        },
         user: true,
       },
     });

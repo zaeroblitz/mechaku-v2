@@ -1,12 +1,14 @@
 import BaseResponse from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IProduct } from "./products";
 
 export interface IWishlist {
   id: string;
-  user_id: string;
+  userId: string;
   productId: string;
-  created_at: string;
-  updated_at: string;
+  product: IProduct;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface WishlistResponse extends BaseResponse {

@@ -8,7 +8,14 @@ import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
 // Icons
-import { CreditCard, LogOut, Search, ShoppingBag, User } from "lucide-react";
+import {
+  CreditCard,
+  Heart,
+  LogOut,
+  Search,
+  ShoppingBag,
+  User,
+} from "lucide-react";
 
 // Shadcn Components
 import {
@@ -105,7 +112,7 @@ export default function Navbar() {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="rounded-xl bg-white p-3 text-slate-600">
+              <DropdownMenuContent className="rounded-xl bg-white p-3 px-6 text-slate-600">
                 <DropdownMenuLabel>Hi, {data.user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
@@ -115,6 +122,10 @@ export default function Navbar() {
                 <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
                   <ShoppingBag size={14} />
                   <Link href="/my-carts">My Carts</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
+                  <Heart size={14} />
+                  <Link href="/my-wishlists">My Wishlists</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-slate-100">
                   <CreditCard size={14} />
