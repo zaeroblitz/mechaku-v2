@@ -32,20 +32,24 @@ export interface CartItemProps {
   id: string;
   name: string;
   price: number;
+  stock: number;
   quantity: number;
   imageUrl: string;
   checked: boolean;
   onChecked: (isChecked: boolean) => void;
+  onQuantityChange: (qty: number) => void;
 }
 
 export default function CartItem({
   id,
   name,
   price,
+  stock,
   quantity,
   imageUrl,
   checked,
   onChecked,
+  onQuantityChange,
 }: CartItemProps) {
   const { toast } = useToast();
   const [actionCartItem, { isLoading }] = useActionCartItemMutation();
@@ -62,6 +66,12 @@ export default function CartItem({
         action,
         id,
       }).unwrap();
+
+      if (action === "increase") {
+        onQuantityChange(Math.min(quantity + 1, stock));
+      } else {
+        onQuantityChange(Math.max(1, quantity - 1));
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -164,7 +174,6 @@ function DeleteDialog({ isLoading, onDelete }: DeleteDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        {" "}
         <Button className="size-5 w-fit cursor-pointer bg-transparent p-0 text-secondary hover:bg-transparent lg:size-6">
           <Trash2 size={20} className="size-4 md:size-5" />
         </Button>

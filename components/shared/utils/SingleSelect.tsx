@@ -16,6 +16,7 @@ interface Props {
   placeholder: string;
   options?: { value: string; label: string }[];
   width?: number;
+  fullWidth?: boolean;
   onSelectChange: (value: string) => void;
 }
 
@@ -24,6 +25,7 @@ export default function SingleSelect({
   placeholder,
   options,
   width = 240,
+  fullWidth = false,
   onSelectChange,
 }: Props) {
   const [value, setValue] = useState("");
@@ -39,7 +41,8 @@ export default function SingleSelect({
       <SelectTrigger
         className={cn(
           "flex h-12 w-full gap-2 rounded-2xl border  border-[#ecedf2] bg-white px-12 py-4 font-poppins text-xs ring-transparent lg:h-14 lg:text-sm",
-          width !== 240 ? `md:w-[${width}]px` : "md:w-[240px]"
+          width !== 240 ? `md:w-[${width}]px` : "md:w-[240px]",
+          fullWidth && "md:w-full"
         )}
       >
         <SelectValue placeholder={placeholder} />

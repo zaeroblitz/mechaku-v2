@@ -3,6 +3,7 @@
 // Modules
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // Shadcn Components
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,15 +14,18 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/shop/home/Navbar";
 import Footer from "@/components/shop/home/Footer";
 import CartItem from "@/components/shop/cart/CartItem";
+import EmptyState from "@/components/shared/state/EmptyState";
+import CartItemSkeleton from "@/components/shop/cart/CartItemSkeleton";
 
 // Utils
 import { formatToRupiah } from "@/lib/utils";
 import { ICartItem, useGetCartQuery } from "@/services/carts";
-import CartItemSkeleton from "@/components/shop/cart/CartItemSkeleton";
-import EmptyState from "@/components/shared/state/EmptyState";
+import { useCheckout } from "@/context/CheckoutProvider";
 
 export default function MyCarts() {
+  const router = useRouter();
   const { data: session } = useSession();
+  const { setCheckoutItems } = useCheckout();
   const { data: carts, isLoading: cartsLoading } = useGetCartQuery({
     userId: session?.user.id,
   });
@@ -58,6 +62,7 @@ export default function MyCarts() {
               <div className="flex items-center gap-2">
                 <Checkbox
                   id="all-cart-iems"
+                  checked={selectedCarts.length === carts.data.items.length}
                   className="size-4 rounded-sm border border-slate-300 text-violet-50 data-[state=checked]:bg-accent-purple lg:size-5 lg:rounded-md"
                   onCheckedChange={(checked: boolean) => {
                     setSelectedCarts(checked ? carts.data.items : []);
@@ -77,20 +82,28 @@ export default function MyCarts() {
                   id={cart.id}
                   name={cart.product.name}
                   price={cart.product.price}
+                  stock={cart.product.quantity}
                   quantity={cart.quantity}
                   imageUrl={cart.product.images[0].imageUrl}
                   checked={selectedCarts.some(
                     (selectedCartId) => selectedCartId.id === cart.id
                   )}
-                  onChecked={(isCheked) =>
+                  onChecked={(isCheked) => {
                     setSelectedCarts(
                       isCheked
                         ? [...selectedCarts, cart]
                         : selectedCarts.filter(
                             (selectedCartId) => selectedCartId.id !== cart.id
                           )
-                    )
-                  }
+                    );
+                  }}
+                  onQuantityChange={(quantity) => {
+                    const updatedCarts = selectedCarts.map((item) =>
+                      item.id === cart.id ? { ...item, quantity } : item
+                    );
+
+                    setSelectedCarts(updatedCarts);
+                  }}
                 />
               ))}
             </div>
@@ -134,6 +147,17 @@ export default function MyCarts() {
                     />
                     <Button className="rounded-lg bg-accent-purple px-6 py-3 text-center font-lexend text-white hover:bg-accent-purple/90">
                       Apply
+                    </Button>
+                  </div>
+                  <div className="flex-center flex w-full rounded-2xl">
+                    <Button
+                      onClick={() => {
+                        setCheckoutItems(selectedCarts);
+                        router.push("/checkout");
+                      }}
+                      className="w-full rounded-2xl bg-primary py-6 text-center text-sm font-semibold text-white transition duration-300 hover:bg-secondary lg:text-base"
+                    >
+                      Checkout
                     </Button>
                   </div>
                 </div>
